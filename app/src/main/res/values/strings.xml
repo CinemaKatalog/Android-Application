@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android-Application</string>
+    <string name="main_title">Все фильмы</string>
 </resources>
