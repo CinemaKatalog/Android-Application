@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Android-Application</string>
     <string name="main_title">Все фильмы</string>
+    <string name="profile">Профиль</string>
+    <string name="home">Главная</string>
+    <string name="search">Поиск</string>
 </resources>

@@ -7,4 +7,6 @@
 
     <color name="color_pink">#EC407B</color>
     <color name="color_turquoise">#20FFF8</color>
+
+    <color name="color_darker_gray">#6D6C6C</color>
 </resources>
