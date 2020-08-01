@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        initView()
     }
 
     private fun initView(){
@@ -27,7 +27,9 @@ class MainActivity : AppCompatActivity() {
         mainFragment = MainFragment()
         btmNavView = findViewById(R.id.main_bottom_nav_view)
 
+        btmNavView.selectedItemId = R.id.action_main
         loadFragment(mainFragment)
+
         btmNavView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.action_profile->{
@@ -48,11 +50,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
     }
 
     private fun loadFragment(fragment: Fragment){
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, fragment)
+        transaction.replace(R.id.main_fragment_container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }

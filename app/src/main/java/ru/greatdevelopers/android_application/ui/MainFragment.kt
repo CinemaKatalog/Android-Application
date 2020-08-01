@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 import ru.greatdevelopers.android_application.R
 
 class MainFragment : Fragment(){
-    private lateinit var collapsingToolbarLayout : CollapsingToolbarLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,7 +21,6 @@ class MainFragment : Fragment(){
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.collapsing_toolbar.title = "Все фильмы"
         super.onViewCreated(view, savedInstanceState)
     }
 }
