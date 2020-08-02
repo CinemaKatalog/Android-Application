@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.greatdevelopers.android_application.ui.AccountFragment
+import ru.greatdevelopers.android_application.ui.FavoriteFragment
 import ru.greatdevelopers.android_application.ui.MainFragment
 import ru.greatdevelopers.android_application.ui.SearchFragment
 
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainFragment: MainFragment
     private lateinit var accountFragment: AccountFragment
     private lateinit var searchFragment: SearchFragment
+    private lateinit var favoriteFragment: FavoriteFragment
 
     private lateinit var btmNavView : BottomNavigationView
 
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         accountFragment = AccountFragment()
         searchFragment = SearchFragment()
         mainFragment = MainFragment()
+        favoriteFragment = FavoriteFragment()
         btmNavView = findViewById(R.id.main_bottom_nav_view)
 
         btmNavView.selectedItemId = R.id.action_main
@@ -42,6 +45,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.action_main->{
                     loadFragment(mainFragment)
+                    return@setOnNavigationItemSelectedListener true
+                }
+                R.id.action_favourite->{
+                    loadFragment(favoriteFragment)
                     return@setOnNavigationItemSelectedListener true
                 }
                 else->{

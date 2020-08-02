@@ -2,13 +2,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <!--<item name="colorPrimary">@color/color_primary</item>-->
-        <item name="colorPrimary">#161FC6</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <!--<item name="colorPrimary">#161FC6</item>-->
         <item name="colorPrimaryVariant">#B1B1B1</item>
         <item name="colorSecondary">@color/color_secondary</item>
         <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
 
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 

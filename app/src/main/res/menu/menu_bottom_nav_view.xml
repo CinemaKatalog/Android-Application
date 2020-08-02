@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_outline_home_24"
         android:title="@string/home" />
     <item
+        android:id="@+id/action_favourite"
+        android:icon="@drawable/ic_baseline_favorite_border_24"
+        android:title="@string/favourite" />
+    <item
         android:id="@+id/action_search"
         android:icon="@drawable/ic_text_search"
         android:title="@string/search" />
