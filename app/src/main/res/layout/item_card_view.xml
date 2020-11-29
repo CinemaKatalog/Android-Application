@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_film_tile"
+    android:layout_width="96dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:background="@color/color_primary"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_film_image"
+        android:layout_width="96dp"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="@color/color_primary"
+        app:cardCornerRadius="7dp">
+
+        <ImageView
+            android:id="@+id/film_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@color/color_secondary_variant" />
+
+        <TextView
+            android:id="@+id/card_film_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rectangle_rating"
+            android:text="КП 8.0"
+            android:textColor="@color/color_primary"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/card_film_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/card_film_image"
+        android:text="Название"
+        android:textStyle="bold"
+        android:textColor="@color/color_text_dark"
+        android:gravity="center"
+        tools:ignore="NotSibling" />
+    <TextView
+        android:id="@+id/card_film_genre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_below="@+id/card_film_name"
+        android:text="Жанр"
+        android:textColor="@color/color_text_dark"
+        android:gravity="center"
+        tools:ignore="NotSibling" />
+
+</RelativeLayout>

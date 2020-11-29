@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:isScrollContainer="true"
+    app:layout_scrollFlags="scroll"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+        android:id="@+id/tv_film_main_info"
+        style="@style/Film.MainInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginStart="@dimen/spacing_large_24"
+        android:text="Жанр, Страна, Год, Рейтинг"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_film_producer"
+        style="@style/Film.MainInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:text="Режисер: Имя"
+        app:layout_constraintStart_toStartOf="@+id/tv_film_main_info"
+        app:layout_constraintTop_toBottomOf="@id/tv_film_main_info" />
+
+    <View
+        android:id="@+id/divider_producer"
+        style="@style/Divider.Horizontal"
+        android:layout_marginStart="@dimen/spacing_normal_16"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:background="@color/color_divider_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_film_producer" />
+
+    <TextView
+        android:id="@+id/tv_film_description_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Описание"
+        style="@style/Film.BlockTitles"
+        app:layout_constraintStart_toStartOf="@id/tv_film_producer"
+        app:layout_constraintTop_toBottomOf="@id/divider_producer"
+        android:layout_marginTop="@dimen/spacing_normal_16"/>
+
+    <TextView
+        android:id="@+id/tv_film_description_body"
+        style="@style/Film.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:text="Тут расположен текст описания к фильму text Text TEXT text Text TEXT_text Text TEXT text Text TEXT_text Text TEXT text Text TEXT_text Text TEXT text Text TEXT_text Text TEXT text Text TEXT_text Text TEXT text Text TEXT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_film_description_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_film_description_title" />
+
+    <View
+        android:id="@+id/divider_description"
+        style="@style/Divider.Horizontal"
+        android:layout_marginStart="@dimen/spacing_normal_16"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:background="@color/color_divider_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_film_description_body" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view_film"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/cinema_card_view" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,15 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.FavoriteFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.mainscreen.fragments.FavoriteFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/favourite_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/in_progress" />
+        android:layout_height="wrap_content"
+        style="Widget.MaterialComponents.Toolbar"
+        android:fitsSystemWindows="true"
+        android:background="@color/color_primary">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/favourite_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_primary"
+            android:minHeight="?attr/actionBarSize"
+            app:title="@string/favourite_toolbar_title"
+            app:titleMarginStart="@dimen/spacing_huge_32"
+            app:titleTextColor="@color/color_text_dark"
+            app:titleTextAppearance="?attr/textAppearanceHeadline6">
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
-</FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_view_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:layout_gravity="center_horizontal"
+        app:spanCount="3"
+        tools:listitem="@layout/item_card_view" />
+
+
+</LinearLayout>

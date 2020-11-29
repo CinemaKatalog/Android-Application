@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_background"
+    app:behavior_hideable="true"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <TextView
+        android:id="@+id/tv_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:text="Фильтры"
+        android:textColor="@color/color_text_dark"
+        android:textSize="@dimen/spacing_large_24"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:text="@string/options_cancel"
+        android:textColor="@color/color_text_dark"
+        android:textSize="@dimen/spacing_normal_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/tv_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options_genre"
+        android:layout_marginTop="@dimen/spacing_huge_32"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintTop_toBottomOf="@id/tv_options"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <Spinner
+        android:id="@+id/spinner_genre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large_24"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_large_24"
+        app:layout_constraintEnd_toStartOf="@id/spinner_country"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+
+    <TextView
+        android:id="@+id/tv_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options_country"
+        app:layout_constraintTop_toTopOf="@id/tv_genre"
+        app:layout_constraintStart_toStartOf="@id/spinner_country"/>
+    <Spinner
+        android:id="@+id/spinner_country"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_large_24"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_large_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/spinner_genre"
+        app:layout_constraintTop_toBottomOf="@+id/tv_genre" />
+
+    <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options_year"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_genre"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_year_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options_year_from"
+        android:textColor="@color/color_text_dark"
+        android:textSize="@dimen/font_normal_16"
+
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintBottom_toBottomOf="@id/date_picker_from"
+        app:layout_constraintTop_toTopOf="@id/date_picker_from"
+        app:layout_constraintEnd_toStartOf="@id/date_picker_from"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <DatePicker
+        android:id="@+id/date_picker_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintTop_toTopOf="@+id/date_picker_to"
+        app:layout_constraintEnd_toStartOf="@id/tv_year_to"
+        app:layout_constraintStart_toEndOf="@id/tv_year_from"/>
+
+    <TextView
+        android:id="@+id/tv_year_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options_year_to"
+        android:textColor="@color/color_text_dark"
+        android:textSize="@dimen/font_normal_16"
+
+        app:layout_constraintBottom_toBottomOf="@id/date_picker_to"
+        app:layout_constraintTop_toTopOf="@id/date_picker_to"
+        app:layout_constraintEnd_toStartOf="@id/date_picker_to"
+        app:layout_constraintStart_toEndOf="@id/date_picker_from"/>
+
+    <DatePicker
+        android:id="@+id/date_picker_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_year"
+        app:layout_constraintStart_toEndOf="@id/tv_year_to"
+        android:layout_marginTop="@dimen/spacing_normal_16" />
+
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options_rating"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_to"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rs_rating"
+        style="@style/SearchOptions.Slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        android:layout_marginTop="@dimen/spacing_large_24"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        android:paddingBottom="@dimen/spacing_huge_32"
+        android:valueFrom="0.0"
+        android:valueTo="5.0"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_rating"
+        app:layout_constraintBottom_toTopOf="@id/btn_select"/>
+
+    <Button
+        android:id="@+id/btn_select"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal_16"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:layout_marginBottom="@dimen/font_normal_16"
+        android:backgroundTint="@color/color_secondary"
+        android:text="Подобрать"
+        android:textColor="@color/color_text_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

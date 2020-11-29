@@ -1,17 +1,18 @@
-package ru.greatdevelopers.android_application
+package ru.greatdevelopers.android_application.ui.mainscreen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.greatdevelopers.android_application.ui.AccountFragment
-import ru.greatdevelopers.android_application.ui.FavoriteFragment
-import ru.greatdevelopers.android_application.ui.MainFragment
-import ru.greatdevelopers.android_application.ui.SearchFragment
+import ru.greatdevelopers.android_application.R
+import ru.greatdevelopers.android_application.ui.mainscreen.fragments.FavoriteFragment
+import ru.greatdevelopers.android_application.ui.mainscreen.fragments.MainFragment
+import ru.greatdevelopers.android_application.ui.mainscreen.fragments.ProfileFragment
+import ru.greatdevelopers.android_application.ui.mainscreen.fragments.SearchFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
     private lateinit var mainFragment: MainFragment
-    private lateinit var accountFragment: AccountFragment
+    private lateinit var accountFragment: ProfileFragment
     private lateinit var searchFragment: SearchFragment
     private lateinit var favoriteFragment: FavoriteFragment
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView(){
-        accountFragment = AccountFragment()
+        accountFragment = ProfileFragment()
         searchFragment = SearchFragment()
         mainFragment = MainFragment()
         favoriteFragment = FavoriteFragment()
@@ -35,19 +36,19 @@ class MainActivity : AppCompatActivity() {
 
         btmNavView.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.action_profile->{
+                R.id.action_profile ->{
                     loadFragment(accountFragment)
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.action_search->{
+                R.id.action_search ->{
                     loadFragment(searchFragment)
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.action_main->{
+                R.id.action_main ->{
                     loadFragment(mainFragment)
                     return@setOnNavigationItemSelectedListener true
                 }
-                R.id.action_favourite->{
+                R.id.action_favourite ->{
                     loadFragment(favoriteFragment)
                     return@setOnNavigationItemSelectedListener true
                 }

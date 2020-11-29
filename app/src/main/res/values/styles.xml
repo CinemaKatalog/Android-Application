@@ -3,13 +3,20 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
-        <!--<item name="colorPrimary">#161FC6</item>-->
+        <item name="colorAccent">@color/color_secondary</item>
+        <item name="colorOnPrimary">@color/color_secondary</item>
+
+        <!--<item name="colorPrimaryDark">#FFFFFF</item>-->
         <item name="colorPrimaryVariant">#B1B1B1</item>
         <item name="colorSecondary">@color/color_secondary</item>
         <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
 
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="alertDialogTheme">@style/AlertDialogCustomTheme</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 
@@ -18,6 +25,159 @@
     </style>
     <style name="Widget.MaterialComponents.Toolbar" parent="">
         <item name="elevation">8dp</item>
-
     </style>
+
+
+    <!-- Profile Fragment styles -->
+    <style name="Divider"></style>
+
+    <style name="Divider.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+    <style name="Divider.Vertical">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+
+
+    <style name="Profile"></style>
+
+    <style name="Profile.EditText">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+        <item name="android:enabled">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:focusable">false</item>
+    </style>
+
+    <style name="Profile.EditText.Single">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Profile.EditText.Multiline">
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:maxLength">128</item>
+    </style>
+
+    <style name="Profile.Header"></style>
+
+    <style name="Profile.Header.Nickname">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/font_large_20</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Profile.Header.UserType">
+        <item name="android:textSize">@dimen/font_normal_16</item>
+        <item name="android:textColor">@color/color_text_secondary</item>
+    </style>
+
+
+    <style name="Profile.InfoItem">
+        <item name="android:paddingTop">@dimen/spacing_normal_16</item>
+        <item name="android:paddingStart">@dimen/spacing_normal_16</item>
+        <item name="android:paddingEnd">@dimen/spacing_normal_16</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:minHeight">72dp</item>
+    </style>
+
+    <style name="Film"></style>
+
+    <style name="Film.BlockTitles">
+        <item name="android:textSize">@dimen/font_large_20</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+    </style>
+
+    <style name="Film.MainInfo">
+        <item name="android:textSize">@dimen/font_small_12</item>
+        <item name="android:textColor">@color/color_text_secondary</item>
+    </style>
+
+    <style name="Film.Description">
+        <item name="android:textSize">@dimen/font_normal_16</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+    </style>
+    <style name="Film.CinemaName">
+        <item name="android:textSize">@dimen/font_normal_16</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+    </style>
+
+    <style name="Sign"></style>
+
+    <style name="Sign.EditText">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Options"></style>
+
+    <style name="Options.EditText">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+    </style>
+
+    <style name="Options.EditText.Single">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Options.EditText.Multiline">
+        <item name="android:singleLine">false</item>
+    </style>
+
+
+
+    <style name="BottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>
+        <!--<item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item> //Changes the Shape Apperance-->
+        <!--<item name="hintTextColor">?attr/colorOnSurface</item>-->   //When you added this line it will applies only one color in normal and activate state i.e colorOnSurface color
+    </style>
+
+    <style name="ThemeOverlay.App.TextInputLayout" parent="">
+        <item name="colorPrimary">@color/color_secondary</item>  //Activated color
+        <!--<item name="colorOnSurface">@color/colorPrimary</item>    //Normal color
+        <item name="colorError">@color/colorPrimary</item>       //Error color-->
+
+        //Text Appearance styles
+        <!--<item name="textAppearanceSubtitle1">@style/TextAppearance.App.Subtitle1</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.App.Caption</item>-->
+
+        <!--Note: When setting a materialThemeOverlay on a custom TextInputLayout style, don’t forget to set editTextStyle to either a @style/Widget.MaterialComponents.TextInputEditText.* style or to a custom one that inherits from that.
+        The TextInputLayout styles set materialThemeOverlay that overrides editTextStyle with the specific TextInputEditText style needed. Therefore, you don’t need to specify a style tag on the edit text.-->
+        <!--<item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox</item>-->
+    </style>
+
+
+    <style name="SearchOptions.Slider" parent="">
+        <item name="trackColorActive">@color/color_secondary</item>
+        <item name="trackColorInactive">@color/color_secondary_24</item>
+    </style>
+
+
+
+    <style name="AlertDialogCustomTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:colorPrimary">@color/color_secondary</item>
+        <item name="android:colorAccent">@color/color_secondary</item>
+    </style>
+
+    <style name="AlertButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/color_secondary</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="AlertButtonStyle"/>
+    <style name="NegativeButtonStyle" parent="AlertButtonStyle"/>
+
 </resources>

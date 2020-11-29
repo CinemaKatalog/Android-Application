@@ -3,19 +3,29 @@
     package="ru.greatdevelopers.android_application">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.EditActivity" />
+        <activity
+            android:name=".ui.signscreen.SignActivity"
+            android:label="@string/title_activity_sign">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.mainscreen.MainActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".ui.filmscreen.FilmActivity"
+            android:parentActivityName=".ui.mainscreen.MainActivity" />
     </application>
 
 </manifest>
