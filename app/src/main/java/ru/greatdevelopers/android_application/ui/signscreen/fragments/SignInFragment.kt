@@ -48,11 +48,6 @@ class SignInFragment : Fragment() {
 
         signInViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
             user = foundUser
-            user?.password?.let { it1 ->
-                Utils.showToast(requireContext(),
-                    it1, Toast.LENGTH_SHORT)
-            }
-
         })
         signInButton.setOnClickListener {
             if (et_sign_in_login.text.toString().isNotEmpty()

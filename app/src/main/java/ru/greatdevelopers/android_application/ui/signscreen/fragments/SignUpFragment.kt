@@ -38,7 +38,11 @@ class SignUpFragment : Fragment() {
         signInFragment = SignInFragment()
         signUpButton = view.findViewById(R.id.btn_sign_up)
 
-        signUpViewModel.user.observe(viewLifecycleOwner, Observer { foundUser -> user = foundUser })
+        signUpViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
+            user = foundUser
+
+        })
+
         signUpButton.setOnClickListener {
             if (et_sign_up_name.text.toString().isNotEmpty()
                 && et_sign_up_login.text.toString().isNotEmpty()
@@ -49,14 +53,26 @@ class SignUpFragment : Fragment() {
                 val login = et_sign_up_login.text.toString()
                 val password = et_sign_up_password.text.toString()
 
-                signUpViewModel.loginRequest(login)
-                if(user?.login == login){
+                if(password.matches(Regex(Utils.PASSWORD_PATTERN))){
                     Utils.showToast(requireContext(),
-                        getString(R.string.text_sign_up_already_exist), Toast.LENGTH_SHORT)
+                        "All right, you may use this password", Toast.LENGTH_SHORT)
+
+                    signUpViewModel.loginRequest(login){
+                            user: User? ->
+                        if(user != null){
+                            Utils.showToast(requireContext(),
+                                getString(R.string.text_sign_up_already_exist), Toast.LENGTH_SHORT)
+                        }else{
+                            signUpViewModel.insertUser(User(name = name, login = login, password = password, userType = "user"))
+                            loadFragment(signInFragment)
+                        }
+                    }
                 }else{
-                    //signUpViewModel.insertUser(User(name = name, login = login, password = password, userType = "user"))
-                    loadFragment(signInFragment)
+                    Utils.showToast(requireContext(),
+                        "!!!You may not use this password!!!", Toast.LENGTH_SHORT)
                 }
+
+
 
             } else {
                 Utils.showToast(requireContext(),

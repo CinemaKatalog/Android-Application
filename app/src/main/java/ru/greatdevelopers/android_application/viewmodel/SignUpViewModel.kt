@@ -18,9 +18,15 @@ class SignUpViewModel(private val repository: ProfileRepository):ViewModel() {
     val user: LiveData<User>
         get() = loadUser
 
-    fun loginRequest(login: String){
+    fun loginRequest(login: String, onFoundUser: (user: User?)-> Unit){
         viewModelScope.launch {
-            loadUser.postValue(repository.getUserByLogin(login))
+            val tmpUser = repository.getUserByLogin(login)
+
+            loadUser.postValue(tmpUser)
+            onFoundUser(tmpUser)
+            if(tmpUser == null){
+
+            }
         }
     }
 
