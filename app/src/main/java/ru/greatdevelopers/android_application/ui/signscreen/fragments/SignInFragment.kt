@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_sign_in.*
-import kotlinx.android.synthetic.main.fragment_sign_up.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.Utils.Utils
@@ -19,7 +18,6 @@ import ru.greatdevelopers.android_application.ui.mainscreen.MainActivity
 import ru.greatdevelopers.android_application.viewmodel.SignInViewModel
 
 class SignInFragment : Fragment() {
-    private val newUserFragmentRequestCode = 1
     private val signInViewModel by viewModel<SignInViewModel>()
 
     private lateinit var signInButton: Button
@@ -61,18 +59,16 @@ class SignInFragment : Fragment() {
                     user: User ->
                     if(user.password == password){
                         var intentSignIn = Intent(requireContext(), MainActivity::class.java)
+                        intentSignIn.putExtra("user_id", user.id)
                         startActivity(intentSignIn)
                     }else{
                         Utils.showToast(requireContext(),
                             getString(R.string.text_sign_up_incorrect), Toast.LENGTH_SHORT)
                     }
                 }
-
-
-
             } else {
                 Utils.showToast(requireContext(),
-                    getString(R.string.text_sign_up_not_complite), Toast.LENGTH_SHORT)
+                    getString(R.string.text_sign_up_not_complete), Toast.LENGTH_SHORT)
             }
 
 
