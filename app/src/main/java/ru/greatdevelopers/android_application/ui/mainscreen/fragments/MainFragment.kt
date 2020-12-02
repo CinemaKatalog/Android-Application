@@ -68,9 +68,8 @@ class MainFragment : Fragment(){
 
         mainViewModel.initialRequest(requireArguments().getInt("user_id")){
             user: User? ->
-            if (user?.userType == "user"){
-                fab_edit.visibility = View.GONE
-            }else{
+            if (user?.userType == "admin"){
+                fab_edit.visibility = View.VISIBLE
                 fab_edit.setOnClickListener {
                     var intentEdit = Intent(this.context, EditActivity::class.java)
                     startActivity(intentEdit)

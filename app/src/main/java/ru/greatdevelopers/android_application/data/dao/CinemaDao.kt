@@ -6,7 +6,7 @@ import ru.greatdevelopers.android_application.data.model.Favourite
 
 @Dao
 interface CinemaDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUser(cinema: Cinema)
 
     @Update

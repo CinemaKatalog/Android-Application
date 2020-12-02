@@ -54,8 +54,6 @@ class SignUpFragment : Fragment() {
                 val password = et_sign_up_password.text.toString()
 
                 if(password.matches(Regex(Utils.PASSWORD_PATTERN))){
-                    Utils.showToast(requireContext(),
-                        "All right, you may use this password", Toast.LENGTH_SHORT)
 
                     signUpViewModel.loginRequest(login){
                             user: User? ->
@@ -88,6 +86,4 @@ class SignUpFragment : Fragment() {
         transaction?.commit()
     }
 
-    private fun registerUser(){
-    }
 }

@@ -31,6 +31,10 @@ val viewModelModule = module {
     viewModel {
         MainViewModel(get(), get())
     }
+
+    viewModel {
+        ProfileViewModel(get())
+    }
 }
 
 val databaseModule = module {

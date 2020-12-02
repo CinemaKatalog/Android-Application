@@ -6,7 +6,7 @@ import ru.greatdevelopers.android_application.data.model.User
 
 @Dao
 interface UserDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUser(user: User)
 
     @Update

@@ -6,32 +6,43 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
+import ru.greatdevelopers.android_application.Utils.Utils
+import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.ui.mainscreen.MainActivity
 import ru.greatdevelopers.android_application.ui.signscreen.SignActivity
+import ru.greatdevelopers.android_application.viewmodel.ProfileViewModel
 
-class ProfileFragment : Fragment(R.layout.fragment_profile){
-    private lateinit var exitButton:Button
-    companion object{
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
+    private val profileViewModel by viewModel<ProfileViewModel>()
+    private lateinit var exitButton: Button
+
+    companion object {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
     }
+
     var isEditMode = false
-    lateinit var viewFields:Map<String, TextView>
+    lateinit var viewFields: Map<String, TextView>
+
+    private var user: User? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         exitButton = view.findViewById(R.id.btn_exit)
-            exitButton.setOnClickListener {
-                var intentExit = Intent(activity, SignActivity::class.java)
-                startActivity(intentExit)
-            }
+        exitButton.setOnClickListener {
+            var intentExit = Intent(activity, SignActivity::class.java)
+            startActivity(intentExit)
+        }
         initViews(savedInstanceState)
     }
 
-    private fun initViews(savedInstanceState: Bundle?){
+    private fun initViews(savedInstanceState: Bundle?) {
         viewFields = mapOf(
             "nickname" to tv_name,
             "user_type" to tv_user_type,
@@ -40,33 +51,73 @@ class ProfileFragment : Fragment(R.layout.fragment_profile){
             "password" to et_password
         )
 
+        profileViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
+            for ((k, v) in viewFields) {
+                when (k) {
+                    "nickname" -> v.text = foundUser.name
+                    "user_type" -> v.text = foundUser.userType
+                    "name" -> v.text = foundUser.name
+                    "email" -> v.text = foundUser.login
+                    "password" -> v.text = foundUser.password
+                }
+            }
+            user = foundUser
+        })
+        profileViewModel.initialRequest(requireArguments().getInt("user_id"))
+
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
 
-
         btn_edit_profile.setOnClickListener(View.OnClickListener {
+
+            if (isEditMode) {
+                if (viewFields["name"]?.text.toString().isNotEmpty() &&
+                    viewFields["email"]?.text.toString().isNotEmpty() &&
+                    viewFields["password"]?.text.toString().isNotEmpty()
+                ){
+                    if (viewFields["password"]?.text.toString().matches(Regex(Utils.PASSWORD_PATTERN))){
+                        var updateUser = User(
+                            user!!.id,
+                            name = viewFields["name"]?.text.toString(),
+                            login = viewFields["email"]?.text.toString(),
+                            password = viewFields["password"]?.text.toString(),
+                            userType = user!!.userType
+                        )
+
+                        profileViewModel.updateUserInfo(updateUser)
+
+                    }else{
+                        Utils.showToast(requireContext(),
+                            getString(R.string.text_sign_up_wrong_password), Toast.LENGTH_SHORT)
+                        isEditMode = !isEditMode
+                    }
+                }else{
+                    isEditMode = !isEditMode
+                    Utils.showToast(requireContext(),
+                        getString(R.string.text_sign_up_not_complete), Toast.LENGTH_SHORT)
+                }
+            }
+
             isEditMode = !isEditMode
             showCurrentMode(isEditMode)
         })
-
-
     }
 
     private fun showCurrentMode(isEdit: Boolean) {
         val info = viewFields.filter { setOf("name", "email", "password").contains(it.key) }
-        for ((k, v) in info){
+        for ((k, v) in info) {
             v as EditText
             v.isFocusable = isEdit
             v.isFocusableInTouchMode = isEdit
             v.isEnabled = isEdit
-            v.background.alpha = if(isEdit) 255 else 0
+            v.background.alpha = if (isEdit) 255 else 0
         }
 
-        with(btn_edit_profile){
+        with(btn_edit_profile) {
 
-            val icon = if(isEdit){
+            val icon = if (isEdit) {
                 resources.getDrawable(R.drawable.ic_baseline_save_24, context.theme)
-            }else{
+            } else {
                 resources.getDrawable(R.drawable.ic_baseline_edit_24, context.theme)
             }
 

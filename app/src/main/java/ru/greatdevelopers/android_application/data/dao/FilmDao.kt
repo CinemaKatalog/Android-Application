@@ -7,7 +7,7 @@ import ru.greatdevelopers.android_application.data.model.Film
 
 @Dao
 interface FilmDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFilm(film: Film)
 
     @Update

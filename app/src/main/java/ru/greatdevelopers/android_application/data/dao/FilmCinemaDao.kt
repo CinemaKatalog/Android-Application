@@ -7,7 +7,7 @@ import ru.greatdevelopers.android_application.data.model.User
 
 @Dao
 interface FilmCinemaDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFilmCinema(filmCinema: FilmCinema)
 
     @Update

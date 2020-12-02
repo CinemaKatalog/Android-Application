@@ -17,6 +17,7 @@ object Utils {
             "$"
 
 
+
     fun showToast(context: Context, text:String, duration:Int){
         val toast = Toast.makeText(context, text, duration)
         toast.setGravity(Gravity.CENTER, 0, 0)
