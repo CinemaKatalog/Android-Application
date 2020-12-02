@@ -8,10 +8,7 @@ import ru.greatdevelopers.android_application.data.dao.FavouriteDao
 import ru.greatdevelopers.android_application.data.dao.FilmDao
 import ru.greatdevelopers.android_application.data.dao.UserDao
 import ru.greatdevelopers.android_application.data.db.AppDatabase
-import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
-import ru.greatdevelopers.android_application.viewmodel.SearchViewModel
-import ru.greatdevelopers.android_application.viewmodel.SignInViewModel
-import ru.greatdevelopers.android_application.viewmodel.SignUpViewModel
+import ru.greatdevelopers.android_application.viewmodel.*
 
 
 val viewModelModule = module {
@@ -29,6 +26,10 @@ val viewModelModule = module {
 
     viewModel {
         SignUpViewModel(get())
+    }
+
+    viewModel {
+        MainViewModel(get(), get())
     }
 }
 

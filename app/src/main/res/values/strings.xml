@@ -42,7 +42,8 @@
     <string name="label_yes_sure">Да, уверен</string>
     <string name="label_cancel">Отмена</string>
     <string name="text_delete_canceled">Удаление отменено</string>
-    <string name="text_sign_up_not_complite">Вы не зарегистрированы. Не все поля заполнены!</string>
-    <string name="text_sign_up_incorrect">Не верный логин или пароль</string>
+    <string name="text_sign_up_not_complete">Вы не зарегистрированы. Не все поля заполнены!</string>
+    <string name="text_sign_up_incorrect">Неверный логин или пароль</string>
     <string name="text_sign_up_already_exist">Пользователь с таким логином уже существует</string>
+    <string name="text_sign_up_wrong_password">Неверный формат пароля</string>
 </resources>

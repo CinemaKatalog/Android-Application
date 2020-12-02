@@ -15,20 +15,26 @@ class MainActivity : AppCompatActivity(){
     private lateinit var accountFragment: ProfileFragment
     private lateinit var searchFragment: SearchFragment
     private lateinit var favoriteFragment: FavoriteFragment
+    private lateinit var passedData: Bundle
 
     private lateinit var btmNavView : BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        passedData = intent.extras!!
         initView()
     }
 
     private fun initView(){
         accountFragment = ProfileFragment()
+        accountFragment.arguments = passedData
         searchFragment = SearchFragment()
+        searchFragment.arguments = passedData
         mainFragment = MainFragment()
+        mainFragment.arguments = passedData
         favoriteFragment = FavoriteFragment()
+        favoriteFragment.arguments = passedData
         btmNavView = findViewById(R.id.main_bottom_nav_view)
 
         btmNavView.selectedItemId = R.id.action_main

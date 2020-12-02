@@ -2,24 +2,33 @@ package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.transition.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.koin.androidx.viewmodel.compat.ScopeCompat.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.*
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.GroupAdapter
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.FilmGroup
+import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.ui.EditActivity
 import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
+import ru.greatdevelopers.android_application.viewmodel.MainViewModel
 
 class MainFragment : Fragment(){
+    private val mainViewModel by viewModel<MainViewModel>()
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: GroupAdapter
     private var filmsGroupList: ArrayList<FilmGroup> = ArrayList()
+    private var user: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +36,7 @@ class MainFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_main, container, false)
+
 
 
         return view
@@ -48,21 +58,32 @@ class MainFragment : Fragment(){
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        //val fab: View = view.findViewById(R.id.fab_edit)
-        fab_edit.setOnClickListener {
-            var intentEdit = Intent(this.context, EditActivity::class.java)
-            startActivity(intentEdit)
+        mainViewModel.user.observe(viewLifecycleOwner, Observer {foundUser->
+            user = foundUser
+        })
+        mainViewModel.films.observe(viewLifecycleOwner, Observer { films ->
+            createFakeElements(films)
+            recyclerViewAdapter.setItemList(filmsGroupList)
+        })
+
+        mainViewModel.initialRequest(requireArguments().getInt("user_id")){
+            user: User? ->
+            if (user?.userType == "user"){
+                fab_edit.visibility = View.GONE
+            }else{
+                fab_edit.setOnClickListener {
+                    var intentEdit = Intent(this.context, EditActivity::class.java)
+                    startActivity(intentEdit)
+                }
+            }
         }
     }
 
-    /*private fun createFakeElements(count : Int) {
-        var filmList: ArrayList<Film> = ArrayList()
-        for (j in 0 .. 10){
-            filmList.add(Film("Название$j","Жанр$j"))
-        }
-        for (i in 0 .. count){
+    private fun createFakeElements(filmList: List<Film>) {
+
+        for (i in 0 .. 5){
             filmsGroupList.add(FilmGroup("Название$i", filmList))
         }
-    }*/
+    }
 
 }

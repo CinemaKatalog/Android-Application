@@ -69,14 +69,14 @@ class SignUpFragment : Fragment() {
                     }
                 }else{
                     Utils.showToast(requireContext(),
-                        "!!!You may not use this password!!!", Toast.LENGTH_SHORT)
+                        getString(R.string.text_sign_up_wrong_password), Toast.LENGTH_SHORT)
                 }
 
 
 
             } else {
                 Utils.showToast(requireContext(),
-                    getString(R.string.text_sign_up_not_complite), Toast.LENGTH_SHORT)
+                    getString(R.string.text_sign_up_not_complete), Toast.LENGTH_SHORT)
             }
         }
     }
