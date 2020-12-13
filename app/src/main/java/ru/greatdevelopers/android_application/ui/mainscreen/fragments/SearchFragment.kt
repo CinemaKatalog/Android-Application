@@ -32,6 +32,7 @@ class SearchFragment : Fragment(){
     private lateinit var searchView: SearchView
     private lateinit var optionsBtn: ImageButton
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,15 +56,20 @@ class SearchFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recycle_view_search)
-        //createFakeElements(35)
-        //recyclerViewAdapter = BaseItemAdapter(searchFilmsList){
+
+
+        var userId = requireArguments().getInt("user_id")
+
         recyclerViewAdapter = BaseItemAdapter(){
             var intent = Intent(
                 activity,
                 FilmActivity::class.java
             )
+            intent.putExtra("film_id", it)
+            intent.putExtra("user_id", userId)
             activity?.startActivity(intent)
         }
+
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = GridLayoutManager(activity, 3)
 
@@ -71,19 +77,22 @@ class SearchFragment : Fragment(){
             recyclerViewAdapter.setItemList(films)
         })
         searchViewModel.initialRequest()
-    }
 
-    /*private fun createFakeElements(count: Int) {
-        for (i in 0 .. count){
-            searchFilmsList.add(Film("Название$i", "Жанр$i"))
-        }
-    }*/
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                //Log.d(TAG, "onQueryTextSubmit: $query")
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //Log.d(TAG, "onQueryTextChange: $newText")
+                return false
+            }
+        })
+    }
 
     private fun showBottomSheetDialog() {
         val view: View = layoutInflater.inflate(R.layout.bottom_sheet_search_options, null)
-        //val dialog = activity?.let { BottomSheetDialog(it) }
-        //dialog?.setContentView(view)
-        //dialog?.show()
         val dialog = BottomSheetFragment()
         activity?.supportFragmentManager?.let { dialog.show(it, dialog.tag) }
     }

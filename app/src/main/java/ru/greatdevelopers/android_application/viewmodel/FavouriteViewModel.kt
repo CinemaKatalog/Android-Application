@@ -17,6 +17,4 @@ class FavouriteViewModel (private val repository: FilmRepository, private val us
     val favoriteFilms: LiveData<List<Film>>
         get() = loadFavourites
 
-
-    //val allFilms: LiveData<List<Film>> = repository.allFilms.asLiveData()
 }

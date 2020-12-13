@@ -7,12 +7,20 @@ import ru.greatdevelopers.android_application.data.model.Favourite
 @Dao
 interface CinemaDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUser(cinema: Cinema)
+    suspend fun insertCinema(cinema: Cinema)
 
     @Update
-    suspend fun updateUser(cinema: Cinema)
+    suspend fun updateCinema(cinema: Cinema)
 
     @Delete
-    suspend fun deleteUser(cinema: Cinema)
+    suspend fun deleteCinema(cinema: Cinema)
 
+    @Query("SELECT * FROM Cinema WHERE site_url == :url")
+    suspend fun getCinemaByUrl(url: String): Cinema
+
+    @Query("SELECT * FROM Cinema WHERE cinema_name == :name")
+    suspend fun getCinemaByName(name: String): Cinema?
+
+    @Query("SELECT * FROM Cinema")
+    suspend fun getAllCinema(): List<Cinema>
 }

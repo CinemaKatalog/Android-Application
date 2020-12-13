@@ -9,4 +9,7 @@ data class Cinema(@PrimaryKey @ColumnInfo(name = "site_url") var url: String,
              @ColumnInfo(name = "cinema_name") var name: String,
              var email: String) {
 
+    override fun toString(): String {
+        return name
+    }
 }

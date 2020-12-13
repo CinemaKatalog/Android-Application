@@ -23,7 +23,7 @@ interface FilmDao {
     suspend fun getFilmByName(name: String): List<Film>
 
     @Query("SELECT * FROM Film WHERE film_id == :id")
-    suspend fun getFilmById(id: Int): List<Film>
+    suspend fun getFilmById(id: Int): Film?
 
     @Query("SELECT * FROM Film WHERE genre == :genre AND country == :country AND year >= :minYear AND year <= :maxYear AND rating >= :minRating AND rating <= :maxRating")
     suspend fun getFilmByAllParams(

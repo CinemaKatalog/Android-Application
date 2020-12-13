@@ -1,16 +1,18 @@
 package ru.greatdevelopers.android_application.ui.mainscreen.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.extensions.LayoutContainer
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.R
 
-class BaseItemAdapter(val onClick: (position: Int)-> Unit): RecyclerView.Adapter<BaseItemAdapter.ViewHolder>(){
+class BaseItemAdapter(val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<BaseItemAdapter.ViewHolder>(){
 
 
     private var values: List<Film> = ArrayList()
@@ -33,6 +35,17 @@ class BaseItemAdapter(val onClick: (position: Int)-> Unit): RecyclerView.Adapter
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.nameTextView?.text = values[position].name
         holder.genreTextView?.text = values[position].genre
+
+        /*Glide.with(context)
+            .load(new File(uri.getPath()))
+            .into(imageView);*/
+
+        holder.image?.let {
+            Glide.with(holder.itemView.context).load(Uri.parse(values[position].poster)).into(
+                it
+            )
+        }
+        //holder.image?.setImageURI(Uri.parse(values[position].poster))
     }
 
 
@@ -46,10 +59,8 @@ class BaseItemAdapter(val onClick: (position: Int)-> Unit): RecyclerView.Adapter
             image = containerView.findViewById(R.id.film_image)
 
             containerView.setOnClickListener{
-                onClick(adapterPosition)
-
+                onClick(values[adapterPosition].id!!)
             }
-
         }
     }
 }

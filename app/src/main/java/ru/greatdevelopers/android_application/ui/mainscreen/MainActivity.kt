@@ -29,12 +29,16 @@ class MainActivity : AppCompatActivity(){
     private fun initView(){
         accountFragment = ProfileFragment()
         accountFragment.arguments = passedData
+
         searchFragment = SearchFragment()
         searchFragment.arguments = passedData
+
         mainFragment = MainFragment()
         mainFragment.arguments = passedData
+
         favoriteFragment = FavoriteFragment()
         favoriteFragment.arguments = passedData
+
         btmNavView = findViewById(R.id.main_bottom_nav_view)
 
         btmNavView.selectedItemId = R.id.action_main

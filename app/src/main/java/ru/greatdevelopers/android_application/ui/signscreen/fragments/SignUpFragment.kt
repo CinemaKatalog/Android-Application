@@ -35,6 +35,7 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //signUpViewModel.insertUser(User(name = "admin", login = "admin", password = "password", userType = "admin"))
         signInFragment = SignInFragment()
         signUpButton = view.findViewById(R.id.btn_sign_up)
 
@@ -74,7 +75,7 @@ class SignUpFragment : Fragment() {
 
             } else {
                 Utils.showToast(requireContext(),
-                    getString(R.string.text_sign_up_not_complete), Toast.LENGTH_SHORT)
+                    getString(R.string.text_not_complete), Toast.LENGTH_SHORT)
             }
         }
     }

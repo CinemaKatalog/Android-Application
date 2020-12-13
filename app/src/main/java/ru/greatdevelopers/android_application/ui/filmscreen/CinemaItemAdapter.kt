@@ -8,9 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import ru.greatdevelopers.android_application.R
 
-class CinemaItemAdapter(val onClick: (position: Int)-> Unit): RecyclerView.Adapter<CinemaItemAdapter.ViewHolder>() {
+class CinemaItemAdapter(val onClick: (cinemaListItem: CinemaListItem)-> Unit): RecyclerView.Adapter<CinemaItemAdapter.ViewHolder>() {
 
-    private val values: List<CinemaListItem> = ArrayList()
+    private var values: List<CinemaListItem> = ArrayList()
+
+    fun setItemList(newList: List<CinemaListItem>){
+        notifyDataSetChanged()
+        values = newList
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CinemaItemAdapter.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.cinema_card_view, parent, false)
@@ -18,7 +23,7 @@ class CinemaItemAdapter(val onClick: (position: Int)-> Unit): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: CinemaItemAdapter.ViewHolder, position: Int) {
-        holder.nameTextView?.text = values[position].name
+        holder.nameTextView?.text = values[position].cinema_name
         holder.priceTextView?.text = values[position].price.toString()
         holder.ratingTextView?.text = values[position].rating.toString()
     }
@@ -36,7 +41,7 @@ class CinemaItemAdapter(val onClick: (position: Int)-> Unit): RecyclerView.Adapt
             priceTextView = containerView.findViewById(R.id.tv_cinema_price)
             ratingTextView = containerView.findViewById(R.id.tv_cinema_film_rating)
             containerView.setOnClickListener {
-                onClick(adapterPosition)
+                onClick(values[adapterPosition])
             }
         }
     }

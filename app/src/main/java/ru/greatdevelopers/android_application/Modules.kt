@@ -4,9 +4,7 @@ import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.greatdevelopers.android_application.data.dao.FavouriteDao
-import ru.greatdevelopers.android_application.data.dao.FilmDao
-import ru.greatdevelopers.android_application.data.dao.UserDao
+import ru.greatdevelopers.android_application.data.dao.*
 import ru.greatdevelopers.android_application.data.db.AppDatabase
 import ru.greatdevelopers.android_application.viewmodel.*
 
@@ -32,8 +30,16 @@ val viewModelModule = module {
         MainViewModel(get(), get())
     }
 
-    viewModel {
-        ProfileViewModel(get())
+    viewModel { (userId: Int) ->
+        ProfileViewModel(get(), userId)
+    }
+
+    viewModel {(filmId: Int?) ->
+        EditViewModel(get(), get(), filmId)
+    }
+
+    viewModel {(filmId: Int) ->
+        FilmViewModel(get(), get(), get(), filmId)
     }
 }
 
@@ -73,8 +79,14 @@ val repositoryModule = module {
         return ProfileRepository(userDao)
     }
 
+    fun cinemaRepository(filmCinemaDao: FilmCinemaDao, cinemaDao: CinemaDao): CinemaRepository {
+        return CinemaRepository(filmCinemaDao, cinemaDao)
+    }
+
     single { filmRepository(get(), get()) }
 
     single { profileRepository(get()) }
+
+    single { cinemaRepository(get(), get()) }
 }
 

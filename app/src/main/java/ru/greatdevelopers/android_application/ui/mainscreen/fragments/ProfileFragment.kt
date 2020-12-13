@@ -11,15 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.data.model.User
-import ru.greatdevelopers.android_application.ui.mainscreen.MainActivity
 import ru.greatdevelopers.android_application.ui.signscreen.SignActivity
 import ru.greatdevelopers.android_application.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private val profileViewModel by viewModel<ProfileViewModel>()
+    private val profileViewModel by viewModel<ProfileViewModel> { parametersOf(requireArguments().getInt("user_id")) }
     private lateinit var exitButton: Button
 
     companion object {
@@ -28,7 +28,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
-
     private var user: User? = null
 
 
@@ -63,7 +62,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             user = foundUser
         })
-        profileViewModel.initialRequest(requireArguments().getInt("user_id"))
+        profileViewModel.initialRequest()
 
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
@@ -84,7 +83,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             userType = user!!.userType
                         )
 
-                        profileViewModel.updateUserInfo(updateUser)
+                        profileViewModel.updateUserInfo(updateUser){
+                            Utils.showToast(
+                                requireContext(),
+                                getString(R.string.text_changes_saved), Toast.LENGTH_SHORT
+                            )
+                        }
 
                     }else{
                         Utils.showToast(requireContext(),
@@ -94,7 +98,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }else{
                     isEditMode = !isEditMode
                     Utils.showToast(requireContext(),
-                        getString(R.string.text_sign_up_not_complete), Toast.LENGTH_SHORT)
+                        getString(R.string.text_not_complete), Toast.LENGTH_SHORT)
                 }
             }
 
@@ -128,6 +132,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState?.putBoolean(IS_EDIT_MODE, isEditMode)
+        outState.putBoolean(IS_EDIT_MODE, isEditMode)
     }
 }

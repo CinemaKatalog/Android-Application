@@ -16,6 +16,6 @@ interface FavouriteDao {
     @Delete
     suspend fun deleteFavourite(favourite: Favourite)
 
-    @Query("SELECT * FROM Favourite WHERE user_id == :userId")
-    suspend fun getFavouriteByLogin(userId: Int): List<Favourite>
+    @Query("SELECT * FROM Favourite WHERE user_id = :userId AND film_id = :filmId")
+    suspend fun getFavouriteById(filmId: Int, userId: Int): Favourite?
 }

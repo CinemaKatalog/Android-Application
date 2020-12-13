@@ -8,22 +8,23 @@ import kotlinx.coroutines.launch
 import ru.greatdevelopers.android_application.ProfileRepository
 import ru.greatdevelopers.android_application.data.model.User
 
-class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() {
+class ProfileViewModel(private val repository: ProfileRepository, private val userId: Int) : ViewModel() {
     private val loadUser = MutableLiveData<User>()
     val user: LiveData<User>
         get() = loadUser
 
-    fun initialRequest(user_id: Int) {
+    fun initialRequest() {
         viewModelScope.launch {
-            val tmpUser = repository.getUserById(user_id)
+            val tmpUser = repository.getUserById(userId)
             loadUser.postValue(tmpUser)
         }
     }
 
-    fun updateUserInfo(user: User) {
+    fun updateUserInfo(user: User, onInsert: () -> Unit) {
         viewModelScope.launch {
             repository.updateUser(user)
-            initialRequest(user.id!!)
+            initialRequest()
+            onInsert()
         }
     }
 }

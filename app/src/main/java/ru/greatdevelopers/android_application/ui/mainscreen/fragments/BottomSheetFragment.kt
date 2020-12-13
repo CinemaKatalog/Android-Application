@@ -80,5 +80,9 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
             View.GONE
         (date_picker_to as ViewGroup).findViewById<ViewGroup>(Resources.getSystem().getIdentifier("month", "id", "android")).visibility =
             View.GONE
+
+        tv_cancel.setOnClickListener {
+            dismiss()
+        }
     }
 }

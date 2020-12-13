@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/AppTheme">
+    android:theme="@style/AppTheme"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/film_app_bar"
@@ -24,6 +25,7 @@
             app:title="Название">
 
             <ImageView
+                android:id="@+id/iv_collapsing_film_poster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="false"
@@ -78,7 +80,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/btn_delete_film"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_edit_24"
-                    app:tint="?attr/colorControlNormal" />
+                    app:tint="?attr/colorControlNormal"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/btn_delete_film"
@@ -92,7 +95,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_baseline_delete_24"
-                    app:tint="?attr/colorControlNormal" />
+                    app:tint="?attr/colorControlNormal"
+                    android:visibility="gone"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -107,14 +111,45 @@
             android:layout_height="match_parent"
             android:paddingVertical="8dp">
             <TextView
-                android:id="@+id/tv_film_main_info"
+                android:id="@+id/tv_film_genre"
                 style="@style/Film.MainInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_large_24"
                 android:layout_marginTop="@dimen/spacing_normal_16"
-                android:text="Жанр, Страна, Год, Рейтинг"
+                android:text="Жанр"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_film_country"
+                style="@style/Film.MainInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large_24"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                android:text="Страна"
+                app:layout_constraintStart_toEndOf="@id/tv_film_genre"
+                app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_film_year"
+                style="@style/Film.MainInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large_24"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                android:text="Год"
+                app:layout_constraintStart_toEndOf="@id/tv_film_country"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_film_rating"
+                style="@style/Film.MainInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large_24"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                android:text="Рейтинг"
+                app:layout_constraintStart_toEndOf="@id/tv_film_year"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -124,8 +159,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal_16"
                 android:text="Режисер: Имя"
-                app:layout_constraintStart_toStartOf="@+id/tv_film_main_info"
-                app:layout_constraintTop_toBottomOf="@id/tv_film_main_info" />
+                app:layout_constraintStart_toStartOf="@+id/tv_film_genre"
+                app:layout_constraintTop_toBottomOf="@id/tv_film_genre" />
 
             <View
                 android:id="@+id/divider_producer"
@@ -175,7 +210,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_baseline_favorite_24"
+        android:src="@drawable/ic_baseline_favorite_border_24"
         app:backgroundTint="@color/color_pink"
         app:layout_anchor="@id/film_app_bar"
         app:layout_anchorGravity="bottom|right|end"

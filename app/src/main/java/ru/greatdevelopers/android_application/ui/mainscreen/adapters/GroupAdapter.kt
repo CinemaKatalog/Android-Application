@@ -9,7 +9,7 @@ import ru.greatdevelopers.android_application.data.FilmGroup
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.data.model.Film
 
-class GroupAdapter(private val onClick: (position: Int)-> Unit): RecyclerView.Adapter<GroupAdapter.ViewHolder>(){
+class GroupAdapter(private val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<GroupAdapter.ViewHolder>(){
 
     private var values: List<FilmGroup> = ArrayList()
 

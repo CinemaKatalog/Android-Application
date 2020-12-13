@@ -11,10 +11,7 @@
     android:layout_marginTop="16dp"
     android:layout_marginBottom="16dp"
     android:background="@color/color_primary"
-    android:orientation="vertical"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_film_image"

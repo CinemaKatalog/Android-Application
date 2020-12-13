@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.EditActivity">
+    tools:context=".ui.editscreen.EditActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/edit_app_bar"
@@ -52,6 +52,7 @@
                 android:src="@mipmap/ic_launcher"/>
 
             <ImageButton
+                android:id="@+id/btn_add_poster"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="@dimen/spacing_normal_16"
@@ -189,7 +190,7 @@
 
 
             <DatePicker
-                android:id="@+id/date_edit_picker_to"
+                android:id="@+id/date_edit_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:calendarViewShown="false"
@@ -209,7 +210,7 @@
                 android:padding="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_edit_picker_to"
+                app:layout_constraintTop_toBottomOf="@id/date_edit_picker"
                 tools:listitem="@layout/cinema_card_view"/>
 
             <ImageButton
@@ -221,9 +222,11 @@
                 android:src="@drawable/ic_baseline_playlist_add_24"
                 app:layout_constraintTop_toBottomOf="@id/recycle_view_options"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"/>
 
             <Button
+                android:id="@+id/btn_edit_save"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color_secondary"

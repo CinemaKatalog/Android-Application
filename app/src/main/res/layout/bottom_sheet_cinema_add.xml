@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bottom_sheet_background"
+    app:behavior_hideable="true"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <TextView
+        android:id="@+id/tv_cinema_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:text="Добавить"
+        android:textColor="@color/color_text_dark"
+        android:textSize="@dimen/spacing_large_24"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_cancel_cinema_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:text="Удалить"
+        android:textColor="@color/color_text_dark"
+        android:textSize="@dimen/spacing_normal_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/tv_cinema_add_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Кинотеатр"
+        android:layout_marginTop="@dimen/spacing_huge_32"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintTop_toBottomOf="@id/tv_cinema_add"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <Spinner
+        android:id="@+id/spinner_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_large_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cinema_add_name" />
+
+    <ImageButton
+        android:id="@+id/btn_edit_add_cinema"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/spacing_normal_16"
+        android:background="@drawable/btn_round_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_name"
+        app:layout_constraintStart_toEndOf="@+id/spinner_name"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
+    <ImageButton
+        android:id="@+id/btn_edit_change_cinema"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:background="@drawable/btn_round_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner_name"
+        app:layout_constraintStart_toEndOf="@+id/btn_edit_add_cinema"
+        app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_cinema_add_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxBackgroundMode="none"
+
+        app:hintTextColor="@color/color_secondary"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintTop_toBottomOf="@id/spinner_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/et_cinema_name"
+            style="@style/Cinema.EditText.NotEnable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Название"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_cinema_add_url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxBackgroundMode="none"
+
+        app:hintTextColor="@color/color_secondary"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintTop_toBottomOf="@id/til_cinema_add_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/et_cinema_url"
+            style="@style/Cinema.EditText.NotEnable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="cinema-url"
+            android:imeOptions="actionNext"
+            android:inputType="textUri" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_cinema_add_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxBackgroundMode="none"
+
+        app:hintTextColor="@color/color_secondary"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintTop_toBottomOf="@id/til_cinema_add_url"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/et_cinema_email"
+            style="@style/Cinema.EditText.NotEnable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_cinema_add_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:boxBackgroundMode="none"
+
+        app:hintTextColor="@color/color_secondary"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintTop_toBottomOf="@id/til_cinema_add_email"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/et_price"
+            style="@style/Cinema.EditText.Enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Цена"
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_cinema_film_url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        app:boxBackgroundMode="none"
+        app:hintTextColor="@color/color_secondary"
+
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        app:layout_constraintTop_toBottomOf="@id/til_cinema_add_price"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/et_film_url"
+            style="@style/Cinema.EditText.Enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="film-url"
+            android:imeOptions="actionDone"
+            android:inputType="textUri" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_cinema_add_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/options_rating"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        app:layout_constraintTop_toBottomOf="@+id/til_cinema_film_url"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/rs_cinema_add_rating"
+        style="@style/SearchOptions.Slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_huge_32"
+        android:layout_marginTop="@dimen/spacing_large_24"
+        android:layout_marginEnd="@dimen/spacing_huge_32"
+        android:paddingBottom="@dimen/spacing_huge_32"
+        android:valueFrom="0.0"
+        android:valueTo="5.0"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cinema_add_rating"
+        app:layout_constraintBottom_toTopOf="@id/btn_cinema_add_save"/>
+
+    <Button
+        android:id="@+id/btn_cinema_add_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal_16"
+        android:layout_marginTop="@dimen/spacing_normal_16"
+        android:layout_marginEnd="@dimen/spacing_normal_16"
+        android:layout_marginBottom="@dimen/font_normal_16"
+        android:backgroundTint="@color/color_secondary"
+        android:text="Сохранить"
+        android:textColor="@color/color_text_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

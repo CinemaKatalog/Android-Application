@@ -42,8 +42,14 @@
     <string name="label_yes_sure">Да, уверен</string>
     <string name="label_cancel">Отмена</string>
     <string name="text_delete_canceled">Удаление отменено</string>
-    <string name="text_sign_up_not_complete">Вы не зарегистрированы. Не все поля заполнены!</string>
+    <string name="text_not_complete">Не все поля заполнены!</string>
     <string name="text_sign_up_incorrect">Неверный логин или пароль</string>
     <string name="text_sign_up_already_exist">Пользователь с таким логином уже существует</string>
     <string name="text_sign_up_wrong_password">Неверный формат пароля</string>
+    <string name="text_film_fields_complete">Заполнены не все поля</string>
+    <string name="text_changes_saved">Изменения сохранены</string>
+    <string name="label_save">Сохранить</string>
+    <string name="label_add">Добавить</string>
+    <string name="text_question_add_alert">Заполните все поля</string>
+    <string name="text_cinema_add_complete">Изменения успешно сохранены</string>
 </resources>

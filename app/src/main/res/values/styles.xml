@@ -11,12 +11,13 @@
         <item name="colorSecondary">@color/color_secondary</item>
         <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
 
+        <!--<item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
         <item name="android:fitsSystemWindows">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
-        <item name="alertDialogTheme">@style/AlertDialogCustomTheme</item>
+        <item name="materialAlertDialogTheme">@style/AlertDialogCustomTheme</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
     </style>
 
@@ -81,6 +82,24 @@
         <item name="android:paddingEnd">@dimen/spacing_normal_16</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:minHeight">72dp</item>
+    </style>
+
+    <style name="Cinema"></style>
+
+    <style name="Cinema.EditText">
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:textColor">@color/color_text_dark</item>
+    </style>
+
+    <style name="Cinema.EditText.Enable">
+        <item name="android:singleLine">true</item>
+
+    </style>
+    <style name="Cinema.EditText.NotEnable">
+        <item name="android:singleLine">true</item>
+        <item name="android:enabled">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:focusable">false</item>
     </style>
 
     <style name="Film"></style>
@@ -169,7 +188,7 @@
     <style name="AlertDialogCustomTheme" parent="Theme.MaterialComponents.Light.Dialog.Alert">
         <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-        <item name="android:colorPrimary">@color/color_secondary</item>
+        <item name="colorPrimary">@color/color_secondary</item>
         <item name="android:colorAccent">@color/color_secondary</item>
     </style>
 

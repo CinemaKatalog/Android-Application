@@ -16,33 +16,26 @@ import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
 import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
 
-class FavoriteFragment() : Fragment(){
-    private val favouriteViewModel by viewModel<FavouriteViewModel>{parametersOf(0)}
+class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
+    private val favouriteViewModel by viewModel<FavouriteViewModel>{parametersOf(requireArguments().getInt("user_id"))}
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: BaseItemAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_favorite, container, false)
-
-        return view
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var userId = requireArguments().getInt("user_id")
+
         recyclerView = view.findViewById(R.id.recycle_view_favorite)
-        //createFakeElements(35)
-        //recyclerViewAdapter = BaseItemAdapter(favoriteFilmsList) {
+
         recyclerViewAdapter = BaseItemAdapter() {
             var intent = Intent(
                 activity,
                 FilmActivity::class.java
             )
+            intent.putExtra("film_id", it)
+            intent.putExtra("user_id", userId)
             activity?.startActivity(intent)
         }
         recyclerView.adapter = recyclerViewAdapter
@@ -54,10 +47,5 @@ class FavoriteFragment() : Fragment(){
         favouriteViewModel.initialRequest()
     }
 
-    /*private fun createFakeElements(count: Int) {
-        for (i in 0..count) {
-            favoriteFilmsList.add(Film("Название$i", "Жанр$i"))
-        }
-    }*/
 
 }
