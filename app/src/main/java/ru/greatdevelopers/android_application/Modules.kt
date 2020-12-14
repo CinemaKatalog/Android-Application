@@ -68,11 +68,18 @@ val databaseModule = module {
     single {
         get<AppDatabase>().cinemaDao()
     }
+    single {
+        get<AppDatabase>().genreDao()
+    }
+
+    single {
+        get<AppDatabase>().countryDao()
+    }
 }
 
 val repositoryModule = module {
-    fun filmRepository(filmDao: FilmDao, favouriteDao: FavouriteDao): FilmRepository {
-        return FilmRepository(filmDao, favouriteDao)
+    fun filmRepository(filmDao: FilmDao, favouriteDao: FavouriteDao, genreDao: GenreDao, countryDao: CountryDao): FilmRepository {
+        return FilmRepository(filmDao, favouriteDao, genreDao, countryDao)
     }
 
     fun profileRepository(userDao: UserDao): ProfileRepository {
@@ -83,7 +90,7 @@ val repositoryModule = module {
         return CinemaRepository(filmCinemaDao, cinemaDao)
     }
 
-    single { filmRepository(get(), get()) }
+    single { filmRepository(get(), get(), get(), get()) }
 
     single { profileRepository(get()) }
 

@@ -12,7 +12,7 @@ import ru.greatdevelopers.android_application.data.dao.*
 import ru.greatdevelopers.android_application.data.model.*
 
 @Database(
-    entities = [Cinema::class, Favourite::class, Film::class, FilmCinema::class, User::class],
+    entities = [Cinema::class, Favourite::class, Film::class, FilmCinema::class, User::class, Genre::class, Country::class],
     version = 1, exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -21,6 +21,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun filmDao(): FilmDao
     abstract fun filmCinemaDao(): FilmCinemaDao
     abstract fun userDao(): UserDao
+    abstract fun genreDao(): GenreDao
+    abstract fun countryDao(): CountryDao
 
     /*companion object {
         @Volatile

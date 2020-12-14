@@ -16,6 +16,7 @@ import ru.greatdevelopers.android_application.data.FilmGroup
 import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.ui.editscreen.EditActivity
 import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
+import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 import ru.greatdevelopers.android_application.viewmodel.MainViewModel
 
 class MainFragment : Fragment(R.layout.fragment_main){
@@ -66,7 +67,7 @@ class MainFragment : Fragment(R.layout.fragment_main){
         }
     }
 
-    private fun createFakeElements(filmList: List<Film>) {
+    private fun createFakeElements(filmList: List<FilmListItem>) {
 
         for (i in 0 .. 5){
             filmsGroupList.add(FilmGroup("Название$i", filmList))

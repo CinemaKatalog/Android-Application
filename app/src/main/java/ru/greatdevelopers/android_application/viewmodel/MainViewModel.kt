@@ -9,6 +9,7 @@ import ru.greatdevelopers.android_application.FilmRepository
 import ru.greatdevelopers.android_application.ProfileRepository
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
 class MainViewModel(
     private val filmRepository: FilmRepository,
@@ -19,8 +20,8 @@ class MainViewModel(
     val user: LiveData<User>
         get() = loadUser
 
-    private val loadFilms = MutableLiveData<List<Film>>()
-    val films: LiveData<List<Film>>
+    private val loadFilms = MutableLiveData<List<FilmListItem>>()
+    val films: LiveData<List<FilmListItem>>
         get() = loadFilms
 
     fun initialRequest(user_id: Int, onFoundUser: (user: User?)-> Unit) {
@@ -28,7 +29,7 @@ class MainViewModel(
             val tmpUser = profileRepository.getUserById(user_id)
             loadUser.postValue(tmpUser)
             onFoundUser(tmpUser)
-            loadFilms.postValue(filmRepository.getAllFilms())
+            loadFilms.postValue(filmRepository.getFilmsWithExtra())
         }
     }
 }

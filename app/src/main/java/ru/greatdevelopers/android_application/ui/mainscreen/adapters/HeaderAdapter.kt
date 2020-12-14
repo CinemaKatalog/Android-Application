@@ -14,22 +14,22 @@ class HeaderAdapter(private val values: List<Film>):RecyclerView.Adapter<HeaderA
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent?.context).inflate(R.layout.header_container_main, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.header_container_main, parent, false)
         return ViewHolder(itemView)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder?.nameTextView?.text = values[position].name
-        holder?.genreTextView?.text = values[position].genre
+        holder.nameTextView?.text = values[position].name
+        //holder?.genreTextView?.text = values[position].genre
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var nameTextView: TextView? = null
         var genreTextView: TextView? = null
         init {
-            nameTextView = itemView?.findViewById(R.id.header_film_name)
-            genreTextView = itemView?.findViewById(R.id.header_film_genre)
+            nameTextView = itemView.findViewById(R.id.header_film_name)
+            genreTextView = itemView.findViewById(R.id.header_film_genre)
         }
     }
 }

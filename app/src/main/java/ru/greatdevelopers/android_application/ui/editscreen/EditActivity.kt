@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -16,12 +17,18 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit.*
+import kotlinx.android.synthetic.main.alert_cinema_add.view.*
+import kotlinx.android.synthetic.main.alert_country_genre.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.Utils.Utils
+import ru.greatdevelopers.android_application.data.model.Cinema
+import ru.greatdevelopers.android_application.data.model.Country
 import ru.greatdevelopers.android_application.data.model.Film
+import ru.greatdevelopers.android_application.data.model.Genre
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaItemAdapter
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 import ru.greatdevelopers.android_application.viewmodel.EditViewModel
@@ -44,29 +51,14 @@ class EditActivity : AppCompatActivity() {
 
     lateinit var viewFields: Map<String, TextView>
 
-    var genres = arrayOf(
-        "Комедия",
-        "Детектив",
-        "Триллер",
-        "Документальный",
-        "Мелодрамма",
-        "Военный"
-    )
-
-    var country = arrayOf(
-        "Россия",
-        "США",
-        "Франция",
-        "Казахстан",
-        "Италия",
-        "Финляндия"
-    )
+    var genres = ArrayList<Genre>()
+    var country = ArrayList<Country>()
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: CinemaItemAdapter
 
-    private lateinit var adapterGenres: ArrayAdapter<String>
-    private lateinit var adapterCountries: ArrayAdapter<String>
+    private lateinit var adapterGenres: ArrayAdapter<Genre>
+    private lateinit var adapterCountries: ArrayAdapter<Country>
 
     private var selectedImageUri: Uri? = null
 
@@ -80,6 +72,10 @@ class EditActivity : AppCompatActivity() {
 
     private fun initView(savedInstanceState: Bundle?) {
 
+        //editViewModel.insertCountry(Country(name = "Не выбрано"))
+        //editViewModel.insertCountry(Country(name = "Россия"))
+        //editViewModel.insertGenre(Genre(name = "Любой"))
+        //editViewModel.insertGenre(Genre(name = "Комедия"))
         viewFields = mapOf(
             "name" to et_film_name,
             "description" to et_film_description,
@@ -96,13 +92,31 @@ class EditActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recycle_view_options)
         recyclerViewAdapter = CinemaItemAdapter() {
-            showBottomSheetDialog(it.film_id, it.site_url)
+            showBottomSheetDialog(it.film_id, it.page_url, it.site_url)
         }
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         editViewModel.cinemaList.observe(this, Observer {
             if (it != null) recyclerViewAdapter.setItemList(it)
+        })
+        editViewModel.country.observe(this, Observer {
+            if (it != null) {
+                adapterCountries.clear()
+                adapterCountries.addAll(it)
+                adapterCountries.notifyDataSetChanged()
+                country = it as ArrayList<Country>
+
+            }
+        })
+        editViewModel.genre.observe(this, Observer {
+            if (it != null) {
+                adapterGenres.clear()
+                adapterGenres.addAll(it)
+                adapterGenres.notifyDataSetChanged()
+                genres = it as ArrayList<Genre>
+
+            }
         })
         editViewModel.film.observe(this, Observer { foundFilm ->
             if (foundFilm != null) {
@@ -135,8 +149,8 @@ class EditActivity : AppCompatActivity() {
                 isEditMode = true
                 showCurrentMode(isEditMode)
 
+                film = foundFilm
             }
-            film = foundFilm
         })
         editViewModel.initialRequest()
 
@@ -172,15 +186,17 @@ class EditActivity : AppCompatActivity() {
             if (viewFields["name"]?.text.toString().isNotEmpty() &&
                 viewFields["description"]?.text.toString().isNotEmpty() &&
                 viewFields["producer"]?.text.toString().isNotEmpty() &&
-                selectedImageUri != null
+                selectedImageUri != null &&
+                spinner_edit_country.selectedItemPosition != 0 &&
+                spinner_edit_genre.selectedItemPosition != 0
             ) {
                 if (isEditMode) {
                     editViewModel.updateFilm(
                         Film(
                             film!!.id,
                             viewFields["name"]?.text.toString(),
-                            genres[spinner_edit_genre.selectedItemPosition],
-                            country[spinner_edit_country.selectedItemPosition],
+                            genres[spinner_edit_genre.selectedItemPosition].id,
+                            country[spinner_edit_country.selectedItemPosition].id,
                             viewFields["producer"]?.text.toString(),
                             viewFields["description"]?.text.toString(),
                             selectedImageUri.toString(),
@@ -192,30 +208,30 @@ class EditActivity : AppCompatActivity() {
                             this,
                             getString(R.string.text_changes_saved), Toast.LENGTH_SHORT
                         )
+                        editViewModel.initialRequest()
                     }
                 } else {
-                    editViewModel.insertFilm(
-                        Film(
-                            name = viewFields["name"]?.text.toString(),
-                            genre = genres[spinner_edit_genre.selectedItemPosition],
-                            country = country[spinner_edit_country.selectedItemPosition],
-                            producer = viewFields["producer"]?.text.toString(),
-                            description = viewFields["description"]?.text.toString(),
-                            poster = selectedImageUri.toString(),
-                            year = date_edit_picker.year,
-                            rating = 4.5f
-                        )
-                    ) {
+                    film = Film(
+                        name = viewFields["name"]?.text.toString(),
+                        genre = genres[spinner_edit_genre.selectedItemPosition].id,
+                        country = country[spinner_edit_country.selectedItemPosition].id,
+                        producer = viewFields["producer"]?.text.toString(),
+                        description = viewFields["description"]?.text.toString(),
+                        poster = selectedImageUri.toString(),
+                        year = date_edit_picker.year,
+                        rating = 4.5f
+                    )
+                    editViewModel.insertFilm(film!!) {
                         Utils.showToast(
                             this,
                             getString(R.string.text_changes_saved), Toast.LENGTH_SHORT
                         )
+
                         isEditMode = true
                         showCurrentMode(isEditMode)
-
+                        editViewModel.initialRequest()
                     }
                 }
-                editViewModel.initialRequest()
             } else {
                 Utils.showToast(
                     this,
@@ -224,10 +240,138 @@ class EditActivity : AppCompatActivity() {
             }
         }
         btn_add_cinema.setOnClickListener {
-            showBottomSheetDialog(film!!.id!!)
+            //film?.id.let { showBottomSheetDialog(it) }
+            showBottomSheetDialog(film!!.id)
+        }
+
+        btn_add_country.setOnClickListener {
+            val promptsView: View =
+                LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(this)
+            addAlert.setView(promptsView)
+
+            addAlert.setTitle(getString(R.string.label_add))
+                .setMessage(getString(R.string.text_question_add_alert))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.label_save)) { dialog, which ->
+                    if (promptsView.et_alert_name.text.toString().isNotEmpty()) {
+                        editViewModel.insertCountry(
+                            Country(name = promptsView.et_alert_name.text.toString())
+                        ) {
+                            Utils.showToast(
+                                this,
+                                getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                            )
+                            editViewModel.initialRequest()
+                        }
+                    } else {
+                        Utils.showToast(
+                            this,
+                            getString(R.string.text_not_complete), Toast.LENGTH_SHORT
+                        )
+                    }
+                }
+                .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
+
+                }
+            addAlert.create().show()
+        }
+        btn_change_country.setOnClickListener {
+            val promptsView: View =
+            LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(this)
+            addAlert.setView(promptsView)
+
+            addAlert.setTitle(getString(R.string.label_add))
+                .setMessage(getString(R.string.text_question_add_alert))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.label_save)) { dialog, which ->
+                    if (promptsView.et_alert_name.text.toString().isNotEmpty()) {
+                        editViewModel.updateCountry(
+                            Country(id = (spinner_edit_country.selectedItem as Country).id,
+                                name = promptsView.et_alert_name.text.toString())
+                        ) {
+                            Utils.showToast(
+                                this,
+                                getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                            )
+                            editViewModel.initialRequest()
+                        }
+                    } else {
+                        Utils.showToast(
+                            this,
+                            getString(R.string.text_not_complete), Toast.LENGTH_SHORT
+                        )
+                    }
+                }
+                .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
+
+                }
+            addAlert.create().show() }
+        btn_add_genre.setOnClickListener { val promptsView: View =
+            LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(this)
+            addAlert.setView(promptsView)
+
+            addAlert.setTitle(getString(R.string.label_add))
+                .setMessage(getString(R.string.text_question_add_alert))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.label_save)) { dialog, which ->
+                    if (promptsView.et_alert_name.text.toString().isNotEmpty()) {
+                        editViewModel.insertGenre(
+                            Genre(name = promptsView.et_alert_name.text.toString())
+                        ) {
+                            Utils.showToast(
+                                this,
+                                getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                            )
+                            editViewModel.initialRequest()
+                        }
+                    } else {
+                        Utils.showToast(
+                            this,
+                            getString(R.string.text_not_complete), Toast.LENGTH_SHORT
+                        )
+                    }
+                }
+                .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
+
+                }
+            addAlert.create().show() }
+        btn_change_country.setOnClickListener {
+            val promptsView: View =
+                LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(this)
+            addAlert.setView(promptsView)
+
+            addAlert.setTitle(getString(R.string.label_add))
+                .setMessage(getString(R.string.text_question_add_alert))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.label_save)) { dialog, which ->
+                    if (promptsView.et_alert_name.text.toString().isNotEmpty()) {
+                        editViewModel.updateGenre(
+                            Genre(id = (spinner_edit_country.selectedItem as Country).id,
+                                name = promptsView.et_alert_name.text.toString())
+                        ) {
+                            Utils.showToast(
+                                this,
+                                getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                            )
+                            editViewModel.initialRequest()
+                        }
+                    } else {
+                        Utils.showToast(
+                            this,
+                            getString(R.string.text_not_complete), Toast.LENGTH_SHORT
+                        )
+                    }
+                }
+                .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
+
+                }
+            addAlert.create().show()
         }
         showCurrentMode(isEditMode)
-
     }
 
     private fun initDatePickers() {
@@ -247,8 +391,8 @@ class EditActivity : AppCompatActivity() {
     private fun initSpinners() {
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        adapterGenres = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, genres)
-        adapterCountries = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, country)
+        adapterGenres = ArrayAdapter<Genre>(this, android.R.layout.simple_spinner_item, genres)
+        adapterCountries = ArrayAdapter<Country>(this, android.R.layout.simple_spinner_item, country)
 
         // Определяем разметку для использования при выборе элемента
         adapterGenres.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -262,7 +406,7 @@ class EditActivity : AppCompatActivity() {
         var country: Int = 0
 
         for (index in this.country.indices) {
-            country = if (this.country[index] == film.country) {
+            country = if (this.country[index].id == film.country) {
                 index
             } else {
                 0
@@ -275,7 +419,7 @@ class EditActivity : AppCompatActivity() {
     private fun getGenrePosition(film: Film): Int {
         var genre: Int = 0
         genres.forEachIndexed { index, element ->
-            genre = if (element == film.genre) {
+            genre = if (element.id == film.genre) {
                 index
             } else {
                 0
@@ -284,13 +428,14 @@ class EditActivity : AppCompatActivity() {
         return genre
     }
 
-    private fun showBottomSheetDialog(filmId: Int, cinemaUrl: String? = null) {
+    private fun showBottomSheetDialog(filmId: Int, pageUrl: String? = null, cinemaUrl: String? = null) {
         val view: View = layoutInflater.inflate(R.layout.bottom_sheet_cinema_add, null)
         val dialog = CinemaBottomSheetFragment(editViewModel)
         var arg = Bundle()
         arg.putInt("film_id", filmId)
         if (cinemaUrl != null) {
             arg.putString("cinema_url", cinemaUrl)
+            arg.putString("page_url", pageUrl)
         }
         dialog.arguments = arg
         //supportFragmentManager.beginTransaction().replace()
@@ -345,11 +490,11 @@ class EditActivity : AppCompatActivity() {
     ) {
         if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(
-                    Activity().baseContext,
-                    "Разрешение получено",
-                    Toast.LENGTH_SHORT
-                ).show()
+
+                Utils.showToast(
+                    this,
+                    "Разрешение получено", Toast.LENGTH_SHORT
+                )
             } else {
                 Toast.makeText(this, "Разрешение не получено", Toast.LENGTH_SHORT).show()
             }

@@ -2,43 +2,48 @@ package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 
 import android.content.res.Resources
 import android.os.Bundle
+import android.provider.ContactsContract.ProfileSyncState.set
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.core.view.get
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.slider.RangeSlider
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.bottom_sheet_search_options.*
 import ru.greatdevelopers.android_application.R
+import ru.greatdevelopers.android_application.Utils.Utils
+import ru.greatdevelopers.android_application.data.model.Country
+import ru.greatdevelopers.android_application.data.model.Genre
+import ru.greatdevelopers.android_application.viewmodel.EditViewModel
+import ru.greatdevelopers.android_application.viewmodel.SearchViewModel
+import java.lang.reflect.Array.set
+import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class BottomSheetFragment: BottomSheetDialogFragment() {
-    var genres = arrayOf(
-        "Любой",
-        "Комедия",
-        "Детектив",
-        "Триллер",
-        "Документальный",
-        "Мелодрамма",
-        "Военный"
-    )
+class BottomSheetFragment(private val searchViewModel: SearchViewModel) :
+    BottomSheetDialogFragment() {
 
-    var country = arrayOf(
-        "Не выбрано",
-        "Россия",
-        "США",
-        "Франция",
-        "Казахстан",
-        "Италия",
-        "Финляндия"
-    )
+    private var genres = ArrayList<Genre>()
+    private var country = ArrayList<Country>()
+
+    private lateinit var adapterGenres: ArrayAdapter<Genre>
+    private lateinit var adapterCountries: ArrayAdapter<Country>
+    private var selectedCountry: Int? = null
+    private var selectedGenre: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.BottomSheetTheme)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,39 +55,123 @@ class BottomSheetFragment: BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val spinnerGenre = view.findViewById(R.id.spinner_genre) as Spinner
-        val spinnerCountry = view.findViewById(R.id.spinner_country) as Spinner
-
+        initSpinner()
+        initDatePicker()
         val sliderRating = view.findViewById(R.id.rs_rating) as RangeSlider
         sliderRating.values = listOf(0F, 5F)
 
+        searchViewModel.country.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                adapterCountries.clear()
+                adapterCountries.addAll(it)
+                adapterCountries.notifyDataSetChanged()
+                country = it as ArrayList<Country>
+
+            }
+        })
+        searchViewModel.genre.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                adapterGenres.clear()
+                adapterGenres.addAll(it)
+                adapterGenres.notifyDataSetChanged()
+                genres = it as ArrayList<Genre>
+
+            }
+        })
+        searchViewModel.initialRequestOptions()
+
+        tv_cancel.setOnClickListener {
+            searchViewModel.initialRequest()
+            dismiss()
+        }
+
+        btn_select.setOnClickListener {
+            searchViewModel.searchByParamsRequest(
+                selectedGenre,
+                selectedCountry,
+                date_picker_from.year,
+                date_picker_to.year,
+                sliderRating.values[0],
+                sliderRating.values[1]
+            )
+        }
+    }
+
+    private fun initSpinner() {
+
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        val adapterGenres: ArrayAdapter<String> = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, genres)
-        val adapterCountries: ArrayAdapter<String> = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, country)
+        adapterGenres =
+            ArrayAdapter<Genre>(requireContext(), android.R.layout.simple_spinner_item, genres)
+        adapterCountries =
+            ArrayAdapter<Country>(requireContext(), android.R.layout.simple_spinner_item, country)
 
         // Определяем разметку для использования при выборе элемента
         adapterGenres.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         adapterCountries.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Применяем адаптер к элементу spinner
-        spinnerGenre.adapter = adapterGenres
-        spinnerCountry.adapter = adapterCountries
+        spinner_genre.adapter = adapterGenres
+        spinner_country.adapter = adapterCountries
 
+        spinner_country.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedCountry = if (parent?.getItemAtPosition(position).toString() == "Не выбрано"){
+                    null
+                }else {
+                    //parent?.getItemAtPosition(position).toString()
+                    (parent?.getItemAtPosition(position) as Country).id
+                }
+            }
 
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                selectedCountry = null
+            }
+        }
+
+        spinner_genre.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedGenre = if(parent?.getItemAtPosition(position).toString() == "Любой"){
+                    null
+                }else{
+                    (parent?.getItemAtPosition(position) as Genre).id
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                selectedGenre = null
+            }
+        }
+    }
+
+    private fun initDatePicker() {
         date_picker_from.maxDate = Calendar.getInstance().timeInMillis
         date_picker_to.maxDate = Calendar.getInstance().timeInMillis
 
-        (date_picker_from as ViewGroup).findViewById<ViewGroup>(Resources.getSystem().getIdentifier("day", "id", "android")).visibility =
+        (date_picker_from as ViewGroup).findViewById<ViewGroup>(
+            Resources.getSystem().getIdentifier("day", "id", "android")
+        ).visibility =
             View.GONE
-        (date_picker_from as ViewGroup).findViewById<ViewGroup>(Resources.getSystem().getIdentifier("month", "id", "android")).visibility =
+        (date_picker_from as ViewGroup).findViewById<ViewGroup>(
+            Resources.getSystem().getIdentifier("month", "id", "android")
+        ).visibility =
             View.GONE
 
-        (date_picker_to as ViewGroup).findViewById<ViewGroup>(Resources.getSystem().getIdentifier("day", "id", "android")).visibility =
+        (date_picker_to as ViewGroup).findViewById<ViewGroup>(
+            Resources.getSystem().getIdentifier("day", "id", "android")
+        ).visibility =
             View.GONE
-        (date_picker_to as ViewGroup).findViewById<ViewGroup>(Resources.getSystem().getIdentifier("month", "id", "android")).visibility =
+        (date_picker_to as ViewGroup).findViewById<ViewGroup>(
+            Resources.getSystem().getIdentifier("month", "id", "android")
+        ).visibility =
             View.GONE
-
-        tv_cancel.setOnClickListener {
-            dismiss()
-        }
     }
 }

@@ -179,7 +179,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
                             editViewModel.initialRequestCinemas(requireArguments().getString("cinema_url"))
-
+                            editViewModel.initialRequest()
                         }
                     } else {
                         Utils.showToast(
@@ -227,6 +227,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
                             editViewModel.initialRequestCinemas(requireArguments().getString("cinema_url"))
+                            editViewModel.initialRequest()
                         }
                     } else {
                         Utils.showToast(
@@ -252,9 +253,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
 
     private fun initSpinner() {
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        adapterCinemas =
-            ArrayAdapter<Cinema>(requireContext(), android.R.layout.simple_spinner_item, cinemas)
-
+        adapterCinemas = ArrayAdapter<Cinema>(requireContext(), android.R.layout.simple_spinner_item, cinemas)
         // Определяем разметку для использования при выборе элемента
         adapterCinemas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Применяем адаптер к элементу spinner

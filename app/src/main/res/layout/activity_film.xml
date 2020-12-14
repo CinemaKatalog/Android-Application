@@ -12,7 +12,7 @@
         android:id="@+id/film_app_bar"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:fitsSystemWindows="false">
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/film_collapsing_toolbar"
@@ -28,7 +28,7 @@
                 android:id="@+id/iv_collapsing_film_poster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="false"
+                android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_launcher"
                 app:layout_collapseMode="parallax"
@@ -52,6 +52,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:fitsSystemWindows="false"
                 android:layout_height="?attr/actionBarSize">
 
                 <ImageView

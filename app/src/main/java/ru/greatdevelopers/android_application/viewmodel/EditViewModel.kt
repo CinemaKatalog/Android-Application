@@ -7,9 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.greatdevelopers.android_application.CinemaRepository
 import ru.greatdevelopers.android_application.FilmRepository
-import ru.greatdevelopers.android_application.data.model.Cinema
-import ru.greatdevelopers.android_application.data.model.Film
-import ru.greatdevelopers.android_application.data.model.FilmCinema
+import ru.greatdevelopers.android_application.data.model.*
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 
 class EditViewModel(
@@ -18,16 +16,24 @@ class EditViewModel(
     private val filmId: Int? = null
 ) : ViewModel() {
 
-    fun initialRequest() {
-        viewModelScope.launch {
-            loadFilmInfo.postValue(filmId?.let { filmRepository.getFilmById(it) })
-            loadCinemaListInfo.postValue(filmId?.let { cinemaRepository.getFilmCinemaWithName(it) })
-        }
-    }
-
+    private val loadGenreInfo = MutableLiveData<List<Genre>>()
+    val genre: LiveData<List<Genre>>
+        get() = loadGenreInfo
+    private val loadCountryInfo = MutableLiveData<List<Country>>()
+    val country: LiveData<List<Country>>
+        get() = loadCountryInfo
     private val loadFilmInfo = MutableLiveData<Film>()
     val film: LiveData<Film>
         get() = loadFilmInfo
+
+    fun initialRequest() {
+        viewModelScope.launch {
+            loadFilmInfo.postValue(filmId?.let { filmRepository.getFilmById(it) })
+            loadGenreInfo.postValue(filmRepository.getAllGenres())
+            loadCountryInfo.postValue(filmRepository.getAllCountries())
+            loadCinemaListInfo.postValue(filmId?.let { cinemaRepository.getFilmCinemaWithName(it) })
+        }
+    }
 
     fun updateFilm(film: Film, onUpdate: () -> Unit) {
         viewModelScope.launch {
@@ -40,8 +46,31 @@ class EditViewModel(
     fun insertFilm(film: Film, onInsert: () -> Unit) {
         viewModelScope.launch {
             filmRepository.insertFilm(film)
-            //initialRequest()
             onInsert()
+        }
+    }
+
+    fun insertGenre(genre: Genre, onInsert: () -> Unit) {
+        viewModelScope.launch {
+            filmRepository.insertGenre(genre)
+        }
+    }
+
+    fun insertCountry(country: Country, onInsert: () -> Unit) {
+        viewModelScope.launch {
+            filmRepository.insertCountry(country)
+        }
+    }
+
+    fun updateGenre(genre: Genre, onUpdate: () -> Unit) {
+        viewModelScope.launch {
+            filmRepository.updateGenre(genre)
+        }
+    }
+
+    fun updateCountry(country: Country, onUpdate: () -> Unit) {
+        viewModelScope.launch {
+            filmRepository.updateCountry(country)
         }
     }
 
@@ -57,6 +86,15 @@ class EditViewModel(
         }
     }
 
+    fun deleteFilmCinema(filmId: Int, siteUrl: String, onDelete: () -> Unit) {
+        viewModelScope.launch {
+            var filmCinema = cinemaRepository.getFilmCinemaByIds(filmId, siteUrl)
+            filmCinema?.let { cinemaRepository.deleteFilmCinema(it) }
+            onDelete()
+        }
+    }
+
+
     fun insertCinema(cinema: Cinema, onInsert: () -> Unit) {
         viewModelScope.launch {
             cinemaRepository.insertCinema(cinema)
@@ -70,6 +108,7 @@ class EditViewModel(
             onUpdate()
         }
     }
+
 
     private val loadCinemaListInfo = MutableLiveData<List<CinemaListItem>>()
     val cinemaList: LiveData<List<CinemaListItem>>
@@ -94,17 +133,4 @@ class EditViewModel(
             })
         }
     }
-
-    fun deleteFilmCinema(filmId: Int, siteUrl: String, onDelete: () -> Unit) {
-        viewModelScope.launch {
-            var filmCinema = cinemaRepository.getFilmCinemaByIds(filmId, siteUrl)
-            filmCinema?.let { cinemaRepository.deleteFilmCinema(it) }
-            onDelete()
-        }
-    }
-    /*fun getCinemaByName(name: String): Cinema?{
-        viewModelScope.launch {
-            cinemaRepository.getCinemaByName(name)
-        }
-    }*/
 }

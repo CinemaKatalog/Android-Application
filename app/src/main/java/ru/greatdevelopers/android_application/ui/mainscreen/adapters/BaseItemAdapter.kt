@@ -15,9 +15,9 @@ import ru.greatdevelopers.android_application.R
 class BaseItemAdapter(val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<BaseItemAdapter.ViewHolder>(){
 
 
-    private var values: List<Film> = ArrayList()
+    private var values: List<FilmListItem> = ArrayList()
 
-    fun setItemList(newList: List<Film>){
+    fun setItemList(newList: List<FilmListItem>){
         notifyDataSetChanged()
         values = newList
     }
@@ -33,8 +33,8 @@ class BaseItemAdapter(val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<B
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.nameTextView?.text = values[position].name
-        holder.genreTextView?.text = values[position].genre
+        holder.nameTextView?.text = values[position].film_name
+        holder.genreTextView?.text = values[position].genre_name
 
         /*Glide.with(context)
             .load(new File(uri.getPath()))
@@ -59,7 +59,7 @@ class BaseItemAdapter(val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<B
             image = containerView.findViewById(R.id.film_image)
 
             containerView.setOnClickListener{
-                onClick(values[adapterPosition].id!!)
+                onClick(values[adapterPosition].film_id)
             }
         }
     }

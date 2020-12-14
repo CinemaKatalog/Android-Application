@@ -81,11 +81,13 @@ class SearchFragment : Fragment(){
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //Log.d(TAG, "onQueryTextSubmit: $query")
+                searchViewModel.searchRequest(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 //Log.d(TAG, "onQueryTextChange: $newText")
+                searchViewModel.searchRequest(newText)
                 return false
             }
         })
@@ -93,7 +95,7 @@ class SearchFragment : Fragment(){
 
     private fun showBottomSheetDialog() {
         val view: View = layoutInflater.inflate(R.layout.bottom_sheet_search_options, null)
-        val dialog = BottomSheetFragment()
+        val dialog = BottomSheetFragment(searchViewModel)
         activity?.supportFragmentManager?.let { dialog.show(it, dialog.tag) }
     }
 }

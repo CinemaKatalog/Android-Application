@@ -46,9 +46,10 @@ class FilmActivity: AppCompatActivity() {
 
     private fun initView(){
         //setting toolbar
-        setSupportActionBar(findViewById(R.id.film_toolbar))
+        //setSupportActionBar(findViewById(R.id.film_toolbar))
         //home navigation
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
 
         var userId = intent.extras?.getInt("user_id")
 
@@ -72,8 +73,6 @@ class FilmActivity: AppCompatActivity() {
                 when(k){
                     "description" -> v.text = foundFilm.description
                     "producer" -> v.text = foundFilm.producer
-                    "country" -> v.text = foundFilm.country
-                    "genre" -> v.text = foundFilm.genre
                     "rating" -> v.text = foundFilm.rating.toString()
                     "year" -> v.text = foundFilm.year.toString()
                 }
@@ -95,7 +94,7 @@ class FilmActivity: AppCompatActivity() {
         filmViewModel.favourite.observe(this, Observer { foundFavour->
             if (foundFavour == null){
                 fab_add_favourite.setOnClickListener{
-                    filmViewModel.insertFavourite(Favourite(userId!!, film!!.id!!))
+                    filmViewModel.insertFavourite(Favourite(userId!!, film!!.id))
                     fab_add_favourite.setImageResource(R.drawable.ic_baseline_favorite_24)
                 }
             }else{
@@ -110,6 +109,12 @@ class FilmActivity: AppCompatActivity() {
         })
         filmViewModel.cinema.observe(this, Observer {
             recyclerViewAdapter.setItemList(it)
+        })
+        filmViewModel.country.observe(this, Observer {
+            viewFields["country"]?.text = it.name
+        })
+        filmViewModel.genre.observe(this, Observer {
+            viewFields["genre"]?.text = it.name
         })
         filmViewModel.initialRequest(userId!!){
             user: User? ->
@@ -136,12 +141,6 @@ class FilmActivity: AppCompatActivity() {
                         }
 
                     sureAlert.create().show()
-                    //sureAlert.show().getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(resources.getColor(R.color.color_secondary))
-                    //sureAlert.show().getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.color_secondary))
-                    //sureAlert.getPositiveButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(R.color.color_secondary)
-                    //sureAlert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(R.color.color_secondary);
-
-
                 }
             }
         }

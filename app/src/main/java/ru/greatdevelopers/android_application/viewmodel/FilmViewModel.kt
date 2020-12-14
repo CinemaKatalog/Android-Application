@@ -8,9 +8,7 @@ import kotlinx.coroutines.launch
 import ru.greatdevelopers.android_application.CinemaRepository
 import ru.greatdevelopers.android_application.FilmRepository
 import ru.greatdevelopers.android_application.ProfileRepository
-import ru.greatdevelopers.android_application.data.model.Favourite
-import ru.greatdevelopers.android_application.data.model.Film
-import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.model.*
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 
 class FilmViewModel(
@@ -28,6 +26,14 @@ class FilmViewModel(
         get() = loadFilmInfo
 
 
+    private val loadGenreInfo = MutableLiveData<Genre>()
+    val genre: LiveData<Genre>
+        get() = loadGenreInfo
+
+    private val loadCountryInfo = MutableLiveData<Country>()
+    val country: LiveData<Country>
+        get() = loadCountryInfo
+
     private val loadCinemaInfo = MutableLiveData<List<CinemaListItem>>()
     val cinema: LiveData<List<CinemaListItem>>
         get() = loadCinemaInfo
@@ -39,10 +45,13 @@ class FilmViewModel(
             val tmpUser = profileRepository.getUserById(user_id)
             loadUser.postValue(tmpUser)
             onFoundUser(tmpUser)
-            loadFilmInfo.postValue(filmId.let { filmRepository.getFilmById(it) })
+            val tmpFilm = filmId.let { filmRepository.getFilmById(it) }
+            loadFilmInfo.postValue(tmpFilm)
             loadFavourite.postValue(filmRepository.getFavouriteById(filmId, user_id))
             loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaWithName(filmId))
-            onFoundUser
+            loadGenreInfo.postValue(tmpFilm?.let { filmRepository.getGenreById(it.genre) })
+            loadCountryInfo.postValue(tmpFilm?.let { filmRepository.getCountryById(it.country) })
+            //onFoundUser
         }
     }
 
