@@ -44,6 +44,7 @@ class EditActivity : AppCompatActivity() {
     }
 
     private var isEditMode = false
+    private var rating = 0f
 
     lateinit var viewFields: Map<String, TextView>
 
@@ -69,9 +70,7 @@ class EditActivity : AppCompatActivity() {
     private fun initView(savedInstanceState: Bundle?) {
 
         //editViewModel.insertCountry(Country(name = "Не выбрано")){}
-        //editViewModel.insertCountry(Country(name = "Россия")){}
         //editViewModel.insertGenre(Genre(name = "Любой")){}
-        //editViewModel.insertGenre(Genre(name = "Комедия")){}
         viewFields = mapOf(
             "name" to et_film_name,
             "description" to et_film_description,
@@ -94,7 +93,16 @@ class EditActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         editViewModel.cinemaList.observe(this, Observer {
-            if (it != null) recyclerViewAdapter.setItemList(it)
+            if (it != null) {
+                var sum = 0f
+                recyclerViewAdapter.setItemList(it)
+                for(i in it){
+                    sum += i.rating
+                }
+                if (sum > 0){
+                    rating = sum/it.size
+                }
+            }
         })
         editViewModel.countryList.observe(this, Observer {
             if (it != null) {
@@ -206,7 +214,7 @@ class EditActivity : AppCompatActivity() {
                             viewFields["description"]?.text.toString(),
                             selectedImageUri.toString(),
                             date_edit_picker.year,
-                            4.5f
+                            rating
                         )
                     ) {
                         Utils.showToast(
@@ -224,7 +232,7 @@ class EditActivity : AppCompatActivity() {
                         description = viewFields["description"]?.text.toString(),
                         poster = selectedImageUri.toString(),
                         year = date_edit_picker.year,
-                        rating = 4.5f
+                        rating = rating
                     )
                     editViewModel.insertFilm(film!!) {
                         Utils.showToast(

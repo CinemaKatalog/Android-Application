@@ -24,12 +24,60 @@ class MainViewModel(
     val films: LiveData<List<FilmListItem>>
         get() = loadFilms
 
-    fun initialRequest(user_id: Int, onFoundUser: (user: User?)-> Unit) {
+    private val loadFilmsRating = MutableLiveData<List<FilmListItem>>()
+    val filmsRating: LiveData<List<FilmListItem>>
+        get() = loadFilmsRating
+
+    private val loadFilmsYear = MutableLiveData<List<FilmListItem>>()
+    val filmsYear: LiveData<List<FilmListItem>>
+        get() = loadFilmsYear
+
+    private val loadFilmsGenre = MutableLiveData<List<FilmListItem>>()
+    val filmsGenre: LiveData<List<FilmListItem>>
+        get() = loadFilmsGenre
+
+    fun initialRequest(user_id: Int, onFoundUser: (user: User?) -> Unit) {
         viewModelScope.launch {
             val tmpUser = profileRepository.getUserById(user_id)
             loadUser.postValue(tmpUser)
             onFoundUser(tmpUser)
             loadFilms.postValue(filmRepository.getFilmsWithExtra())
+        }
+    }
+
+    fun initGroupsRequest(onInit: () -> Unit) {
+        viewModelScope.launch {
+            loadFilmsGenre.postValue(
+                filmRepository.getFilmByParameters(
+                    2,
+                    null,
+                    minRating = 0f,
+                    maxRating = 5f,
+                    minYear = 2020,
+                    maxYear = 0
+                )
+            )
+            loadFilmsYear.postValue(
+                filmRepository.getFilmByParameters(
+                    null,
+                    null,
+                    minRating = 0f,
+                    maxRating = 5f,
+                    minYear = 2020,
+                    maxYear = 2020
+                )
+            )
+            loadFilmsRating.postValue(
+                filmRepository.getFilmByParameters(
+                    null,
+                    null,
+                    minRating = 4f,
+                    maxRating = 5f,
+                    minYear = 2020,
+                    maxYear = 0
+                )
+            )
+            onInit()
         }
     }
 }

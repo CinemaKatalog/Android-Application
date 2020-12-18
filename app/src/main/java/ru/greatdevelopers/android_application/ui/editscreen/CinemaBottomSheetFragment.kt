@@ -212,7 +212,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
             promptsView.et_cinema_alert_url.isFocusable = false
             promptsView.et_cinema_alert_url.isFocusableInTouchMode = false
 
-            addAlert.setTitle(getString(R.string.label_add))
+            addAlert.setTitle(getString(R.string.label_change))
                 .setMessage(getString(R.string.text_question_add_alert))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.label_save)) { dialog, which ->

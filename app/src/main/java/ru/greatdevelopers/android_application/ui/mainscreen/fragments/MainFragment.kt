@@ -3,6 +3,7 @@ package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.*
+import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.GroupAdapter
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.FilmGroup
@@ -51,9 +53,20 @@ class MainFragment : Fragment(R.layout.fragment_main){
             user = foundUser
         })
         mainViewModel.films.observe(viewLifecycleOwner, Observer { films ->
-            createFakeElements(films)
-            recyclerViewAdapter.setItemList(filmsGroupList)
+            //createFakeElements()
+            //recyclerViewAdapter.setItemList(filmsGroupList)
         })
+        mainViewModel.filmsGenre.observe(viewLifecycleOwner, Observer {
+            filmsGroupList.add(FilmGroup("Комедии", it))
+        })
+        mainViewModel.filmsYear.observe(viewLifecycleOwner, Observer {
+            filmsGroupList.add(FilmGroup("2020 года", it))
+        })
+        mainViewModel.filmsRating.observe(viewLifecycleOwner, Observer {
+            filmsGroupList.add(FilmGroup("Рейтинговые", it))
+        })
+
+
 
         mainViewModel.initialRequest(requireArguments().getInt("user_id")){
             user: User? ->
@@ -64,14 +77,16 @@ class MainFragment : Fragment(R.layout.fragment_main){
                     startActivity(intentEdit)
                 }
             }
+            filmsGroupList.clear()
+            mainViewModel.initGroupsRequest(){
+                recyclerViewAdapter.setItemList(filmsGroupList)
+                //filmsGroupList.clear()
+            }
         }
     }
 
-    private fun createFakeElements(filmList: List<FilmListItem>) {
+    private fun createFakeElements() {
         filmsGroupList.clear()
-        for (i in 0 .. 5){
-            filmsGroupList.add(FilmGroup("Название$i", filmList))
-        }
     }
 
 }

@@ -13,7 +13,7 @@
     <string name="favourite_toolbar_title">Понравивилось</string>
     <string name="options_title">Параметры</string>
     <string name="title_activity_sign">SignActivity</string>
-    <string name="prompt_email">Email</string>
+    <string name="prompt_email">Логин</string>
     <string name="prompt_name">Имя</string>
     <string name="prompt_password">Пароль</string>
     <string name="action_sign_in">Войти</string>
