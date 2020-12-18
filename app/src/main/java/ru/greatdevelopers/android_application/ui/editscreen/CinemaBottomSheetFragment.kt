@@ -82,6 +82,9 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                 adapterCinemas.notifyDataSetChanged()
                 cinemas = it as ArrayList<Cinema>
 
+                if(isEditMode){
+                    spinner_name.setSelection(getPosition(requireArguments().getString("cinema_url")!!))
+                }
             }
         })
         editViewModel.filmCinema.observe(viewLifecycleOwner, Observer {
@@ -94,6 +97,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                 }
                 rs_cinema_add_rating.values = arrayListOf(it.rating)
             }
+            editViewModel.cinemaInitRequest()
         })
         editViewModel.initialRequestCinemas(requireArguments().getString("cinema_url"))
 
@@ -300,7 +304,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
 
     private fun showCurrentMode(isEdit: Boolean) {
         if (requireArguments().getString("cinema_url") != null) {
-            spinner_name.setSelection(getPosition(requireArguments().getString("cinema_url")!!))
+            //spinner_name.setSelection(getPosition(requireArguments().getString("cinema_url")!!))
         }
         spinner_name.isEnabled = !isEdit
         spinner_name.isFocusable = !isEdit

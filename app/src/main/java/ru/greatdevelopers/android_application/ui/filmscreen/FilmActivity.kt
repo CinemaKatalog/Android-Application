@@ -33,8 +33,8 @@ class FilmActivity: AppCompatActivity() {
     private lateinit var recyclerViewAdapter: CinemaItemAdapter
     private var cinemaList: ArrayList<CinemaListItem> = ArrayList()
 
-
     private var film: Film? = null
+    private var isFavourite: Boolean = false
 
     private lateinit var viewFields: Map<String, TextView>
 
@@ -92,21 +92,22 @@ class FilmActivity: AppCompatActivity() {
 
         })
         filmViewModel.favourite.observe(this, Observer { foundFavour->
-            if (foundFavour == null){
-                fab_add_favourite.setOnClickListener{
-                    filmViewModel.insertFavourite(Favourite(userId!!, film!!.id))
-                    fab_add_favourite.setImageResource(R.drawable.ic_baseline_favorite_24)
-                }
-            }else{
-                //fab_add_favourite.setImageDrawable(R.drawable.ic_baseline_favorite_24)
-                fab_add_favourite.setImageResource(R.drawable.ic_baseline_favorite_24)
-                fab_add_favourite.setOnClickListener{
-                    filmViewModel.deleteFavourite(foundFavour)
-                    fab_add_favourite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-                }
-            }
+            isFavourite = foundFavour != null
+            showCurrentMode(isFavourite)
 
+            fab_add_favourite.setOnClickListener {
+                if (isFavourite){
+                    filmViewModel.deleteFavourite(foundFavour)
+                }else{
+                    filmViewModel.insertFavourite(Favourite(userId!!, film!!.id)){
+                        filmViewModel.favouriteRequest(userId)
+                    }
+                }
+                isFavourite = !isFavourite
+                showCurrentMode(isFavourite)
+            }
         })
+        filmViewModel.favouriteRequest(userId!!)
         filmViewModel.cinema.observe(this, Observer {
             recyclerViewAdapter.setItemList(it)
         })
@@ -116,7 +117,7 @@ class FilmActivity: AppCompatActivity() {
         filmViewModel.genre.observe(this, Observer {
             viewFields["genre"]?.text = it.name
         })
-        filmViewModel.initialRequest(userId!!){
+        filmViewModel.initialRequest(userId){
             user: User? ->
             if (user?.userType == "admin"){
                 btn_edit_film.visibility = View.VISIBLE
@@ -149,10 +150,17 @@ class FilmActivity: AppCompatActivity() {
         }
 
 
-
-
     }
 
+    private fun showCurrentMode(isFavourite: Boolean) {
+
+        if (isFavourite) {
+            fab_add_favourite.setImageResource(R.drawable.ic_baseline_favorite_24)
+        } else {
+            fab_add_favourite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+        }
+
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_film_toolbar, menu)
         return true

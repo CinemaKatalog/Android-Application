@@ -109,8 +109,9 @@ interface FilmDao {
 
     @Query(
         "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
-                "FROM Film, Genre " +
-                "WHERE Film.genre == Genre.genre_id AND Film.film_id == (SELECT film_id FROM Favourite WHERE Favourite.user_id == :userId) ORDER BY Film.film_name ASC"
+                "FROM Film INNER JOIN Genre ON Film.genre == Genre.genre_id " +
+                "INNER JOIN Favourite ON Film.film_id == Favourite.film_id " +
+                "WHERE Favourite.user_id == :userId ORDER BY Film.film_name ASC"
     )
     suspend fun getFavourFilmWithExtra(userId: Int): List<FilmListItem>
 }

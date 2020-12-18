@@ -16,22 +16,30 @@ class EditViewModel(
     private val filmId: Int? = null
 ) : ViewModel() {
 
-    private val loadGenreInfo = MutableLiveData<List<Genre>>()
-    val genre: LiveData<List<Genre>>
-        get() = loadGenreInfo
-    private val loadCountryInfo = MutableLiveData<List<Country>>()
-    val country: LiveData<List<Country>>
-        get() = loadCountryInfo
+    private val loadGenreListInfo = MutableLiveData<List<Genre>>()
+    val genreList: LiveData<List<Genre>>
+        get() = loadGenreListInfo
+    private val loadCountryListInfo = MutableLiveData<List<Country>>()
+    val countryList: LiveData<List<Country>>
+        get() = loadCountryListInfo
     private val loadFilmInfo = MutableLiveData<Film>()
     val film: LiveData<Film>
         get() = loadFilmInfo
 
+
     fun initialRequest() {
         viewModelScope.launch {
-            loadFilmInfo.postValue(filmId?.let { filmRepository.getFilmById(it) })
-            loadGenreInfo.postValue(filmRepository.getAllGenres())
-            loadCountryInfo.postValue(filmRepository.getAllCountries())
+
             loadCinemaListInfo.postValue(filmId?.let { cinemaRepository.getFilmCinemaWithName(it) })
+            loadFilmInfo.postValue(filmId?.let { filmRepository.getFilmById(it) })
+
+        }
+    }
+
+    fun spinnerInitRequest(){
+        viewModelScope.launch {
+            loadGenreListInfo.postValue(filmRepository.getAllGenres())
+            loadCountryListInfo.postValue(filmRepository.getAllCountries())
         }
     }
 
@@ -53,24 +61,28 @@ class EditViewModel(
     fun insertGenre(genre: Genre, onInsert: () -> Unit) {
         viewModelScope.launch {
             filmRepository.insertGenre(genre)
+            onInsert()
         }
     }
 
     fun insertCountry(country: Country, onInsert: () -> Unit) {
         viewModelScope.launch {
             filmRepository.insertCountry(country)
+            onInsert()
         }
     }
 
     fun updateGenre(genre: Genre, onUpdate: () -> Unit) {
         viewModelScope.launch {
             filmRepository.updateGenre(genre)
+            onUpdate()
         }
     }
 
     fun updateCountry(country: Country, onUpdate: () -> Unit) {
         viewModelScope.launch {
             filmRepository.updateCountry(country)
+            onUpdate()
         }
     }
 
@@ -124,13 +136,18 @@ class EditViewModel(
 
     fun initialRequestCinemas(siteUrl: String? = null) {
         viewModelScope.launch {
-            loadCinemaInfo.postValue(cinemaRepository.getAllCinema())
             loadFilmCinemaInfo.postValue(siteUrl?.let {
                 cinemaRepository.getFilmCinemaByIds(
                     filmId!!,
                     it
                 )
             })
+        }
+    }
+
+    fun cinemaInitRequest(){
+        viewModelScope.launch {
+            loadCinemaInfo.postValue(cinemaRepository.getAllCinema())
         }
     }
 }

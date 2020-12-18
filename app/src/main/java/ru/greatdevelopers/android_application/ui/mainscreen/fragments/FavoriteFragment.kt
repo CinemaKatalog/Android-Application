@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAdapter
 import ru.greatdevelopers.android_application.R
+import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
 import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
 
@@ -43,6 +45,7 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
 
         favouriteViewModel.favoriteFilms.observe(viewLifecycleOwner, Observer { films ->
             recyclerViewAdapter.setItemList(films)
+
         })
         favouriteViewModel.initialRequest()
     }

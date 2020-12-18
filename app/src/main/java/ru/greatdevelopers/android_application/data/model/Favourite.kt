@@ -3,6 +3,7 @@ package ru.greatdevelopers.android_application.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.ForeignKey.CASCADE
 
 @Entity(
     primaryKeys = ["user_id", "film_id"], foreignKeys = [ForeignKey(
@@ -11,7 +12,7 @@ import androidx.room.ForeignKey
     ),
         ForeignKey(
             entity = Film::class,
-            parentColumns = ["film_id"], childColumns = ["film_id"]
+            parentColumns = ["film_id"], childColumns = ["film_id"], onDelete = CASCADE
         )]
 )
 data class Favourite(

@@ -68,7 +68,7 @@ class MainFragment : Fragment(R.layout.fragment_main){
     }
 
     private fun createFakeElements(filmList: List<FilmListItem>) {
-
+        filmsGroupList.clear()
         for (i in 0 .. 5){
             filmsGroupList.add(FilmGroup("Название$i", filmList))
         }

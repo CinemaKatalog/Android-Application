@@ -7,7 +7,6 @@ import ru.greatdevelopers.android_application.data.model.Genre
 @Dao
 interface CountryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-
     suspend fun insertCountry(country: Country)
 
     @Update
