@@ -24,7 +24,7 @@ interface FilmDao {
     @Query("SELECT * FROM Film WHERE film_name LIKE '%' || :name || '%' ORDER BY film_name ASC")
     suspend fun getFilmByName(name: String): List<Film>
 
-    @Query("SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
+    @Query("SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
             "FROM Film, Genre WHERE Film.genre == Genre.genre_id AND Film.film_name LIKE '%' || :name || '%' ORDER BY Film.film_name ASC")
     suspend fun getFilmByNameWithExtra(name: String): List<FilmListItem>
 
@@ -32,7 +32,7 @@ interface FilmDao {
     suspend fun getFilmById(id: Int): Film?
 
     @Query(
-        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
+        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
                 "FROM Film, Genre " +
                 "WHERE Film.genre == Genre.genre_id AND Film.genre == :genre AND Film.country == :country AND " +
                 "year >= :minYear AND year <= :maxYear AND rating >= :minRating AND rating <= :maxRating ORDER BY Film.film_name ASC"
@@ -47,7 +47,7 @@ interface FilmDao {
     ): List<FilmListItem>
 
     @Query(
-        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
+        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
                 "FROM Film, Genre " +
                 "WHERE Film.genre == Genre.genre_id AND Film.genre == :genre AND year >= :minYear AND year <= :maxYear AND rating >= :minRating AND rating <= :maxRating" +
                 " ORDER BY Film.film_name ASC"
@@ -61,7 +61,7 @@ interface FilmDao {
     ): List<FilmListItem>
 
     @Query(
-        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
+        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
                 "FROM Film, Genre " +
                 "WHERE Film.genre == Genre.genre_id AND Film.country == :country " +
                 "AND year >= :minYear AND year <= :maxYear AND rating >= :minRating AND rating <= :maxRating" +
@@ -76,7 +76,7 @@ interface FilmDao {
     ): List<FilmListItem>
 
     @Query(
-        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
+        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
                 "FROM Film, Genre " +
                 "WHERE Film.genre == Genre.genre_id AND year >= :minYear AND year <= :maxYear AND rating >= :minRating AND rating <= :maxRating" +
                 " ORDER BY Film.film_name ASC"
@@ -101,14 +101,14 @@ interface FilmDao {
     suspend fun getFavouriteFilms(userId: Int): List<Film>
 
     @Query(
-        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
+        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
                 "FROM Film, Genre " +
                 "WHERE Film.genre == Genre.genre_id ORDER BY Film.film_name ASC"
     )
     suspend fun getFilmWithExtra(): List<FilmListItem>
 
     @Query(
-        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster " +
+        "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
                 "FROM Film INNER JOIN Genre ON Film.genre == Genre.genre_id " +
                 "INNER JOIN Favourite ON Film.film_id == Favourite.film_id " +
                 "WHERE Favourite.user_id == :userId ORDER BY Film.film_name ASC"

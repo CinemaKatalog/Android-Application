@@ -35,6 +35,7 @@ class BaseItemAdapter(val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<B
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.nameTextView?.text = values[position].film_name
         holder.genreTextView?.text = values[position].genre_name
+        holder.ratingTextView?.text = values[position].rating.toString()
 
         /*Glide.with(context)
             .load(new File(uri.getPath()))
@@ -52,10 +53,12 @@ class BaseItemAdapter(val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<B
     inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView), LayoutContainer {
         var nameTextView: TextView? = null
         var genreTextView: TextView? = null
+        var ratingTextView: TextView? = null
         var image : ImageView? = null
         init {
             nameTextView = containerView.findViewById(R.id.card_film_name)
             genreTextView = containerView.findViewById(R.id.card_film_genre)
+            ratingTextView = containerView.findViewById(R.id.card_film_rating)
             image = containerView.findViewById(R.id.film_image)
 
             containerView.setOnClickListener{
