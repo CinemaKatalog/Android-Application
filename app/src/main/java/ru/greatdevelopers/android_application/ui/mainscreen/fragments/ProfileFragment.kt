@@ -18,7 +18,7 @@ import ru.greatdevelopers.android_application.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val profileViewModel by viewModel<ProfileViewModel> { parametersOf(requireArguments().getInt("user_id")) }
-    private lateinit var exitButton: Button
+    //private lateinit var exitButton: Button
 
     companion object {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
@@ -31,8 +31,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        exitButton = view.findViewById(R.id.btn_exit)
-        exitButton.setOnClickListener {
+        //exitButton = view.findViewById(R.id.btn_exit)
+        btn_exit.setOnClickListener {
             /*var intentExit = Intent(activity, SignActivity::class.java)
             startActivity(intentExit)*/
         }

@@ -28,7 +28,7 @@ import ru.greatdevelopers.android_application.viewmodel.FilmViewModel
 class FilmActivity: AppCompatActivity() {
     private val filmViewModel by viewModel<FilmViewModel> { parametersOf(intent.extras?.getInt("film_id")) }
 
-    private lateinit var recyclerView: RecyclerView
+    //private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: CinemaItemAdapter
     private var cinemaList: ArrayList<CinemaListItem> = ArrayList()
 
@@ -61,11 +61,11 @@ class FilmActivity: AppCompatActivity() {
             "year" to tv_film_year
         )
 
-        recyclerView = findViewById(R.id.recycle_view_film)
+        //recyclerView = findViewById(R.id.recycle_view_film)
 
         recyclerViewAdapter = CinemaItemAdapter() {}
-        recyclerView.adapter = recyclerViewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recycle_view_film.adapter = recyclerViewAdapter
+        recycle_view_film.layoutManager = LinearLayoutManager(this)
 
         filmViewModel.film.observe(this, Observer { foundFilm ->
             for ((k, v) in viewFields){

@@ -18,7 +18,7 @@ import ru.greatdevelopers.android_application.viewmodel.SignUpViewModel
 class SignUpFragment : Fragment() {
     private val signUpViewModel by viewModel<SignUpViewModel>()
 
-    private lateinit var signUpButton: Button
+    //private lateinit var signUpButton: Button
     private lateinit var signInFragment: SignInFragment
     private var user: User? = null
 
@@ -37,14 +37,14 @@ class SignUpFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //signUpViewModel.insertUser(User(name = "admin", login = "admin", password = "password", userType = "admin"))
         signInFragment = SignInFragment()
-        signUpButton = view.findViewById(R.id.btn_sign_up)
+        //signUpButton = view.findViewById(R.id.btn_sign_up)
 
         signUpViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
             user = foundUser
 
         })
 
-        signUpButton.setOnClickListener {
+        btn_sign_up.setOnClickListener {
             if (et_sign_up_name.text.toString().isNotEmpty()
                 && et_sign_up_login.text.toString().isNotEmpty()
                 && et_sign_up_password.text.toString().isNotEmpty()

@@ -51,7 +51,7 @@ class EditActivity : AppCompatActivity() {
     var genreList = ArrayList<Genre>()
     var countryList = ArrayList<Country>()
 
-    private lateinit var recyclerView: RecyclerView
+    //private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: CinemaItemAdapter
 
     private lateinit var adapterGenres: ArrayAdapter<Genre>
@@ -85,12 +85,12 @@ class EditActivity : AppCompatActivity() {
         initSpinners()
         initDatePickers()
 
-        recyclerView = findViewById(R.id.recycle_view_options)
+        //recyclerView = findViewById(R.id.recycle_view_options)
         recyclerViewAdapter = CinemaItemAdapter() {
             showBottomSheetDialog(it.film_id, it.page_url, it.site_url)
         }
-        recyclerView.adapter = recyclerViewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recycle_view_options.adapter = recyclerViewAdapter
+        recycle_view_options.layoutManager = LinearLayoutManager(this)
 
         editViewModel.cinemaList.observe(this, Observer {
             if (it != null) {

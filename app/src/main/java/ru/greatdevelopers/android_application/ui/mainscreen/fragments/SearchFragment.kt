@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_search.*
 import org.koin.androidx.viewmodel.compat.ScopeCompat.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
@@ -26,10 +27,8 @@ import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAda
 class SearchFragment : Fragment(){
     private val searchViewModel by viewModel<SearchViewModel>()
 
-    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: BaseItemAdapter
     private lateinit var linearLayoutOfSearchView: LinearLayout
-    private lateinit var searchView: SearchView
     private lateinit var optionsBtn: ImageButton
 
 
@@ -40,9 +39,8 @@ class SearchFragment : Fragment(){
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        searchView = view.findViewById(R.id.search_view)
-        searchView.isSubmitButtonEnabled = false
-        linearLayoutOfSearchView = searchView.getChildAt(0) as LinearLayout
+        search_view.isSubmitButtonEnabled = false
+        linearLayoutOfSearchView = search_view.getChildAt(0) as LinearLayout
         optionsBtn = inflater.inflate(R.layout.custom_button_search_view, container, false) as ImageButton
         optionsBtn.setImageResource(R.drawable.ic_baseline_tune_24)
         optionsBtn.setOnClickListener {
@@ -55,7 +53,7 @@ class SearchFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view.findViewById(R.id.recycle_view_search)
+        //recyclerView = view.findViewById(R.id.recycle_view_search)
 
 
         var userId = requireArguments().getInt("user_id")
@@ -70,15 +68,15 @@ class SearchFragment : Fragment(){
             activity?.startActivity(intent)
         }
 
-        recyclerView.adapter = recyclerViewAdapter
-        recyclerView.layoutManager = GridLayoutManager(activity, 3)
+        recycle_view_search.adapter = recyclerViewAdapter
+        recycle_view_search.layoutManager = GridLayoutManager(activity, 3)
 
         searchViewModel.allFilms.observe(viewLifecycleOwner, Observer { films ->
             recyclerViewAdapter.setItemList(films)
         })
         searchViewModel.initialRequest()
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 //Log.d(TAG, "onQueryTextSubmit: $query")
                 searchViewModel.searchRequest(query)

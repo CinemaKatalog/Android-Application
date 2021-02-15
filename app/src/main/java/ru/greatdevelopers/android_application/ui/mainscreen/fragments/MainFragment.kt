@@ -24,7 +24,7 @@ import ru.greatdevelopers.android_application.viewmodel.MainViewModel
 class MainFragment : Fragment(R.layout.fragment_main){
     private val mainViewModel by viewModel<MainViewModel>()
 
-    private lateinit var recyclerView: RecyclerView
+    //private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: GroupAdapter
     private var filmsGroupList: ArrayList<FilmGroup> = ArrayList()
     private var user: User? = null
@@ -35,7 +35,7 @@ class MainFragment : Fragment(R.layout.fragment_main){
 
         var userId = requireArguments().getInt("user_id")
 
-        recyclerView = view.findViewById(R.id.recycle_view_tops)
+        //recyclerView = view.findViewById(R.id.recycle_view_tops)
 
         recyclerViewAdapter = GroupAdapter(){
             var intent = Intent(
@@ -46,8 +46,8 @@ class MainFragment : Fragment(R.layout.fragment_main){
             intent.putExtra("user_id", userId)
             activity?.startActivity(intent)
         }
-        recyclerView.adapter = recyclerViewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recycle_view_tops.adapter = recyclerViewAdapter
+        recycle_view_tops.layoutManager = LinearLayoutManager(activity)
 
         mainViewModel.user.observe(viewLifecycleOwner, Observer {foundUser->
             user = foundUser
