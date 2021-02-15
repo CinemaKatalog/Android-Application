@@ -1,7 +1,7 @@
 package ru.greatdevelopers.android_application.ui.mainscreen
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.greatdevelopers.android_application.R
@@ -10,18 +10,18 @@ import ru.greatdevelopers.android_application.ui.mainscreen.fragments.MainFragme
 import ru.greatdevelopers.android_application.ui.mainscreen.fragments.ProfileFragment
 import ru.greatdevelopers.android_application.ui.mainscreen.fragments.SearchFragment
 
-class MainActivity : AppCompatActivity(){
+class MenuActivity : AppCompatActivity() {
     private lateinit var mainFragment: MainFragment
     private lateinit var accountFragment: ProfileFragment
     private lateinit var searchFragment: SearchFragment
     private lateinit var favoriteFragment: FavoriteFragment
     private lateinit var passedData: Bundle
 
-    private lateinit var btmNavView : BottomNavigationView
+    private lateinit var btmNavView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_menu)
         passedData = intent.extras!!
         initView()
     }

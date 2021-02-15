@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.greatdevelopers.android_application.ProfileRepository
-import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.model.User
 
 class SignInViewModel(private val repository: ProfileRepository):ViewModel() {

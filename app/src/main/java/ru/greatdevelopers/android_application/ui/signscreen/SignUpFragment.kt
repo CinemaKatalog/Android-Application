@@ -1,4 +1,4 @@
-package ru.greatdevelopers.android_application.ui.signscreen.fragments
+package ru.greatdevelopers.android_application.ui.signscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -81,10 +81,10 @@ class SignUpFragment : Fragment() {
     }
 
     private fun loadFragment(fragment: Fragment) {
-        val transaction = activity?.supportFragmentManager?.beginTransaction()
+        /*val transaction = activity?.supportFragmentManager?.beginTransaction()
         transaction?.replace(R.id.sign_fragment_container, fragment)
         transaction?.addToBackStack(null)
-        transaction?.commit()
+        transaction?.commit()*/
     }
 
 }

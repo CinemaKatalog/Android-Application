@@ -1,6 +1,5 @@
 package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -15,7 +14,6 @@ import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.data.model.User
-import ru.greatdevelopers.android_application.ui.signscreen.SignActivity
 import ru.greatdevelopers.android_application.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -35,8 +33,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         exitButton = view.findViewById(R.id.btn_exit)
         exitButton.setOnClickListener {
-            var intentExit = Intent(activity, SignActivity::class.java)
-            startActivity(intentExit)
+            /*var intentExit = Intent(activity, SignActivity::class.java)
+            startActivity(intentExit)*/
         }
         initViews(savedInstanceState)
     }

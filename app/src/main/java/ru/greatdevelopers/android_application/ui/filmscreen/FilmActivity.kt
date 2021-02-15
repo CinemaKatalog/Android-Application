@@ -13,16 +13,15 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.activity_film.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.greatdevelopers.android_application.ui.editscreen.EditActivity
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.data.model.Favourite
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.ui.editscreen.EditActivity
 import ru.greatdevelopers.android_application.viewmodel.FilmViewModel
 
 

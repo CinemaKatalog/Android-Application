@@ -53,6 +53,7 @@ dependencies {
     // navigation
     def nav_version = '2.3.2'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // ui
     implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
@@ -106,3 +107,4 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
 }
+apply plugin: "androidx.navigation.safeargs"
