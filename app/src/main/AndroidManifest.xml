@@ -21,11 +21,10 @@
         </activity>
 
         <activity android:name=".ui.editscreen.EditActivity" />
-
-        <!--<activity android:name=".ui.signscreen.SignActivity"/>-->
-
+<!--
+        <activity android:name=".ui.signscreen.SignActivity"/>
         <activity android:name=".ui.mainscreen.MenuActivity" />
-
+-->
         <activity android:name=".ui.filmscreen.FilmActivity" />
 
     </application>

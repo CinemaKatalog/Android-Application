@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/menuFragment">
 
     <fragment
         android:id="@+id/signInFragment"
@@ -14,8 +14,8 @@
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
         <action
-            android:id="@+id/action_signInFragment_to_menuActivity"
-            app:destination="@id/menuActivity" />
+            android:id="@+id/action_signInFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
     </fragment>
 
     <fragment
@@ -24,18 +24,15 @@
         android:label="SignUpFragment"
         tools:layout="@layout/fragment_sign_up">
         <action
-            android:id="@+id/action_signUpFragment_to_menuActivity"
-            app:destination="@id/menuActivity" />
+            android:id="@+id/action_signUpFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
     </fragment>
-    <activity
-        android:id="@+id/menuActivity"
-        android:name="ru.greatdevelopers.android_application.ui.mainscreen.MenuActivity"
-        android:label="MenuActivity"
-        tools:layout="@layout/activity_menu">
-        <argument
-            android:name="userId"
-            app:argType="integer" />
-    </activity>
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="ru.greatdevelopers.android_application.ui.mainscreen.MenuFragment"
+        android:label="MenuFragment"
+        tools:layout="@layout/fragment_menu"></fragment>
 
 
 </navigation>

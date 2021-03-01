@@ -2,7 +2,6 @@ package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -17,8 +16,8 @@ import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private val profileViewModel by viewModel<ProfileViewModel> { parametersOf(requireArguments().getInt("user_id")) }
-    //private lateinit var exitButton: Button
+
+    private val vm by viewModel<ProfileViewModel> { parametersOf(requireArguments().getInt("user_id")) }
 
     companion object {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
@@ -31,7 +30,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //exitButton = view.findViewById(R.id.btn_exit)
         btn_exit.setOnClickListener {
             /*var intentExit = Intent(activity, SignActivity::class.java)
             startActivity(intentExit)*/
@@ -48,7 +46,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             "password" to et_password
         )
 
-        profileViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
+        vm.user.observe(viewLifecycleOwner, Observer { foundUser ->
             for ((k, v) in viewFields) {
                 when (k) {
                     "nickname" -> v.text = foundUser.name
@@ -60,7 +58,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
             user = foundUser
         })
-        profileViewModel.initialRequest()
+        vm.initialRequest()
 
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
@@ -71,8 +69,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 if (viewFields["name"]?.text.toString().isNotEmpty() &&
                     viewFields["email"]?.text.toString().isNotEmpty() &&
                     viewFields["password"]?.text.toString().isNotEmpty()
-                ){
-                    if (viewFields["password"]?.text.toString().matches(Regex(Utils.PASSWORD_PATTERN))){
+                ) {
+                    if (viewFields["password"]?.text.toString()
+                            .matches(Regex(Utils.PASSWORD_PATTERN))
+                    ) {
                         var updateUser = User(
                             user!!.id,
                             name = viewFields["name"]?.text.toString(),
@@ -81,22 +81,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             userType = user!!.userType
                         )
 
-                        profileViewModel.updateUserInfo(updateUser){
+                        vm.updateUserInfo(updateUser) {
                             Utils.showToast(
                                 requireContext(),
                                 getString(R.string.text_changes_saved), Toast.LENGTH_SHORT
                             )
                         }
 
-                    }else{
-                        Utils.showToast(requireContext(),
-                            getString(R.string.text_sign_up_wrong_password), Toast.LENGTH_SHORT)
+                    } else {
+                        Utils.showToast(
+                            requireContext(),
+                            getString(R.string.text_sign_up_wrong_password), Toast.LENGTH_SHORT
+                        )
                         isEditMode = !isEditMode
                     }
-                }else{
+                } else {
                     isEditMode = !isEditMode
-                    Utils.showToast(requireContext(),
-                        getString(R.string.text_not_complete), Toast.LENGTH_SHORT)
+                    Utils.showToast(
+                        requireContext(),
+                        getString(R.string.text_not_complete), Toast.LENGTH_SHORT
+                    )
                 }
             }
 

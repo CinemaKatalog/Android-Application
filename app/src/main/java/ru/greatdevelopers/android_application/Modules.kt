@@ -6,8 +6,14 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.greatdevelopers.android_application.data.dao.*
 import ru.greatdevelopers.android_application.data.db.AppDatabase
+import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.viewmodel.*
 
+val appModule = module {
+    single<User> {
+        User(-1, "", "", "", "user")
+    }
+}
 
 val viewModelModule = module {
     viewModel {
