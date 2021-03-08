@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/menu_nav_graph"
+    app:startDestination="@id/mainFragment">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="ru.greatdevelopers.android_application.ui.mainscreen.fragments.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_filmActivity"
+            app:destination="@id/filmActivity" />
+        <argument
+            android:name="user_id"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_mainFragment_to_editActivity2"
+            app:destination="@id/editActivity2" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ru.greatdevelopers.android_application.ui.mainscreen.fragments.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="ru.greatdevelopers.android_application.ui.mainscreen.fragments.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_filmActivity"
+            app:destination="@id/filmActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="ru.greatdevelopers.android_application.ui.mainscreen.fragments.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_filmActivity"
+            app:destination="@id/filmActivity" />
+
+    </fragment>
+    <activity
+        android:id="@+id/filmActivity"
+        android:name="ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity"
+        android:label="FilmActivity"
+        tools:layout="@layout/activity_film">
+
+    </activity>
+    <activity
+        android:id="@+id/editActivity2"
+        android:name="ru.greatdevelopers.android_application.ui.editscreen.EditActivity"
+        android:label="activity_edit"
+        tools:layout="@layout/activity_edit" />
+</navigation>

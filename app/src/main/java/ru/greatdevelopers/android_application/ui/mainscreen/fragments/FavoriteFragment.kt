@@ -7,23 +7,26 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_favorite.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
+import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAdapter
 import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
 
 class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
-    private val favouriteViewModel by viewModel<FavouriteViewModel>{parametersOf(requireArguments().getInt("user_id"))}
+    private val user: User by inject<User> ()
+    private val favouriteViewModel by viewModel<FavouriteViewModel>{parametersOf(user.id)}
 
-    //private lateinit var recyclerView: RecyclerView
+
     private lateinit var recyclerViewAdapter: BaseItemAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userId = requireArguments().getInt("user_id")
+        //val userId = requireArguments().getInt("user_id")
 
         //recyclerView = view.findViewById(R.id.recycle_view_favorite)
 
@@ -33,7 +36,7 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
                 FilmActivity::class.java
             )
             intent.putExtra("film_id", it)
-            intent.putExtra("user_id", userId)
+            intent.putExtra("user_id", user.id)
             activity?.startActivity(intent)
         }
         recycle_view_favorite.adapter = recyclerViewAdapter

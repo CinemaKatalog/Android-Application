@@ -32,7 +32,28 @@
         android:id="@+id/menuFragment"
         android:name="ru.greatdevelopers.android_application.ui.mainscreen.MenuFragment"
         android:label="MenuFragment"
-        tools:layout="@layout/fragment_menu"></fragment>
+        tools:layout="@layout/fragment_menu">
+
+        <action
+            android:id="@+id/action_menuFragment_to_editActivity"
+            app:destination="@id/editActivity" />
+        <action
+            android:id="@+id/action_menuFragment_to_menu_nav_graph"
+            app:destination="@id/menu_nav_graph" />
+        <action
+            android:id="@+id/action_menuFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <!--<action
+            android:id="@+id/action_menuFragment_to_menu_nav_graph"
+            app:destination="@id/menu_nav_graph" />-->
+    </fragment>
+
+    <activity
+        android:id="@+id/editActivity"
+        android:name="ru.greatdevelopers.android_application.ui.editscreen.EditActivity"
+        android:label="activity_edit"
+        tools:layout="@layout/activity_edit" />
+    <include app:graph="@navigation/menu_nav_graph" />
 
 
 </navigation>

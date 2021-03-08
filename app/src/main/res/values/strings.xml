@@ -53,4 +53,6 @@
     <string name="label_change">Изменить</string>
     <string name="text_question_add_alert">Заполните все поля</string>
     <string name="text_cinema_add_complete">Изменения успешно сохранены</string>
+    <string name="you_are_not_authorized">Вы не авторизованы, войдите для просмотра</string>
+    <string name="not_authorized_btn_enter">Войти</string>
 </resources>

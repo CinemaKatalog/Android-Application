@@ -24,7 +24,6 @@ import ru.greatdevelopers.android_application.viewmodel.MainViewModel
 class MainFragment : Fragment(R.layout.fragment_main){
     private val mainViewModel by viewModel<MainViewModel>()
 
-    //private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: GroupAdapter
     private var filmsGroupList: ArrayList<FilmGroup> = ArrayList()
     private var user: User? = null
@@ -35,7 +34,6 @@ class MainFragment : Fragment(R.layout.fragment_main){
 
         var userId = requireArguments().getInt("user_id")
 
-        //recyclerView = view.findViewById(R.id.recycle_view_tops)
 
         recyclerViewAdapter = GroupAdapter(){
             var intent = Intent(
@@ -80,13 +78,7 @@ class MainFragment : Fragment(R.layout.fragment_main){
             filmsGroupList.clear()
             mainViewModel.initGroupsRequest(){
                 recyclerViewAdapter.setItemList(filmsGroupList)
-                //filmsGroupList.clear()
             }
         }
     }
-
-    private fun createFakeElements() {
-        filmsGroupList.clear()
-    }
-
 }

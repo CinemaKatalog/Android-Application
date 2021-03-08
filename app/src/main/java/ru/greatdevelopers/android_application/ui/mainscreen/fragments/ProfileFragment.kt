@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
@@ -16,8 +17,10 @@ import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
+    private val user: User by inject<User> ()
 
-    private val vm by viewModel<ProfileViewModel> { parametersOf(requireArguments().getInt("user_id")) }
+    private val profileViewModel by viewModel<ProfileViewModel> { parametersOf(user.id) }
+    //private val profileViewModel by viewModel<ProfileViewModel> { parametersOf(0) }
 
     companion object {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
@@ -25,7 +28,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
-    private var user: User? = null
+    //private var user: User? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +49,16 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             "password" to et_password
         )
 
-        vm.user.observe(viewLifecycleOwner, Observer { foundUser ->
+        for ((k, v) in viewFields) {
+            when (k) {
+                "nickname" -> v.text = user.name
+                "user_type" -> v.text = user.userType
+                "name" -> v.text = user.name
+                "email" -> v.text = user.login
+                "password" -> v.text = user.password
+            }
+        }
+        /*profileViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
             for ((k, v) in viewFields) {
                 when (k) {
                     "nickname" -> v.text = foundUser.name
@@ -57,8 +69,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
             user = foundUser
-        })
-        vm.initialRequest()
+        })*/
+        profileViewModel.initialRequest()
 
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
@@ -81,7 +93,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                             userType = user!!.userType
                         )
 
-                        vm.updateUserInfo(updateUser) {
+                        profileViewModel.updateUserInfo(updateUser) {
                             Utils.showToast(
                                 requireContext(),
                                 getString(R.string.text_changes_saved), Toast.LENGTH_SHORT

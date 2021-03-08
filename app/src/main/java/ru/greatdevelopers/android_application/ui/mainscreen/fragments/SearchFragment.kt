@@ -15,21 +15,26 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_search.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.compat.ScopeCompat.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.viewmodel.SearchViewModel
 import ru.greatdevelopers.android_application.data.model.Film
+import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAdapter
 
 
 class SearchFragment : Fragment(){
+    private val user: User by inject<User> ()
+
     private val searchViewModel by viewModel<SearchViewModel>()
 
     private lateinit var recyclerViewAdapter: BaseItemAdapter
     private lateinit var linearLayoutOfSearchView: LinearLayout
     private lateinit var optionsBtn: ImageButton
+    private lateinit var searchView: SearchView
 
 
     override fun onCreateView(
@@ -38,25 +43,30 @@ class SearchFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
-
-        search_view.isSubmitButtonEnabled = false
-        linearLayoutOfSearchView = search_view.getChildAt(0) as LinearLayout
+        searchView = view.findViewById(R.id.search_view)
+        searchView.isSubmitButtonEnabled = false
+        linearLayoutOfSearchView = searchView.getChildAt(0) as LinearLayout
         optionsBtn = inflater.inflate(R.layout.custom_button_search_view, container, false) as ImageButton
         optionsBtn.setImageResource(R.drawable.ic_baseline_tune_24)
         optionsBtn.setOnClickListener {
             showBottomSheetDialog()
         }
         linearLayoutOfSearchView.addView(optionsBtn)
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //recyclerView = view.findViewById(R.id.recycle_view_search)
+        /*search_view.isSubmitButtonEnabled = false
+        linearLayoutOfSearchView = search_view.getChildAt(0) as LinearLayout
+        optionsBtn.setImageResource(R.drawable.ic_baseline_tune_24)
+        optionsBtn.setOnClickListener {
+            showBottomSheetDialog()
+        }
+        linearLayoutOfSearchView.addView(optionsBtn)*/
 
-
-        var userId = requireArguments().getInt("user_id")
+        //var userId = requireArguments().getInt("user_id")
 
         recyclerViewAdapter = BaseItemAdapter(){
             var intent = Intent(
@@ -64,7 +74,7 @@ class SearchFragment : Fragment(){
                 FilmActivity::class.java
             )
             intent.putExtra("film_id", it)
-            intent.putExtra("user_id", userId)
+            intent.putExtra("user_id", user.id)
             activity?.startActivity(intent)
         }
 
@@ -76,15 +86,13 @@ class SearchFragment : Fragment(){
         })
         searchViewModel.initialRequest()
 
-        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                //Log.d(TAG, "onQueryTextSubmit: $query")
                 searchViewModel.searchRequest(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                //Log.d(TAG, "onQueryTextChange: $newText")
                 searchViewModel.searchRequest(newText)
                 return false
             }

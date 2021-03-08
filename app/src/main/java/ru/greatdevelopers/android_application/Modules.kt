@@ -10,7 +10,7 @@ import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.viewmodel.*
 
 val appModule = module {
-    single<User> {
+    single {
         User(-1, "", "", "", "user")
     }
 }
