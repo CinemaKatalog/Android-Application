@@ -20,8 +20,8 @@ val viewModelModule = module {
         SearchViewModel(get())
     }
 
-    viewModel { (userId: Int) ->
-        FavouriteViewModel(get(), userId)
+    viewModel {
+        FavouriteViewModel(get(), get())
     }
 
     viewModel {

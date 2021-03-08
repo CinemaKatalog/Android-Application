@@ -27,7 +27,7 @@ import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAda
 
 
 class SearchFragment : Fragment(){
-    private val user: User by inject<User> ()
+    //private val user: User by inject<User> ()
 
     private val searchViewModel by viewModel<SearchViewModel>()
 
@@ -74,7 +74,7 @@ class SearchFragment : Fragment(){
                 FilmActivity::class.java
             )
             intent.putExtra("film_id", it)
-            intent.putExtra("user_id", user.id)
+            //intent.putExtra("user_id", user.id)
             activity?.startActivity(intent)
         }
 

@@ -18,7 +18,7 @@ import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
 
 class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
     private val user: User by inject<User> ()
-    private val favouriteViewModel by viewModel<FavouriteViewModel>{parametersOf(user.id)}
+    private val favouriteViewModel by viewModel<FavouriteViewModel>()
 
 
     private lateinit var recyclerViewAdapter: BaseItemAdapter
@@ -36,7 +36,7 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
                 FilmActivity::class.java
             )
             intent.putExtra("film_id", it)
-            intent.putExtra("user_id", user.id)
+            //intent.putExtra("user_id", user.id)
             activity?.startActivity(intent)
         }
         recycle_view_favorite.adapter = recyclerViewAdapter
@@ -48,6 +48,4 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
         })
         favouriteViewModel.initialRequest()
     }
-
-
 }

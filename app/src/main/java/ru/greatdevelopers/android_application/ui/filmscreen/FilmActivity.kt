@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_film.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
@@ -26,6 +27,8 @@ import ru.greatdevelopers.android_application.viewmodel.FilmViewModel
 
 
 class FilmActivity: AppCompatActivity() {
+    private val user: User by inject<User> ()
+
     private val filmViewModel by viewModel<FilmViewModel> { parametersOf(intent.extras?.getInt("film_id")) }
 
     private lateinit var recyclerViewAdapter: CinemaItemAdapter
@@ -49,7 +52,7 @@ class FilmActivity: AppCompatActivity() {
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
 
-        var userId = intent.extras?.getInt("user_id")
+        //var userId = intent.extras?.getInt("user_id")
 
         viewFields = mapOf(
             "description" to tv_film_description_body,
@@ -96,15 +99,15 @@ class FilmActivity: AppCompatActivity() {
                 if (isFavourite){
                     filmViewModel.deleteFavourite(foundFavour)
                 }else{
-                    filmViewModel.insertFavourite(Favourite(userId!!, film!!.id)){
-                        filmViewModel.favouriteRequest(userId)
+                    filmViewModel.insertFavourite(Favourite(user.id, film!!.id)){
+                        filmViewModel.favouriteRequest(user.id)
                     }
                 }
                 isFavourite = !isFavourite
                 showCurrentMode(isFavourite)
             }
         })
-        filmViewModel.favouriteRequest(userId!!)
+        filmViewModel.favouriteRequest(user.id)
         filmViewModel.cinema.observe(this, Observer {
             recyclerViewAdapter.setItemList(it)
         })
@@ -114,7 +117,7 @@ class FilmActivity: AppCompatActivity() {
         filmViewModel.genre.observe(this, Observer {
             viewFields["genre"]?.text = it.name
         })
-        filmViewModel.initialRequest(userId){
+        filmViewModel.initialRequest(user.id){
             user: User? ->
             if (user?.userType == "admin"){
                 btn_edit_film.visibility = View.VISIBLE

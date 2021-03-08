@@ -16,9 +16,9 @@ class MainViewModel(
     private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
-    private val loadUser = MutableLiveData<User>()
+    /*private val loadUser = MutableLiveData<User>()
     val user: LiveData<User>
-        get() = loadUser
+        get() = loadUser*/
 
     private val loadFilms = MutableLiveData<List<FilmListItem>>()
     val films: LiveData<List<FilmListItem>>
@@ -36,11 +36,11 @@ class MainViewModel(
     val filmsGenre: LiveData<List<FilmListItem>>
         get() = loadFilmsGenre
 
-    fun initialRequest(user_id: Int, onFoundUser: (user: User?) -> Unit) {
+    fun initialRequest(/*user_id: Int,*/ onFoundUser: () -> Unit) {
         viewModelScope.launch {
-            val tmpUser = profileRepository.getUserById(user_id)
-            loadUser.postValue(tmpUser)
-            onFoundUser(tmpUser)
+            /*val tmpUser = profileRepository.getUserById(user_id)
+            loadUser.postValue(tmpUser)*/
+            onFoundUser()
             loadFilms.postValue(filmRepository.getFilmsWithExtra())
         }
     }
