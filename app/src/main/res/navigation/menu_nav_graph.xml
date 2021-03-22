@@ -26,6 +26,9 @@
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile">
 
+        <action
+            android:id="@+id/action_profileFragment_to_unregisteredFragment"
+            app:destination="@id/unregisteredFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -44,6 +47,9 @@
         <action
             android:id="@+id/action_favoriteFragment_to_filmActivity"
             app:destination="@id/filmActivity" />
+        <action
+            android:id="@+id/action_favoriteFragment_to_unregisteredFragment"
+            app:destination="@id/unregisteredFragment" />
 
     </fragment>
     <activity
@@ -58,4 +64,9 @@
         android:name="ru.greatdevelopers.android_application.ui.editscreen.EditActivity"
         android:label="activity_edit"
         tools:layout="@layout/activity_edit" />
+    <fragment
+        android:id="@+id/unregisteredFragment"
+        android:name="ru.greatdevelopers.android_application.ui.mainscreen.fragments.UnregisteredFragment"
+        android:label="UnregisteredFragment"
+        tools:layout="@layout/fragment_not_authorized"/>
 </navigation>

@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/not_authorized_btn"
+        android:id="@+id/btn_not_authorized"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_maximum_72"
@@ -22,11 +22,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/not_authorized_tv"
+        android:id="@+id/tv_not_authorized"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/you_are_not_authorized"
-        app:layout_constraintBottom_toTopOf="@+id/not_authorized_btn"
+        app:layout_constraintBottom_toTopOf="@+id/btn_not_authorized"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

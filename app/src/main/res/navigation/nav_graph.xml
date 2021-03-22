@@ -6,29 +6,6 @@
     app:startDestination="@id/menuFragment">
 
     <fragment
-        android:id="@+id/signInFragment"
-        android:name="ru.greatdevelopers.android_application.ui.signscreen.SignInFragment"
-        android:label="SignInFragment"
-        tools:layout="@layout/fragment_sign_in">
-        <action
-            android:id="@+id/action_signInFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_signInFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/signUpFragment"
-        android:name="ru.greatdevelopers.android_application.ui.signscreen.SignUpFragment"
-        android:label="SignUpFragment"
-        tools:layout="@layout/fragment_sign_up">
-        <action
-            android:id="@+id/action_signUpFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
-    </fragment>
-
-    <fragment
         android:id="@+id/menuFragment"
         android:name="ru.greatdevelopers.android_application.ui.mainscreen.MenuFragment"
         android:label="MenuFragment"
@@ -40,9 +17,6 @@
         <action
             android:id="@+id/action_menuFragment_to_menu_nav_graph"
             app:destination="@id/menu_nav_graph" />
-        <action
-            android:id="@+id/action_menuFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
         <!--<action
             android:id="@+id/action_menuFragment_to_menu_nav_graph"
             app:destination="@id/menu_nav_graph" />-->

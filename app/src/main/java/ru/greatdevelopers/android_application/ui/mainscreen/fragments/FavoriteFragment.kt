@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import org.koin.android.ext.android.inject
@@ -14,6 +15,7 @@ import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAdapter
+import ru.greatdevelopers.android_application.ui.mainscreen.fragments.ProfileFragmentDirections.actionProfileFragmentToUnregisteredFragment
 import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
 
 class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
@@ -25,7 +27,10 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        if(user.id == -1){
+            val action = FavoriteFragmentDirections.actionFavoriteFragmentToUnregisteredFragment()
+            view.findNavController().navigate(action)
+        }
         //val userId = requireArguments().getInt("user_id")
 
         //recyclerView = view.findViewById(R.id.recycle_view_favorite)
