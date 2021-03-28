@@ -1,4 +1,4 @@
-package ru.greatdevelopers.android_application
+package ru.greatdevelopers.android_application.di
 
 import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
@@ -6,13 +6,13 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.greatdevelopers.android_application.data.dao.*
 import ru.greatdevelopers.android_application.data.db.AppDatabase
-import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.repo.CinemaRepository
+import ru.greatdevelopers.android_application.data.repo.FilmRepository
+import ru.greatdevelopers.android_application.data.repo.ProfileRepository
+import ru.greatdevelopers.android_application.data.repo.UserRepository
 import ru.greatdevelopers.android_application.viewmodel.*
 
 val appModule = module {
-    single {
-        User(-1, "", "", "", "user")
-    }
 }
 
 val viewModelModule = module {
@@ -25,26 +25,26 @@ val viewModelModule = module {
     }
 
     viewModel {
-        SignInViewModel(get())
+        SignInViewModel(get(), get())
     }
 
     viewModel {
-        SignUpViewModel(get())
+        SignUpViewModel(get(), get())
     }
 
     viewModel {
-        MainViewModel(get(), get())
+        MainViewModel(get(), get(), get())
     }
 
-    viewModel { (userId: Int) ->
-        ProfileViewModel(get(), userId)
+    viewModel {
+        ProfileViewModel(get(), get())
     }
 
-    viewModel {(filmId: Int?) ->
+    viewModel { (filmId: Int?) ->
         EditViewModel(get(), get(), filmId)
     }
 
-    viewModel {(filmId: Int) ->
+    viewModel { (filmId: Int) ->
         FilmViewModel(get(), get(), get(), filmId)
     }
 }
@@ -101,5 +101,7 @@ val repositoryModule = module {
     single { profileRepository(get()) }
 
     single { cinemaRepository(get(), get()) }
+
+    single { UserRepository(androidContext()) }
 }
 

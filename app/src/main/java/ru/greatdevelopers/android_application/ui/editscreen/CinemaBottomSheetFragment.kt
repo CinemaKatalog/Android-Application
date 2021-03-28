@@ -9,17 +9,12 @@ import android.widget.*
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_edit.*
-import kotlinx.android.synthetic.main.alert_cinema_add.*
 import kotlinx.android.synthetic.main.alert_cinema_add.view.*
 import kotlinx.android.synthetic.main.bottom_sheet_cinema_add.*
-import kotlinx.android.synthetic.main.bottom_sheet_cinema_add.et_cinema_email
-import kotlinx.android.synthetic.main.bottom_sheet_cinema_add.et_cinema_name
-import kotlinx.android.synthetic.main.bottom_sheet_cinema_add.et_cinema_url
 import ru.greatdevelopers.android_application.R
-import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.data.model.Cinema
 import ru.greatdevelopers.android_application.data.model.FilmCinema
+import ru.greatdevelopers.android_application.utils.Utils
 import ru.greatdevelopers.android_application.viewmodel.EditViewModel
 
 class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :

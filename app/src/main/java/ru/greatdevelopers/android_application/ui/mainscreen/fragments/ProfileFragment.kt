@@ -1,49 +1,61 @@
 package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.navigation.findNavController
+import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_profile.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
-import ru.greatdevelopers.android_application.Utils.Utils
-import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.ui.mainscreen.MenuFragment
+import ru.greatdevelopers.android_application.ui.mainscreen.MenuFragmentDirections
+import ru.greatdevelopers.android_application.utils.Utils
 import ru.greatdevelopers.android_application.viewmodel.ProfileViewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
-    private val user: User by inject<User> ()
-
-    private val profileViewModel by viewModel<ProfileViewModel> { parametersOf(user.id) }
-    //private val profileViewModel by viewModel<ProfileViewModel> { parametersOf(0) }
 
     companion object {
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
     }
 
+    private val profileViewModel by viewModel<ProfileViewModel>()
+
     var isEditMode = false
     lateinit var viewFields: Map<String, TextView>
-    //private var user: User? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(user.id == -1){
-            val action = ProfileFragmentDirections.actionProfileFragmentToUnregisteredFragment()
-            view.findNavController().navigate(action)
-        }
-        btn_exit.setOnClickListener {
-            /*var intentExit = Intent(activity, SignActivity::class.java)
-            startActivity(intentExit)*/
-        }
         initViews(savedInstanceState)
+        initVM()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        profileViewModel.loadUser()
+    }
+
+    private fun initVM() {
+        profileViewModel.user.observe(viewLifecycleOwner) { foundUser ->
+            if (foundUser == null) {
+                val action = ProfileFragmentDirections.actionProfileFragmentToUnregisteredFragment()
+                findNavController().navigate(action)
+                return@observe
+            }
+
+            for ((k, v) in viewFields) {
+                when (k) {
+                    "nickname" -> v.text = foundUser.name
+                    "user_type" -> v.text = foundUser.userType
+                    "name" -> v.text = foundUser.name
+                    "email" -> v.text = foundUser.login
+                    "password" -> v.text = foundUser.password
+                }
+            }
+        }
     }
 
     private fun initViews(savedInstanceState: Bundle?) {
@@ -54,34 +66,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             "email" to et_email,
             "password" to et_password
         )
-
-        for ((k, v) in viewFields) {
-            when (k) {
-                "nickname" -> v.text = user.name
-                "user_type" -> v.text = user.userType
-                "name" -> v.text = user.name
-                "email" -> v.text = user.login
-                "password" -> v.text = user.password
-            }
+        btn_exit.setOnClickListener {
+            profileViewModel.signOut()
+            // не нашел способа как переходить на другой экран из дочернего фрагмента, кроме этого
+            (requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
+                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())
         }
-        /*profileViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
-            for ((k, v) in viewFields) {
-                when (k) {
-                    "nickname" -> v.text = foundUser.name
-                    "user_type" -> v.text = foundUser.userType
-                    "name" -> v.text = foundUser.name
-                    "email" -> v.text = foundUser.login
-                    "password" -> v.text = foundUser.password
-                }
-            }
-            user = foundUser
-        })*/
-        profileViewModel.initialRequest()
-
-        isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
-        showCurrentMode(isEditMode)
-
-        btn_edit_profile.setOnClickListener(View.OnClickListener {
+        btn_edit_profile.setOnClickListener {
 
             if (isEditMode) {
                 if (viewFields["name"]?.text.toString().isNotEmpty() &&
@@ -91,15 +82,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     if (viewFields["password"]?.text.toString()
                             .matches(Regex(Utils.PASSWORD_PATTERN))
                     ) {
-                        var updateUser = User(
-                            user!!.id,
+
+                        profileViewModel.updateUserInfo(
                             name = viewFields["name"]?.text.toString(),
                             login = viewFields["email"]?.text.toString(),
-                            password = viewFields["password"]?.text.toString(),
-                            userType = user!!.userType
-                        )
-
-                        profileViewModel.updateUserInfo(updateUser) {
+                            password = viewFields["password"]?.text.toString()
+                        ) {
                             Utils.showToast(
                                 requireContext(),
                                 getString(R.string.text_changes_saved), Toast.LENGTH_SHORT
@@ -124,7 +112,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
             isEditMode = !isEditMode
             showCurrentMode(isEditMode)
-        })
+        }
+        isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
+        showCurrentMode(isEditMode)
     }
 
     private fun showCurrentMode(isEdit: Boolean) {
@@ -151,7 +141,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
         outState.putBoolean(IS_EDIT_MODE, isEditMode)
     }
 }

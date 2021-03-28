@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_menuFragment_to_menu_nav_graph"
             app:destination="@id/menu_nav_graph" />
+        <action
+            android:id="@+id/action_menuFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
         <!--<action
             android:id="@+id/action_menuFragment_to_menu_nav_graph"
             app:destination="@id/menu_nav_graph" />-->
@@ -27,7 +30,19 @@
         android:name="ru.greatdevelopers.android_application.ui.editscreen.EditActivity"
         android:label="activity_edit"
         tools:layout="@layout/activity_edit" />
+
     <include app:graph="@navigation/menu_nav_graph" />
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="ru.greatdevelopers.android_application.ui.signscreen.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/action_signInFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
 
 
 </navigation>

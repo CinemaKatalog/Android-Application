@@ -3,6 +3,7 @@
     package="ru.greatdevelopers.android_application">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -19,12 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.editscreen.EditActivity" />
-<!--
-        <activity android:name=".ui.signscreen.SignActivity"/>
-        <activity android:name=".ui.mainscreen.MenuActivity" />
--->
         <activity android:name=".ui.filmscreen.FilmActivity" />
 
     </application>

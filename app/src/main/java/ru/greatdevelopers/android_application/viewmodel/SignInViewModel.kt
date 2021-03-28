@@ -5,23 +5,34 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.greatdevelopers.android_application.ProfileRepository
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.repo.ProfileRepository
+import ru.greatdevelopers.android_application.data.repo.UserRepository
 
-class SignInViewModel(private val repository: ProfileRepository):ViewModel() {
+class SignInViewModel(
+    private val profileRepo: ProfileRepository,
+    private val userRepo: UserRepository
+) : ViewModel() {
 
     private val loadUser = MutableLiveData<User>()
     val user: LiveData<User>
         get() = loadUser
 
-    fun loginRequest(login: String, onFoundUser: (user: User)-> Unit){
+    fun loginRequest(login: String, onFoundUser: (user: User) -> Unit) {
         viewModelScope.launch {
-            val tmpUser = repository.getUserByLogin(login)
-            if (tmpUser != null){
+            val tmpUser = userRepo.getUserByLogin(login)
+            if (tmpUser != null) {
                 loadUser.postValue(tmpUser)
 
                 onFoundUser(tmpUser)
             }
+        }
+    }
+
+    fun saveUser(user: User) {
+        viewModelScope.launch {
+            userRepo.writeCurrentUserIdToShPref(user.id)
+            userRepo.writeUserToInternal(user)
         }
     }
 }

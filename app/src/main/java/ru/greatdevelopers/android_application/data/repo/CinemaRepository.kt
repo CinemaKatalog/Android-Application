@@ -1,4 +1,4 @@
-package ru.greatdevelopers.android_application
+package ru.greatdevelopers.android_application.data.repo
 
 import ru.greatdevelopers.android_application.data.dao.CinemaDao
 import ru.greatdevelopers.android_application.data.dao.FilmCinemaDao

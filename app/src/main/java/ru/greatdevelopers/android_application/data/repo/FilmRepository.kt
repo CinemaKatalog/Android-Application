@@ -1,8 +1,13 @@
-package ru.greatdevelopers.android_application
+package ru.greatdevelopers.android_application.data.repo
 
-import kotlinx.coroutines.flow.Flow
-import ru.greatdevelopers.android_application.data.dao.*
-import ru.greatdevelopers.android_application.data.model.*
+import ru.greatdevelopers.android_application.data.dao.CountryDao
+import ru.greatdevelopers.android_application.data.dao.FavouriteDao
+import ru.greatdevelopers.android_application.data.dao.FilmDao
+import ru.greatdevelopers.android_application.data.dao.GenreDao
+import ru.greatdevelopers.android_application.data.model.Country
+import ru.greatdevelopers.android_application.data.model.Favourite
+import ru.greatdevelopers.android_application.data.model.Film
+import ru.greatdevelopers.android_application.data.model.Genre
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
 class FilmRepository(private val filmDao: FilmDao, private val favouriteDao: FavouriteDao, private val genreDao: GenreDao, private val countryDao: CountryDao) {

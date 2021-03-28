@@ -1,4 +1,4 @@
-package ru.greatdevelopers.android_application.Utils
+package ru.greatdevelopers.android_application.utils
 
 import android.content.Context
 import android.graphics.PorterDuff

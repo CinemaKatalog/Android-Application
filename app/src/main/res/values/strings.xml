@@ -10,6 +10,7 @@
     <string name="profile_et_email">e-mail</string>
     <string name="profile_et_password">password</string>
     <string name="profile_btn_exit">Выйти</string>
+    <string name="profile_btn_sign">Авторизоваться</string>
     <string name="favourite_toolbar_title">Понравивилось</string>
     <string name="options_title">Параметры</string>
     <string name="title_activity_sign">SignActivity</string>

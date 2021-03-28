@@ -5,26 +5,49 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.greatdevelopers.android_application.ProfileRepository
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.repo.ProfileRepository
+import ru.greatdevelopers.android_application.data.repo.UserRepository
 
-class ProfileViewModel(private val repository: ProfileRepository, private val userId: Int) : ViewModel() {
-    private val loadUser = MutableLiveData<User>()
-    val user: LiveData<User>
-        get() = loadUser
+class ProfileViewModel(
+    private val repository: ProfileRepository,
+    private val userRepo: UserRepository
+) : ViewModel() {
 
-    fun initialRequest() {
+    private val userLiveData = MutableLiveData<User?>()
+    val user: LiveData<User?>
+        get() = userLiveData
+
+
+    fun updateUserInfo(name: String, login: String, password: String, onUpdated: () -> Unit) {
         viewModelScope.launch {
-            val tmpUser = repository.getUserById(userId)
-            loadUser.postValue(tmpUser)
+            val userEdited = User(
+                user.value!!.id,
+                name, login, password,
+                user.value!!.userType
+            )
+            repository.updateUser(userEdited)
+            userRepo.writeUserToInternal(userEdited)
+            userLiveData.postValue(userEdited)
+            onUpdated()
         }
     }
 
-    fun updateUserInfo(user: User, onInsert: () -> Unit) {
+    fun signOut() {
         viewModelScope.launch {
-            repository.updateUser(user)
-            initialRequest()
-            onInsert()
+            userRepo.writeCurrentUserIdToShPref(-1)
+            userRepo.writeUserToInternal(null)
+        }
+    }
+
+    fun loadUser() {
+        viewModelScope.launch {
+            val id = userRepo.getCurrentUserIdfromShPref()
+            if (id == -1) {
+                userLiveData.postValue(null)
+            } else {
+                userLiveData.postValue(userRepo.getUserById(id))
+            }
         }
     }
 }

@@ -5,20 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.greatdevelopers.android_application.FilmRepository
-import ru.greatdevelopers.android_application.ProfileRepository
-import ru.greatdevelopers.android_application.data.model.Film
-import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.repo.FilmRepository
+import ru.greatdevelopers.android_application.data.repo.ProfileRepository
+import ru.greatdevelopers.android_application.data.repo.UserRepository
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
 class MainViewModel(
     private val filmRepository: FilmRepository,
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
+    private val userRepo: UserRepository
 ) : ViewModel() {
-
-    /*private val loadUser = MutableLiveData<User>()
-    val user: LiveData<User>
-        get() = loadUser*/
 
     private val loadFilms = MutableLiveData<List<FilmListItem>>()
     val films: LiveData<List<FilmListItem>>
@@ -36,10 +32,13 @@ class MainViewModel(
     val filmsGenre: LiveData<List<FilmListItem>>
         get() = loadFilmsGenre
 
-    fun initialRequest(/*user_id: Int,*/ onFoundUser: () -> Unit) {
+    private val loadIsAdmin = MutableLiveData<Boolean>()
+    val isAdmin: LiveData<Boolean>
+        get() = loadIsAdmin
+
+    fun initialRequest(userId: Int, onFoundUser: () -> Unit) {
         viewModelScope.launch {
-            /*val tmpUser = profileRepository.getUserById(user_id)
-            loadUser.postValue(tmpUser)*/
+            loadIsAdmin.postValue(userRepo.getUserById(userId)?.userType == "admin")
             onFoundUser()
             loadFilms.postValue(filmRepository.getFilmsWithExtra())
         }

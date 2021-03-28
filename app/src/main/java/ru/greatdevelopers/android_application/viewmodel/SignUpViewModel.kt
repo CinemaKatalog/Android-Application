@@ -5,10 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.greatdevelopers.android_application.ProfileRepository
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.repo.ProfileRepository
+import ru.greatdevelopers.android_application.data.repo.UserRepository
 
-class SignUpViewModel(private val repository: ProfileRepository):ViewModel() {
+class SignUpViewModel(
+    private val repository: ProfileRepository,
+    private val userRepo: UserRepository
+) : ViewModel() {
 
     fun insertUser(user: User) = viewModelScope.launch() {
         repository.insertUser(user)
@@ -18,13 +22,13 @@ class SignUpViewModel(private val repository: ProfileRepository):ViewModel() {
     val user: LiveData<User>
         get() = loadUser
 
-    fun loginRequest(login: String, onFoundUser: (user: User?)-> Unit){
+    fun loginRequest(login: String, onFoundUser: (user: User?) -> Unit) {
         viewModelScope.launch {
             val tmpUser = repository.getUserByLogin(login)
 
             loadUser.postValue(tmpUser)
             onFoundUser(tmpUser)
-            if(tmpUser == null){
+            if (tmpUser == null) {
 
             }
         }

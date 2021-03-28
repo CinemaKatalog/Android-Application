@@ -1,7 +1,6 @@
 package ru.greatdevelopers.android_application.data.dao
 
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 import ru.greatdevelopers.android_application.data.model.User
 
 @Dao

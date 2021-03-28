@@ -2,28 +2,19 @@ package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 
 import android.content.res.Resources
 import android.os.Bundle
-import android.provider.ContactsContract.ProfileSyncState.set
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.core.view.get
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.slider.RangeSlider
-import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.bottom_sheet_search_options.*
 import ru.greatdevelopers.android_application.R
-import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.data.model.Country
 import ru.greatdevelopers.android_application.data.model.Genre
-import ru.greatdevelopers.android_application.viewmodel.EditViewModel
 import ru.greatdevelopers.android_application.viewmodel.SearchViewModel
-import java.lang.reflect.Array.set
-import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 

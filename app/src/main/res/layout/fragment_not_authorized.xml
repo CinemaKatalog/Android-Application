@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/btn_not_authorized"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_maximum_72"
-        android:layout_marginTop="@dimen/spacing_maximum_72"
-        android:layout_marginEnd="@dimen/spacing_maximum_72"
-        android:backgroundTint="@color/color_secondary"
-        android:text="@string/not_authorized_btn_enter"
-        android:textColor="@color/color_text_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_not_authorized"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/you_are_not_authorized"
-        app:layout_constraintBottom_toTopOf="@+id/btn_not_authorized"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_not_authorized"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_maximum_72"
+        android:layout_marginEnd="@dimen/spacing_maximum_72"
+        android:layout_marginTop="@dimen/spacing_huge_32"
+        android:backgroundTint="@color/color_secondary"
+        android:text="@string/not_authorized_btn_enter"
+        android:textColor="@color/color_text_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_not_authorized" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

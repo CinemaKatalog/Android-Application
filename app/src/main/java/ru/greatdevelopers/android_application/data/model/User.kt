@@ -6,11 +6,19 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class User(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "user_id") val id: Int = 0,
-    @ColumnInfo(name = "user_name") var name: String,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "user_id")
+    val id: Int = 0,
+    @ColumnInfo(name = "user_name")
+    var name: String,
     var login: String,
     var password: String,
-    @ColumnInfo(name = "user_type") var userType: String) {
+    @ColumnInfo(name = "user_type")
+    var userType: String
+) {
 
+    companion object {
+        const val SP_ID_KEY = "userId"
+    }
 
 }

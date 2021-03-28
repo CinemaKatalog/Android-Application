@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
-import ru.greatdevelopers.android_application.Utils.Utils
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.utils.Utils
 import ru.greatdevelopers.android_application.viewmodel.SignInViewModel
 
 class SignInFragment : Fragment(R.layout.fragment_sign_in) {
@@ -36,6 +36,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
                 viewModel.loginRequest(login) { user: User ->
                     if (user.password == password) {
+                        viewModel.saveUser(user)
                         goToMenuActivity(user)
                     } else {
                         Utils.showToast(
@@ -60,14 +61,12 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun goToMenuActivity(user: User) {
-        /*findNavController().navigate(
-            SignInFragmentDirections.actionSignInFragmentToMenuАкфпьуте(
-                user.id
-            )
-        )*/
+        findNavController().navigate(
+            SignInFragmentDirections.actionSignInFragmentToMenuFragment()
+        )
     }
 
     private fun goToSignUpFragment() {
-        findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
+        //findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
     }
 }

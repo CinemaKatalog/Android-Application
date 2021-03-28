@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.greatdevelopers.android_application.CinemaRepository
-import ru.greatdevelopers.android_application.FilmRepository
-import ru.greatdevelopers.android_application.ProfileRepository
 import ru.greatdevelopers.android_application.data.model.*
+import ru.greatdevelopers.android_application.data.repo.CinemaRepository
+import ru.greatdevelopers.android_application.data.repo.FilmRepository
+import ru.greatdevelopers.android_application.data.repo.ProfileRepository
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 
 class FilmViewModel(
