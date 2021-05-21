@@ -26,11 +26,22 @@ class EditViewModel(
     val film: LiveData<Film>
         get() = loadFilmInfo
 
+    private val loadCinemaListInfo = MutableLiveData<List<CinemaListItem>>()
+    val cinemaList: LiveData<List<CinemaListItem>>
+        get() = loadCinemaListInfo
+
+    private val loadCinemaInfo = MutableLiveData<List<Cinema>>()
+    val cinema: LiveData<List<Cinema>>
+        get() = loadCinemaInfo
+
+    private val loadFilmCinemaInfo = MutableLiveData<FilmCinema>()
+    val filmCinema: LiveData<FilmCinema>
+        get() = loadFilmCinemaInfo
 
     fun initialRequest() {
         viewModelScope.launch {
 
-            loadCinemaListInfo.postValue(filmId?.let { cinemaRepository.getFilmCinemaWithName(it) })
+            loadCinemaListInfo.postValue(filmId?.let { cinemaRepository.getFilmCinemaByFilm(it) })
             loadFilmInfo.postValue(filmId?.let { filmRepository.getFilmById(it) })
 
         }
@@ -122,17 +133,7 @@ class EditViewModel(
     }
 
 
-    private val loadCinemaListInfo = MutableLiveData<List<CinemaListItem>>()
-    val cinemaList: LiveData<List<CinemaListItem>>
-        get() = loadCinemaListInfo
 
-    private val loadCinemaInfo = MutableLiveData<List<Cinema>>()
-    val cinema: LiveData<List<Cinema>>
-        get() = loadCinemaInfo
-
-    private val loadFilmCinemaInfo = MutableLiveData<FilmCinema>()
-    val filmCinema: LiveData<FilmCinema>
-        get() = loadFilmCinemaInfo
 
     fun initialRequestCinemas(siteUrl: String? = null) {
         viewModelScope.launch {

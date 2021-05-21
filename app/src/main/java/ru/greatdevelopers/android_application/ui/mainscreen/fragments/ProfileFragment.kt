@@ -33,17 +33,29 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         initVM()
     }
 
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
+        profileViewModel.loadUser()
+    }*/
+
+    override fun onResume() {
+        super.onResume()
         profileViewModel.loadUser()
     }
 
     private fun initVM() {
         profileViewModel.user.observe(viewLifecycleOwner) { foundUser ->
             if (foundUser == null) {
-                val action = ProfileFragmentDirections.actionProfileFragmentToUnregisteredFragment()
-                findNavController().navigate(action)
+
+                group_signed.visibility = View.GONE
+                group_unsigned.visibility = View.VISIBLE
+
+                /*val action = ProfileFragmentDirections.actionProfileFragmentToUnregisteredFragment()
+                findNavController().navigate(action)*/
                 return@observe
+            }else{
+                group_unsigned.visibility =View.GONE
+                group_signed.visibility = View.VISIBLE
             }
 
             for ((k, v) in viewFields) {
@@ -66,11 +78,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             "email" to et_email,
             "password" to et_password
         )
+        btn_not_authorized_profile.setOnClickListener {
+            /*findNavController().navigate(R.id.signInFragment)*/
+            (requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
+                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())
+        }
         btn_exit.setOnClickListener {
             profileViewModel.signOut()
             // не нашел способа как переходить на другой экран из дочернего фрагмента, кроме этого
-            (requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
-                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())
+            /*(requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
+                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())*/
+            //должно работать так, но не работает (из дочернего графа можно перейти в любую точку родительского, из родительского только в дочерний)
+            /*findNavController().navigate(R.id.sign_nav_graph)*/
+
         }
         btn_edit_profile.setOnClickListener {
 

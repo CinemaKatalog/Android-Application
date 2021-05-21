@@ -48,7 +48,7 @@ class FilmViewModel(
             val tmpFilm = filmId.let { filmRepository.getFilmById(it) }
             loadFilmInfo.postValue(tmpFilm)
             //loadFavourite.postValue(filmRepository.getFavouriteById(filmId, user_id))
-            loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaWithName(filmId))
+            loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaByFilm(filmId))
             loadGenreInfo.postValue(tmpFilm?.let { filmRepository.getGenreById(it.genre) })
             loadCountryInfo.postValue(tmpFilm?.let { filmRepository.getCountryById(it.country) })
             //onFoundUser

@@ -61,9 +61,9 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun goToMenuActivity(user: User) {
-        findNavController().navigate(
+        /*findNavController().navigate(
             SignInFragmentDirections.actionSignInFragmentToMenuFragment()
-        )
+        )*/
     }
 
     private fun goToSignUpFragment() {

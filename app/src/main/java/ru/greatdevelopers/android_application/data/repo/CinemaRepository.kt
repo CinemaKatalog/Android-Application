@@ -27,7 +27,7 @@ class CinemaRepository(private val filmCinemaDao: FilmCinemaDao, private val cin
         return cinemaDao.getAllCinema()
     }
 
-    suspend fun getFilmCinemaWithName(filmId: Int): List<CinemaListItem>{
+    suspend fun getFilmCinemaByFilm(filmId: Int): List<CinemaListItem>{
         return filmCinemaDao.getFilmCinemaWithName(filmId)
     }
 

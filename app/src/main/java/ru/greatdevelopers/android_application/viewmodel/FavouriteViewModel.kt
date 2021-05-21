@@ -7,13 +7,23 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.data.repo.FilmRepository
+import ru.greatdevelopers.android_application.data.repo.UserRepository
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
-class FavouriteViewModel (private val repository: FilmRepository, private val user: User): ViewModel() {
+class FavouriteViewModel (private val repository: FilmRepository, private val userRepo: UserRepository): ViewModel() {
 
-    fun initialRequest(){
+    private val userLiveData = MutableLiveData<User?>()
+    val user: LiveData<User?>
+        get() = userLiveData
+
+    fun loadUser() {
         viewModelScope.launch {
-            loadFavourites.postValue(repository.getFavouriteFilmsWithExtra(user.id))
+            val id = userRepo.getCurrentUserIdfromShPref()
+            if (id == -1) {
+                userLiveData.postValue(null)
+            } else {
+                userLiveData.postValue(userRepo.getUserById(id))
+            }
         }
     }
 
@@ -21,4 +31,9 @@ class FavouriteViewModel (private val repository: FilmRepository, private val us
     val favoriteFilms: LiveData<List<FilmListItem>>
         get() = loadFavourites
 
+    fun initialRequest(){
+        viewModelScope.launch {
+            loadFavourites.postValue(repository.getFavouriteFilmsWithExtra(userRepo.getCurrentUserIdfromShPref()))
+        }
+    }
 }

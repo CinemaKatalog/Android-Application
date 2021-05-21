@@ -14,8 +14,8 @@ class UnregisteredFragment: Fragment(R.layout.fragment_not_authorized) {
         super.onViewCreated(view, savedInstanceState)
         btn_not_authorized.setOnClickListener {
             // не нашел способа как переходить на другой экран из дочернего фрагмента, кроме этого
-            (requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
-                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())
+            /*(requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
+                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())*/
         }
     }
 }

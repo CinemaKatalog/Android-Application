@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_menuFragment_to_menu_nav_graph"
             app:destination="@id/menu_nav_graph" />
+        <!--<action
+            android:id="@+id/action_menuFragment_to_sign_nav_graph"
+            app:destination="@id/sign_nav_graph" />-->
         <action
             android:id="@+id/action_menuFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
@@ -32,6 +35,7 @@
         tools:layout="@layout/activity_edit" />
 
     <include app:graph="@navigation/menu_nav_graph" />
+    <!--<include app:graph="@navigation/sign_nav_graph" />-->
 
     <fragment
         android:id="@+id/signInFragment"

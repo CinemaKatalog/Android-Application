@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.mainscreen.fragments.FavoriteFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.mainscreen.fragments.FavoriteFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/favourite_app_bar"
+        style="Widget.MaterialComponents.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="Widget.MaterialComponents.Toolbar"
+        android:background="@color/color_primary"
         android:fitsSystemWindows="true"
-        android:background="@color/color_primary">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/favourite_toolbar"
             android:layout_width="match_parent"
@@ -23,22 +25,53 @@
             android:minHeight="?attr/actionBarSize"
             app:title="@string/favourite_toolbar_title"
             app:titleMarginStart="@dimen/spacing_huge_32"
-            app:titleTextColor="@color/color_text_dark"
-            app:titleTextAppearance="?attr/textAppearanceHeadline6">
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:titleTextAppearance="?attr/textAppearanceHeadline6"
+            app:titleTextColor="@color/color_text_dark"></com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle_view_favorite"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        android:layout_gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favourite_app_bar"
         app:spanCount="3"
         tools:listitem="@layout/item_card_view" />
 
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_not_authorized_favor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/you_are_not_authorized"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_not_authorized_favor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_maximum_72"
+        android:layout_marginTop="@dimen/spacing_huge_32"
+        android:layout_marginEnd="@dimen/spacing_maximum_72"
+        android:backgroundTint="@color/color_secondary"
+        android:text="@string/not_authorized_btn_enter"
+        android:textColor="@color/color_text_light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_not_authorized_favor" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_unsignet_favor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_not_authorized_favor,btn_not_authorized_favor" />
+</androidx.constraintlayout.widget.ConstraintLayout>
