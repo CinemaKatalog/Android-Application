@@ -1,23 +1,12 @@
 package ru.greatdevelopers.android_application.ui.mainscreen
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.fragment_menu.*
 import ru.greatdevelopers.android_application.R
-import ru.greatdevelopers.android_application.ui.editscreen.EditActivity
-import ru.greatdevelopers.android_application.ui.mainscreen.fragments.FavoriteFragment
-import ru.greatdevelopers.android_application.ui.mainscreen.fragments.MainFragment
-import ru.greatdevelopers.android_application.ui.mainscreen.fragments.ProfileFragment
-import ru.greatdevelopers.android_application.ui.mainscreen.fragments.SearchFragment
 
 class MenuFragment : Fragment(R.layout.fragment_menu) {
 

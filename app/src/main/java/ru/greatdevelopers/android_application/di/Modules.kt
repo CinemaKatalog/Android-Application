@@ -45,7 +45,7 @@ val viewModelModule = module {
     }
 
     viewModel { (filmId: Int) ->
-        FilmViewModel(get(), get(), get(), filmId)
+        FilmViewModel(get(), get(), get(), get(), filmId)
     }
 }
 

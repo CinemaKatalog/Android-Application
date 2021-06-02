@@ -10,14 +10,14 @@
         android:label="MainFragment"
         tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_mainFragment_to_filmActivity"
-            app:destination="@id/filmActivity" />
+            android:id="@+id/action_mainFragment_to_filmFragment"
+            app:destination="@id/filmFragment" />
         <argument
             android:name="user_id"
             android:defaultValue="0" />
         <action
-            android:id="@+id/action_mainFragment_to_editActivity2"
-            app:destination="@id/editActivity2" />
+            android:id="@+id/action_mainFragment_to_editFragment"
+            app:destination="@id/editFragment" />
 
     </fragment>
     <fragment
@@ -33,31 +33,42 @@
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_searchFragment_to_filmActivity"
-            app:destination="@id/filmActivity" />
+            android:id="@+id/action_searchFragment_to_filmFragment"
+            app:destination="@id/filmFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="ru.greatdevelopers.android_application.ui.mainscreen.fragments.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" >
+        tools:layout="@layout/fragment_favorite">
         <action
-            android:id="@+id/action_favoriteFragment_to_filmActivity"
-            app:destination="@id/filmActivity" />
+            android:id="@+id/action_favoriteFragment_to_filmFragment"
+            app:destination="@id/filmFragment" />
 
 
     </fragment>
-    <activity
-        android:id="@+id/filmActivity"
-        android:name="ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity"
-        android:label="FilmActivity"
+    <fragment
+        android:id="@+id/filmFragment"
+        android:name="ru.greatdevelopers.android_application.ui.filmscreen.FilmFragment"
+        android:label="FilmFragment"
         tools:layout="@layout/activity_film">
 
-    </activity>
-    <activity
-        android:id="@+id/editActivity2"
-        android:name="ru.greatdevelopers.android_application.ui.editscreen.EditActivity"
-        android:label="activity_edit"
-        tools:layout="@layout/activity_edit" />
+        <action
+            android:id="@+id/action_filmFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+        <argument
+            android:name="filmId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="ru.greatdevelopers.android_application.ui.editscreen.EditFragment"
+        android:label="EditFragment"
+        tools:layout="@layout/activity_edit">
+        <argument
+            android:name="filmId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
