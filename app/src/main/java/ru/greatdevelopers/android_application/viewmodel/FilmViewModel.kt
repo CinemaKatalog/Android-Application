@@ -9,14 +9,17 @@ import ru.greatdevelopers.android_application.data.model.*
 import ru.greatdevelopers.android_application.data.repo.CinemaRepository
 import ru.greatdevelopers.android_application.data.repo.FilmRepository
 import ru.greatdevelopers.android_application.data.repo.ProfileRepository
+import ru.greatdevelopers.android_application.data.repo.UserRepository
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 
 class FilmViewModel(
+    private val userRepo: UserRepository,
     private val filmRepository: FilmRepository,
     private val cinemaRepository: CinemaRepository,
     private val profileRepository: ProfileRepository,
     private val filmId: Int
 ) : ViewModel() {
+
     private val loadUser = MutableLiveData<User>()
     val user: LiveData<User>
         get() = loadUser
@@ -38,13 +41,20 @@ class FilmViewModel(
     val cinema: LiveData<List<CinemaListItem>>
         get() = loadCinemaInfo
 
-
-
-    fun initialRequest(user_id: Int, onFoundUser: (user: User?)-> Unit) {
+    private fun loadUser() {
         viewModelScope.launch {
-            val tmpUser = profileRepository.getUserById(user_id)
-            loadUser.postValue(tmpUser)
-            onFoundUser(tmpUser)
+            val id = userRepo.getCurrentUserIdfromShPref()
+            if (id == -1) {
+                loadUser.postValue(null)
+            } else {
+                loadUser.postValue(userRepo.getUserById(id))
+            }
+        }
+    }
+
+    fun initialRequest() {
+        viewModelScope.launch {
+            loadUser()
             val tmpFilm = filmId.let { filmRepository.getFilmById(it) }
             loadFilmInfo.postValue(tmpFilm)
             //loadFavourite.postValue(filmRepository.getFavouriteById(filmId, user_id))
@@ -55,9 +65,10 @@ class FilmViewModel(
         }
     }
 
-    fun favouriteRequest(user_id: Int){
+    fun favouriteRequest() {
         viewModelScope.launch {
-            loadFavourite.postValue(filmRepository.getFavouriteById(filmId, user_id))
+            val userId = loadUser.value!!.id
+            loadFavourite.postValue(filmRepository.getFavouriteById(filmId, userId))
         }
     }
 

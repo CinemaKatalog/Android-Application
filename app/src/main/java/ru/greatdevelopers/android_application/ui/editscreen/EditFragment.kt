@@ -1,6 +1,7 @@
 package ru.greatdevelopers.android_application.ui.editscreen
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -13,11 +14,13 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.alert_country_genre.view.*
@@ -33,11 +36,7 @@ import ru.greatdevelopers.android_application.utils.Utils
 import ru.greatdevelopers.android_application.viewmodel.EditViewModel
 import java.util.*
 
-
-class EditActivity : Fragment(R.layout.activity_edit) {
-    private val editViewModel by viewModel<EditViewModel> { parametersOf(intent.extras?.getInt("film_id")) }
-
-    private var film: Film? = null
+class EditFragment : Fragment(R.layout.activity_edit) {
 
     companion object {
         const val YOUR_IMAGE_CODE: Int = 1
@@ -45,6 +44,13 @@ class EditActivity : Fragment(R.layout.activity_edit) {
 
         const val IS_EDIT_MODE = "IS_EDIT_MODE"
     }
+
+    private val args: EditFragmentArgs by navArgs()
+
+    private val editViewModel by viewModel<EditViewModel> {
+        parametersOf(args.filmId)
+    }
+    private var film: Film? = null
 
     private var isEditMode = false
     private var rating = 0f
@@ -54,7 +60,7 @@ class EditActivity : Fragment(R.layout.activity_edit) {
     var genreList = ArrayList<Genre>()
     var countryList = ArrayList<Country>()
 
-    //private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var recyclerViewAdapter: CinemaItemAdapter
 
     private lateinit var adapterGenres: ArrayAdapter<Genre>
@@ -65,7 +71,7 @@ class EditActivity : Fragment(R.layout.activity_edit) {
     private var cinemaList: ArrayList<CinemaListItem> = ArrayList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
         initView(savedInstanceState)
     }
 
@@ -80,57 +86,57 @@ class EditActivity : Fragment(R.layout.activity_edit) {
         )
         edit_toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         edit_toolbar.setNavigationOnClickListener() {
-            onBackPressed() // возврат на предыдущий activity
+            //onBackPressed() // возврат на предыдущий activity
         }
 
         //isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         initSpinners()
         initDatePickers()
 
-        //recyclerView = findViewById(R.id.recycle_view_options)
+        recyclerView = recycle_view_options
         recyclerViewAdapter = CinemaItemAdapter() {
             showBottomSheetDialog(it.film_id, it.page_url, it.site_url)
         }
-        recycle_view_options.adapter = recyclerViewAdapter
-        recycle_view_options.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = recyclerViewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        editViewModel.cinemaList.observe(this, Observer {
+        editViewModel.cinemaList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 var sum = 0f
                 recyclerViewAdapter.setItemList(it)
-                for(i in it){
+                for (i in it) {
                     sum += i.rating
                 }
-                if (sum > 0){
-                    rating = sum/it.size
+                if (sum > 0) {
+                    rating = sum / it.size
                 }
             }
         })
-        editViewModel.countryList.observe(this, Observer {
+        editViewModel.countryList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 adapterCountries.clear()
                 adapterCountries.addAll(it)
                 adapterCountries.notifyDataSetChanged()
                 countryList = it as ArrayList<Country>
 
-                if(isEditMode){
+                if (isEditMode) {
                     spinner_edit_country.setSelection(getCountryPosition(film))
                 }
             }
         })
-        editViewModel.genreList.observe(this, Observer {
+        editViewModel.genreList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 adapterGenres.clear()
                 adapterGenres.addAll(it)
                 adapterGenres.notifyDataSetChanged()
                 genreList = it as ArrayList<Genre>
 
-                if (isEditMode){
+                if (isEditMode) {
                     spinner_edit_genre.setSelection(getGenrePosition(film))
                 }
             }
         })
-        editViewModel.film.observe(this, Observer { foundFilm ->
+        editViewModel.film.observe(viewLifecycleOwner, Observer { foundFilm ->
             if (foundFilm != null) {
                 for ((k, v) in viewFields) {
                     when (k) {
@@ -146,7 +152,7 @@ class EditActivity : Fragment(R.layout.activity_edit) {
 
                 }catch (e: SecurityException){
                     Utils.showToast(
-                        this,"Photo load exception", Toast.LENGTH_SHORT
+                        requireContext(), "Photo load exception", Toast.LENGTH_SHORT
                     )
                     e.printStackTrace()
                 }
@@ -171,14 +177,14 @@ class EditActivity : Fragment(R.layout.activity_edit) {
 
         btn_add_poster.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(
-                    this.baseContext,
+                    requireContext(),
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 // Проверка наличия разрешений
                 // Если нет разрешения на использование соответсвующих разркешений выполняем какие-то действия
                 ActivityCompat.requestPermissions(
-                    this,
+                    requireActivity(),
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     READ_EXTERNAL_STORAGE_PERMISSION_CODE
                 )
@@ -220,7 +226,7 @@ class EditActivity : Fragment(R.layout.activity_edit) {
                         )
                     ) {
                         Utils.showToast(
-                            this,
+                            requireContext(),
                             getString(R.string.text_changes_saved), Toast.LENGTH_SHORT
                         )
                         //editViewModel.initialRequest()
@@ -238,19 +244,19 @@ class EditActivity : Fragment(R.layout.activity_edit) {
                     )
                     editViewModel.insertFilm(film!!) {
                         Utils.showToast(
-                            this,
+                            requireContext(),
                             getString(R.string.text_changes_saved), Toast.LENGTH_SHORT
                         )
                         //editViewModel.setFilmId(film!!.id)
                         isEditMode = true
                         //showCurrentMode(isEditMode)
                         //editViewModel.initialRequest()
-                        onBackPressed()
+                        findNavController().popBackStack()
                     }
                 }
             } else {
                 Utils.showToast(
-                    this,
+                    requireContext(),
                     getString(R.string.text_film_fields_complete), Toast.LENGTH_SHORT
                 )
             }
@@ -261,8 +267,8 @@ class EditActivity : Fragment(R.layout.activity_edit) {
 
         btn_add_country.setOnClickListener {
             val promptsView: View =
-                LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
-            val addAlert = MaterialAlertDialogBuilder(this)
+                LayoutInflater.from(requireContext()).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(requireContext())
             addAlert.setView(promptsView)
 
             addAlert.setTitle(getString(R.string.label_add))
@@ -274,14 +280,14 @@ class EditActivity : Fragment(R.layout.activity_edit) {
                             Country(name = promptsView.et_alert_name.text.toString())
                         ) {
                             Utils.showToast(
-                                this,
+                                requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
                             editViewModel.initialRequest()
                         }
                     } else {
                         Utils.showToast(
-                            this,
+                            requireContext(),
                             getString(R.string.text_not_complete), Toast.LENGTH_SHORT
                         )
                     }
@@ -292,11 +298,13 @@ class EditActivity : Fragment(R.layout.activity_edit) {
             addAlert.create().show()
         }
         btn_change_country.setOnClickListener {
-            val promptsView: View = LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
-            val addAlert = MaterialAlertDialogBuilder(this)
+            val promptsView: View =
+                LayoutInflater.from(requireContext()).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(requireContext())
             addAlert.setView(promptsView)
 
-            (promptsView.et_alert_name as TextView).text = spinner_edit_country.selectedItem.toString()
+            (promptsView.et_alert_name as TextView).text =
+                spinner_edit_country.selectedItem.toString()
 
             addAlert.setTitle(getString(R.string.label_change))
                 .setMessage(getString(R.string.text_question_add_alert))
@@ -304,18 +312,20 @@ class EditActivity : Fragment(R.layout.activity_edit) {
                 .setPositiveButton(getString(R.string.label_save)) { dialog, which ->
                     if (promptsView.et_alert_name.text.toString().isNotEmpty()) {
                         editViewModel.updateCountry(
-                            Country(id = (spinner_edit_country.selectedItem as Country).id,
-                                name = promptsView.et_alert_name.text.toString())
+                            Country(
+                                id = (spinner_edit_country.selectedItem as Country).id,
+                                name = promptsView.et_alert_name.text.toString()
+                            )
                         ) {
                             Utils.showToast(
-                                this,
+                                requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
                             editViewModel.initialRequest()
                         }
                     } else {
                         Utils.showToast(
-                            this,
+                            requireContext(),
                             getString(R.string.text_not_complete), Toast.LENGTH_SHORT
                         )
                     }
@@ -325,8 +335,9 @@ class EditActivity : Fragment(R.layout.activity_edit) {
                 }
             addAlert.create().show() }
         btn_add_genre.setOnClickListener {
-            val promptsView: View = LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
-            val addAlert = MaterialAlertDialogBuilder(this)
+            val promptsView: View =
+                LayoutInflater.from(requireContext()).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(requireContext())
             addAlert.setView(promptsView)
 
             addAlert.setTitle(getString(R.string.label_add))
@@ -338,14 +349,14 @@ class EditActivity : Fragment(R.layout.activity_edit) {
                             Genre(name = promptsView.et_alert_name.text.toString())
                         ) {
                             Utils.showToast(
-                                this,
+                                requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
                             editViewModel.initialRequest()
                         }
                     } else {
                         Utils.showToast(
-                            this,
+                            requireContext(),
                             getString(R.string.text_not_complete), Toast.LENGTH_SHORT
                         )
                     }
@@ -355,29 +366,33 @@ class EditActivity : Fragment(R.layout.activity_edit) {
                 }
             addAlert.create().show() }
         btn_change_genre.setOnClickListener {
-            val promptsView: View = LayoutInflater.from(this).inflate(R.layout.alert_country_genre, null)
-            val addAlert = MaterialAlertDialogBuilder(this)
+            val promptsView: View =
+                LayoutInflater.from(requireContext()).inflate(R.layout.alert_country_genre, null)
+            val addAlert = MaterialAlertDialogBuilder(requireContext())
             addAlert.setView(promptsView)
 
-            (promptsView.et_alert_name as TextView).text = spinner_edit_genre.selectedItem.toString()
+            (promptsView.et_alert_name as TextView).text =
+                spinner_edit_genre.selectedItem.toString()
             addAlert.setTitle(getString(R.string.label_change))
                 .setMessage(getString(R.string.text_question_add_alert))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.label_save)) { dialog, which ->
                     if (promptsView.et_alert_name.text.toString().isNotEmpty()) {
                         editViewModel.updateGenre(
-                            Genre(id = (spinner_edit_genre.selectedItem as Genre).id,
-                                name = promptsView.et_alert_name.text.toString())
+                            Genre(
+                                id = (spinner_edit_genre.selectedItem as Genre).id,
+                                name = promptsView.et_alert_name.text.toString()
+                            )
                         ) {
                             Utils.showToast(
-                                this,
+                                requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
                             editViewModel.initialRequest()
                         }
                     } else {
                         Utils.showToast(
-                            this,
+                            requireContext(),
                             getString(R.string.text_not_complete), Toast.LENGTH_SHORT
                         )
                     }
@@ -407,8 +422,13 @@ class EditActivity : Fragment(R.layout.activity_edit) {
     private fun initSpinners() {
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        adapterGenres = ArrayAdapter<Genre>(this, android.R.layout.simple_spinner_item, genreList)
-        adapterCountries = ArrayAdapter<Country>(this, android.R.layout.simple_spinner_item, countryList)
+        adapterGenres =
+            ArrayAdapter<Genre>(requireContext(), android.R.layout.simple_spinner_item, genreList)
+        adapterCountries = ArrayAdapter<Country>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            countryList
+        )
 
         // Определяем разметку для использования при выборе элемента
         adapterGenres.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -449,7 +469,7 @@ class EditActivity : Fragment(R.layout.activity_edit) {
         }
         dialog.arguments = arg
         //supportFragmentManager.beginTransaction().replace()
-        dialog.show(supportFragmentManager, dialog.tag)
+        dialog.show(parentFragmentManager, dialog.tag)
         //supportFragmentManager?.let { dialog.show(it, dialog.tag) }
     }
 
@@ -473,8 +493,8 @@ class EditActivity : Fragment(R.layout.activity_edit) {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode === YOUR_IMAGE_CODE) {
-            if (resultCode === RESULT_OK) {
+        if (requestCode == YOUR_IMAGE_CODE) {
+            if (resultCode == RESULT_OK) {
                 selectedImageUri = data?.data
                 iv_edit_poster.setImageURI(selectedImageUri)
 
@@ -484,7 +504,7 @@ class EditActivity : Fragment(R.layout.activity_edit) {
 
                 try {
                     selectedImageUri?.let {
-                        this.contentResolver
+                        requireContext().contentResolver
                             .takePersistableUriPermission(it, takeFlags)
                     }
                 } catch (e: SecurityException) {
@@ -504,11 +524,12 @@ class EditActivity : Fragment(R.layout.activity_edit) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 Utils.showToast(
-                    this,
+                    requireContext(),
                     "Разрешение получено", Toast.LENGTH_SHORT
                 )
             } else {
-                Toast.makeText(this, "Разрешение не получено", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Разрешение не получено", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

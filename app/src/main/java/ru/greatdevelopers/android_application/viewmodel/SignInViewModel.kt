@@ -23,7 +23,6 @@ class SignInViewModel(
             val tmpUser = userRepo.getUserByLogin(login)
             if (tmpUser != null) {
                 loadUser.postValue(tmpUser)
-
                 onFoundUser(tmpUser)
             }
         }

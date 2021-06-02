@@ -1,6 +1,5 @@
 package ru.greatdevelopers.android_application.ui.mainscreen.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,20 +9,13 @@ import android.widget.LinearLayout
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_search.*
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.compat.ScopeCompat.viewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
-import ru.greatdevelopers.android_application.viewmodel.SearchViewModel
-import ru.greatdevelopers.android_application.data.model.Film
-import ru.greatdevelopers.android_application.data.model.User
-import ru.greatdevelopers.android_application.ui.filmscreen.FilmActivity
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAdapter
+import ru.greatdevelopers.android_application.viewmodel.SearchViewModel
 
 
 class SearchFragment : Fragment(){
@@ -68,14 +60,12 @@ class SearchFragment : Fragment(){
 
         //var userId = requireArguments().getInt("user_id")
 
-        recyclerViewAdapter = BaseItemAdapter(){
-            var intent = Intent(
-                activity,
-                FilmActivity::class.java
+        recyclerViewAdapter = BaseItemAdapter() {
+            findNavController().navigate(
+                SearchFragmentDirections.actionSearchFragmentToFilmFragment(
+                    it
+                )
             )
-            intent.putExtra("film_id", it)
-            //intent.putExtra("user_id", user.id)
-            activity?.startActivity(intent)
         }
 
         recycle_view_search.adapter = recyclerViewAdapter
