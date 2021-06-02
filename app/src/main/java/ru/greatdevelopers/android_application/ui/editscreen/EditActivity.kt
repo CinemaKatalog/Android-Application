@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,7 +34,7 @@ import ru.greatdevelopers.android_application.viewmodel.EditViewModel
 import java.util.*
 
 
-class EditActivity : AppCompatActivity() {
+class EditActivity : Fragment(R.layout.activity_edit) {
     private val editViewModel by viewModel<EditViewModel> { parametersOf(intent.extras?.getInt("film_id")) }
 
     private var film: Film? = null
@@ -63,9 +64,8 @@ class EditActivity : AppCompatActivity() {
 
     private var cinemaList: ArrayList<CinemaListItem> = ArrayList()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit)
         initView(savedInstanceState)
     }
 
