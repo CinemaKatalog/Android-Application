@@ -5,7 +5,7 @@
     android:id="@+id/sign_nav_graph"
     app:startDestination="@id/signInFragment">
 
-    <fragment
+    <!--<fragment
         android:id="@+id/signInFragment"
         android:name="ru.greatdevelopers.android_application.ui.signscreen.SignInFragment"
         android:label="SignInFragment"
@@ -27,5 +27,5 @@
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
     </fragment>
-    <include app:graph="@navigation/nav_graph" />
+    <include app:graph="@navigation/nav_graph" />-->
 </navigation>

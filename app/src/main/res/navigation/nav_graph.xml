@@ -30,7 +30,7 @@
 
     <activity
         android:id="@+id/editActivity"
-        android:name="ru.greatdevelopers.android_application.ui.editscreen.EditActivity"
+        android:name="ru.greatdevelopers.android_application.ui.editscreen.EditFragment"
         android:label="activity_edit"
         tools:layout="@layout/activity_edit" />
 
@@ -46,6 +46,18 @@
         <action
             android:id="@+id/action_signInFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="ru.greatdevelopers.android_application.ui.signscreen.SignUpFragment"
+        android:label="SignUpFragment"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
 
 
