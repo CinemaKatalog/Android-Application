@@ -18,7 +18,7 @@ class FavouriteViewModel (private val repository: FilmRepository, private val us
 
     fun loadUser() {
         viewModelScope.launch {
-            val id = userRepo.getCurrentUserIdfromShPref()
+            val id = userRepo.getCurrentUserIdFromShPref()
             if (id == -1) {
                 userLiveData.postValue(null)
             } else {
@@ -33,7 +33,7 @@ class FavouriteViewModel (private val repository: FilmRepository, private val us
 
     fun initialRequest(){
         viewModelScope.launch {
-            loadFavourites.postValue(repository.getFavouriteFilmsWithExtra(userRepo.getCurrentUserIdfromShPref()))
+            loadFavourites.postValue(repository.getFavouriteFilmsWithExtra(userRepo.getCurrentUserIdFromShPref()))
         }
     }
 }

@@ -86,8 +86,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         btn_exit.setOnClickListener {
             profileViewModel.signOut()
             // не нашел способа как переходить на другой экран из дочернего фрагмента, кроме этого
-            /*(requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
-                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())*/
+            (requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
+                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())
             //должно работать так, но не работает (из дочернего графа можно перейти в любую точку родительского, из родительского только в дочерний)
             /*findNavController().navigate(R.id.sign_nav_graph)*/
 

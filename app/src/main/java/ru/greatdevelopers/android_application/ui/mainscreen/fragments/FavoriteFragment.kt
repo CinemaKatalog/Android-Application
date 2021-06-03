@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_favorite.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
+import ru.greatdevelopers.android_application.ui.mainscreen.MenuFragment
+import ru.greatdevelopers.android_application.ui.mainscreen.MenuFragmentDirections
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAdapter
 import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
 
@@ -78,6 +80,8 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
 
         btn_not_authorized_favor.setOnClickListener {
             /*findNavController().navigate(R.id.sign_nav_graph)*/
+            (requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
+                .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())
         }
     }
 

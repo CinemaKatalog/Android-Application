@@ -52,10 +52,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
         }
 
-        val id: Int = requireContext().getSharedPreferences(User.SP_ID_KEY, Context.MODE_PRIVATE)
-            .getInt(User.SP_ID_KEY, -1)
+        /*val id: Int = requireContext().getSharedPreferences(User.SP_ID_KEY, Context.MODE_PRIVATE)
+            .getInt(User.SP_ID_KEY, -1)*/
 
-        mainViewModel.initialRequest(id) {
+        mainViewModel.initialRequest(/*id*/) {
             filmsGroupList.clear()
             mainViewModel.initGroupsRequest() {
                 recyclerViewAdapter.setItemList(filmsGroupList)

@@ -43,7 +43,7 @@ class FilmViewModel(
 
     private fun loadUser() {
         viewModelScope.launch {
-            val id = userRepo.getCurrentUserIdfromShPref()
+            val id = userRepo.getCurrentUserIdFromShPref()
             if (id == -1) {
                 loadUser.postValue(null)
             } else {

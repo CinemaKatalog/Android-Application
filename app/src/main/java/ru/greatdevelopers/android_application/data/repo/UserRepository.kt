@@ -15,7 +15,7 @@ class UserRepository(val context: Context) {
     // имитация данных из сервера
     private val networkUsers = mutableListOf<User>(
         User(1, "Nikola", "nik@mail.ru", "12345678", "admin"),
-        User(2, "Farkhad", "far@mail.ru", "12345678", "admin")
+        User(2, "Farkhad", "far@mail.ru", "12345678", "user")
     )
 
     /**
@@ -28,7 +28,7 @@ class UserRepository(val context: Context) {
             .apply()
     }
 
-    suspend fun getCurrentUserIdfromShPref(): Int {
+    suspend fun getCurrentUserIdFromShPref(): Int {
         return context.getSharedPreferences(User.SP_ID_KEY, Context.MODE_PRIVATE)
             .getInt(User.SP_ID_KEY, -1)
     }
