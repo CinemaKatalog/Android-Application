@@ -102,6 +102,6 @@ val repositoryModule = module {
 
     single { cinemaRepository(get(), get()) }
 
-    single { UserRepository(androidContext()) }
+    single { UserRepository(androidContext(), get()) }
 }
 

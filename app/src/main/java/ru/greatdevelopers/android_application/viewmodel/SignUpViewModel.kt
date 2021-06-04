@@ -22,7 +22,17 @@ class SignUpViewModel(
     val user: LiveData<User>
         get() = loadUser
 
-    fun loginRequest(login: String, onFoundUser: (user: User?) -> Unit) {
+    fun registerRequest(user: User, onResult: (user: User?) -> Unit) {
+        viewModelScope.launch {
+            val tmpUser = userRepo.registerUser(user)
+            if (tmpUser == null) {
+                loadUser.postValue(tmpUser)
+            }
+            onResult(tmpUser)
+        }
+    }
+
+    /*fun loginRequest(login: String, onFoundUser: (user: User?) -> Unit) {
         viewModelScope.launch {
             val tmpUser = repository.getUserByLogin(login)
 
@@ -32,7 +42,7 @@ class SignUpViewModel(
 
             }
         }
-    }
+    }*/
 
 }
 

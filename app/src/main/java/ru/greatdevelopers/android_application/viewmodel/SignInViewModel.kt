@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.data.repo.ProfileRepository
 import ru.greatdevelopers.android_application.data.repo.UserRepository
+import ru.greatdevelopers.android_application.data.reqmodel.LoginUser
 
 class SignInViewModel(
     private val profileRepo: ProfileRepository,
@@ -18,13 +19,14 @@ class SignInViewModel(
     val user: LiveData<User>
         get() = loadUser
 
-    fun loginRequest(login: String, onFoundUser: (user: User) -> Unit) {
+    fun loginRequest(/*login: String*/ loginUser: LoginUser, onResult: (user: User?) -> Unit) {
         viewModelScope.launch {
-            val tmpUser = userRepo.getUserByLogin(login)
+            //val tmpUser = userRepo.getUserByLogin(login)
+            val tmpUser = userRepo.loginUser(loginUser)
             if (tmpUser != null) {
                 loadUser.postValue(tmpUser)
-                onFoundUser(tmpUser)
             }
+            onResult(tmpUser)
         }
     }
 

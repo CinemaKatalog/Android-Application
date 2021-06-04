@@ -2,11 +2,17 @@ package ru.greatdevelopers.android_application.data.repo
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.reqmodel.LoginUser
+import ru.greatdevelopers.android_application.network.UserApiInterface
 import java.io.File
 
-class UserRepository(val context: Context) {
+class UserRepository(val context: Context, private val userApiInterface: UserApiInterface) {
 
     companion object {
         const val FILE_CURRENT_USER = "current_user"
@@ -48,6 +54,46 @@ class UserRepository(val context: Context) {
         return getUserFromInternalOrNull()
             ?: // имитация получения данных из сервера
             networkUsers.find { it.login == login }
+    }
+
+    suspend fun loginUser(loginUser: LoginUser): User? {
+        val data = MutableLiveData<User>()
+
+        userApiInterface.signIn(loginUser).enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                data.value = null
+            }
+
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val res = response.body()
+                if (response.code() == 200 && res!=null){
+                    data.value = res
+                }else{
+                    data.value = null
+                }
+            }
+        })
+        return data.value
+    }
+
+    suspend fun registerUser(user: User): User? {
+        val data = MutableLiveData<User>()
+
+        userApiInterface.signUp(user).enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                data.value = null
+            }
+
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val res = response.body()
+                if (response.code() == 200 && res!=null){
+                    data.value = res
+                }else{
+                    data.value = null
+                }
+            }
+        })
+        return data.value
     }
 
     suspend fun writeUserToInternal(user: User?) {

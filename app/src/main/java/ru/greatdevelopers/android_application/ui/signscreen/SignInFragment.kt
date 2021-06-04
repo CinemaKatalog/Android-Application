@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_sign_in.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.reqmodel.LoginUser
 import ru.greatdevelopers.android_application.utils.Utils
 import ru.greatdevelopers.android_application.viewmodel.SignInViewModel
 
@@ -34,8 +35,17 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 val login = et_sign_in_login.text.toString()
                 val password = et_sign_in_password.text.toString()
 
-                viewModel.loginRequest(login) { user: User ->
-                    if (user.password == password) {
+                viewModel.loginRequest(LoginUser(login, password)) { user: User? ->
+                    /*if (user.password == password) {
+                        viewModel.saveUser(user)
+                        goToMenuActivity(user)
+                    } else {
+                        Utils.showToast(
+                            requireContext(),
+                            getString(R.string.text_sign_up_incorrect), Toast.LENGTH_SHORT
+                        )
+                    }*/
+                    if (user != null) {
                         viewModel.saveUser(user)
                         goToMenuActivity(user)
                     } else {

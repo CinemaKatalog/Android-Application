@@ -56,7 +56,7 @@ class SignUpFragment : Fragment() {
 
                 if(password.matches(Regex(Utils.PASSWORD_PATTERN))){
 
-                    signUpViewModel.loginRequest(login){
+                    /*signUpViewModel.registerRequest(login){
                             user: User? ->
                         if(user != null){
                             Utils.showToast(requireContext(),
@@ -64,6 +64,15 @@ class SignUpFragment : Fragment() {
                         }else{
                             signUpViewModel.insertUser(User(name = name, login = login, password = password, userType = "user"))
                             //loadFragment(signInFragment)
+                            goToSignInFragment()
+                        }
+                    }*/
+                    signUpViewModel.registerRequest(User(id = 0, name = name, login = login, password = password, userType = "user")){
+                            user: User? ->
+                        if(user != null){
+                            Utils.showToast(requireContext(),
+                                getString(R.string.text_sign_up_already_exist), Toast.LENGTH_SHORT)
+                        }else{
                             goToSignInFragment()
                         }
                     }
