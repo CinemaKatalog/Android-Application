@@ -54,8 +54,8 @@ class MainViewModel(
                     null,
                     minRating = 0f,
                     maxRating = 5f,
-                    minYear = 2020,
-                    maxYear = 0
+                    minYear = 0,
+                    maxYear = 2020
                 )
             )
             loadFilmsYear.postValue(
@@ -64,8 +64,8 @@ class MainViewModel(
                     null,
                     minRating = 0f,
                     maxRating = 5f,
-                    minYear = 2020,
-                    maxYear = 2020
+                    minYear = 2021,
+                    maxYear = 2021
                 )
             )
             loadFilmsRating.postValue(
@@ -74,8 +74,8 @@ class MainViewModel(
                     null,
                     minRating = 4f,
                     maxRating = 5f,
-                    minYear = 2020,
-                    maxYear = 0
+                    minYear = 0,
+                    maxYear = 2020
                 )
             )
             onInit()

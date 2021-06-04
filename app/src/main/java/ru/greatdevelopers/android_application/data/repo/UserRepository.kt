@@ -34,9 +34,9 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
             .apply()
     }
 
-    suspend fun getCurrentUserIdFromShPref(): Int {
+    suspend fun getCurrentUserIdFromShPref(): Long {
         return context.getSharedPreferences(User.SP_ID_KEY, Context.MODE_PRIVATE)
-            .getInt(User.SP_ID_KEY, -1)
+            .getLong(User.SP_ID_KEY, -1L)
     }
 
     /**
@@ -44,8 +44,8 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
      * /data/data/ru.greatdevelopers.android_application/files/current_user
      * Там лежит сериализованный Юзер, либо null если юзер не авторизован в приложении
      */
-    suspend fun getUserById(id: Int): User? {
-        val data = MutableLiveData<User>()
+    suspend fun getUserById(id: Long): User? {
+        /*val data = MutableLiveData<User>()
 
         userApiInterface.getUserById(id).enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
@@ -61,7 +61,9 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
                 }
             }
         })
-        return data.value
+        return data.value*/
+
+        return  getUserFromInternalOrNull() ?:userApiInterface.getUserById(id)
 
 
         /*return getUserFromInternalOrNull()
@@ -76,7 +78,7 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
     }
 
     suspend fun loginUser(loginUser: LoginUser): User? {
-        val data = MutableLiveData<User>()
+        /*val data = MutableLiveData<User>()
 
         userApiInterface.signIn(loginUser).enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
@@ -85,18 +87,20 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
 
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 val res = response.body()
-                if (response.code() == 200 && res!=null){
+                if (response.code() == 200 && res != null) {
                     data.value = res
-                }else{
+                    println("1 - " + data.value)
+                } else {
                     data.value = null
                 }
             }
         })
-        return data.value
+        return data.value*/
+        return userApiInterface.signIn(loginUser)
     }
 
     suspend fun registerUser(user: User): User? {
-        val data = MutableLiveData<User>()
+        /*val data = MutableLiveData<User>()
 
         userApiInterface.signUp(user).enqueue(object : Callback<User> {
             override fun onFailure(call: Call<User>, t: Throwable) {
@@ -112,7 +116,9 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
                 }
             }
         })
-        return data.value
+        return data.value*/
+
+        return userApiInterface.signUp(user)
     }
 
     suspend fun writeUserToInternal(user: User?) {

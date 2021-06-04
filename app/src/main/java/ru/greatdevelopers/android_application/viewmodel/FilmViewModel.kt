@@ -44,7 +44,7 @@ class FilmViewModel(
     private fun loadUser() {
         viewModelScope.launch {
             val id = userRepo.getCurrentUserIdFromShPref()
-            if (id == -1) {
+            if (id == -1L) {
                 loadUser.postValue(null)
             } else {
                 loadUser.postValue(userRepo.getUserById(id))
@@ -57,7 +57,7 @@ class FilmViewModel(
             loadUser()
             val tmpFilm = filmId.let { filmRepository.getFilmById(it) }
             loadFilmInfo.postValue(tmpFilm)
-            //loadFavourite.postValue(filmRepository.getFavouriteById(filmId, user_id))
+            loadFavourite.postValue(filmRepository.getFavouriteById(filmId, loadUser.value!!.id))
             loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaByFilm(filmId))
             loadGenreInfo.postValue(tmpFilm?.let { filmRepository.getGenreById(it.genre) })
             loadCountryInfo.postValue(tmpFilm?.let { filmRepository.getCountryById(it.country) })

@@ -23,6 +23,7 @@ class SignInViewModel(
         viewModelScope.launch {
             //val tmpUser = userRepo.getUserByLogin(login)
             val tmpUser = userRepo.loginUser(loginUser)
+            println("2 - " + tmpUser)
             if (tmpUser != null) {
                 loadUser.postValue(tmpUser)
             }
@@ -34,6 +35,7 @@ class SignInViewModel(
         viewModelScope.launch {
             userRepo.writeCurrentUserIdToShPref(user.id)
             userRepo.writeUserToInternal(user)
+            println(userRepo.getCurrentUserIdFromShPref())
         }
     }
 }

@@ -44,7 +44,7 @@ class ProfileViewModel(
     fun loadUser() {
         viewModelScope.launch {
             val id = userRepo.getCurrentUserIdFromShPref()
-            if (id == -1) {
+            if (id == -1L) {
                 userLiveData.postValue(null)
             } else {
                 userLiveData.postValue(userRepo.getUserById(id))

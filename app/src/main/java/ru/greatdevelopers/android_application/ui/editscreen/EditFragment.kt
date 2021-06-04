@@ -48,7 +48,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
     private val args: EditFragmentArgs by navArgs()
 
     private val editViewModel by viewModel<EditViewModel> {
-        parametersOf(args.filmId)
+        parametersOf(if(args.filmId != -1L) args.filmId else null)
     }
     private var film: Film? = null
 

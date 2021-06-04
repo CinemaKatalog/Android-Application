@@ -7,14 +7,15 @@ import ru.greatdevelopers.android_application.data.reqmodel.LoginUser
 
 interface UserApiInterface {
     @POST("login/signin")
-    fun signIn(@Body loginUser: LoginUser): Call<User>
+    suspend fun signIn(@Body loginUser: LoginUser): User
+    //fun signIn(@Body loginUser: LoginUser): Call<User>
 
     @POST("login/signup")
-    fun signUp(@Body user: User): Call<User>
+    suspend fun signUp(@Body user: User): User
 
     @PUT("profile/")
-    fun updateUser(@Body user: User): Call<User>
+    suspend fun updateUser(@Body user: User): User
 
     @GET("profile/{id}")
-    fun getUserById(@Path("id") id: Int): Call<User>
+    suspend fun getUserById(@Path("id") id: Long): User
 }

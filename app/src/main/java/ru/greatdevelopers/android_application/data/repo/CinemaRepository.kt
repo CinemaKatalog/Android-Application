@@ -24,7 +24,7 @@ class CinemaRepository(
     }
 
     suspend fun getFilmCinemaByIds(filmId: Long, siteUrl: String): FilmCinema? {
-        val data = MutableLiveData<ResponseFilmCinema>()
+        /*val data = MutableLiveData<ResponseFilmCinema>()
 
         cinemaApiInterface.getFilmCinemaByIds(filmId, siteUrl)
             .enqueue(object : Callback<ResponseFilmCinema> {
@@ -43,20 +43,17 @@ class CinemaRepository(
                         data.value = null
                     }
                 }
-            })
+            })*/
 
+        var data = cinemaApiInterface.getFilmCinemaByIds(filmId, siteUrl)
 
-        return if (data.value != null) {
-            FilmCinema(
-                pageUrl = data.value!!.pageUrl,
-                filmId = data.value!!.responseFilm.id,
-                siteUrl = data.value!!.responseCinema.url,
-                price = data.value!!.price,
-                rating = data.value!!.rating
-            )
-        } else {
-            null
-        }
+        return FilmCinema(
+            pageUrl = data.pageUrl,
+            filmId = data.responseFilm.id,
+            siteUrl = data.responseCinema.url,
+            price = data.price,
+            rating = data.rating
+        )
         //return filmCinemaDao.getFilmCinemaByIds(filmId, siteUrl)
     }
 

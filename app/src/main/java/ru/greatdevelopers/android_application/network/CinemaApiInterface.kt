@@ -13,12 +13,12 @@ import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 
 interface CinemaApiInterface {
     @GET("film/loadFilmCinema")
-    fun getFilmCinemaByIds(@Query("filmId") filmId: Long, @Query("siteUrl") siteUrl: String): Call<ResponseFilmCinema>
+    suspend fun getFilmCinemaByIds(@Query("filmId") filmId: Long, @Query("siteUrl") siteUrl: String): ResponseFilmCinema
 
     @GET("edit/loadCinema")
     suspend fun getAllCinema(): List<Cinema>
 
-    @PUT("film/loadFilmCinema/{id}")
+    @GET("film/loadFilmCinema/{id}")
     suspend fun getFilmCinemaWithName(@Path("id") id: Long): List<CinemaListItem>
 
     @POST("edit/filmCinema")

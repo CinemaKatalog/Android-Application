@@ -49,7 +49,7 @@ class SearchViewModel(private val repository: FilmRepository): ViewModel() {
                               minRating: Float,
                               maxRating: Float){
         viewModelScope.launch {
-            loadFilms.postValue(repository.getFilmByParameters(genre, country, maxYear, minYear, minRating, maxRating))
+            loadFilms.postValue(repository.getFilmByParameters(genre, country, minYear, maxYear, minRating, maxRating))
         }
     }
 

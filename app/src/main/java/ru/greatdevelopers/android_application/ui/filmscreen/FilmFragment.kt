@@ -94,23 +94,7 @@ class FilmFragment : Fragment(R.layout.activity_film) {
             film = foundFilm
 
         })
-        filmViewModel.favourite.observe(viewLifecycleOwner, Observer { foundFavour ->
-            isFavourite = foundFavour != null
-            showCurrentMode(isFavourite)
 
-            fab_add_favourite.setOnClickListener {
-                if (isFavourite) {
-                    filmViewModel.deleteFavourite(foundFavour)
-                } else {
-                    filmViewModel.insertFavourite(Favourite(user!!.id, film!!.id)) {
-                        filmViewModel.favouriteRequest()
-                    }
-                }
-                isFavourite = !isFavourite
-                showCurrentMode(isFavourite)
-            }
-        })
-        filmViewModel.favouriteRequest()
         filmViewModel.cinema.observe(viewLifecycleOwner, Observer {
             recyclerViewAdapter.setItemList(it)
         })
@@ -120,7 +104,7 @@ class FilmFragment : Fragment(R.layout.activity_film) {
         filmViewModel.genre.observe(viewLifecycleOwner, Observer {
             viewFields["genre"]?.text = it.name
         })
-        filmViewModel.initialRequest()
+
         filmViewModel.user.observe(viewLifecycleOwner) { user: User ->
             this.user = user
             if (user.userType == "admin") {
@@ -152,6 +136,25 @@ class FilmFragment : Fragment(R.layout.activity_film) {
                 }
             }
         }
+        filmViewModel.initialRequest()
+        //filmViewModel.favouriteRequest()
+        filmViewModel.favourite.observe(viewLifecycleOwner, Observer { foundFavour ->
+            isFavourite = foundFavour != null
+            showCurrentMode(isFavourite)
+
+            fab_add_favourite.setOnClickListener {
+                if (isFavourite) {
+                    filmViewModel.deleteFavourite(foundFavour)
+                } else {
+                    filmViewModel.insertFavourite(Favourite(user!!.id, film!!.id)) {
+                        filmViewModel.favouriteRequest()
+                    }
+                }
+                isFavourite = !isFavourite
+                showCurrentMode(isFavourite)
+            }
+        })
+
         btn_film_back.setOnClickListener {
             findNavController().popBackStack()
         }

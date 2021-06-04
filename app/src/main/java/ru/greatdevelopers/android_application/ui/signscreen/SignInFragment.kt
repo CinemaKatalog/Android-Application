@@ -45,6 +45,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                             getString(R.string.text_sign_up_incorrect), Toast.LENGTH_SHORT
                         )
                     }*/
+                    println("3 - " + user)
                     if (user != null) {
                         viewModel.saveUser(user)
                         goToMenuActivity(user)

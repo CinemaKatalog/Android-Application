@@ -78,7 +78,8 @@ val apiModule = module {
     single { provideCinemaApi(get()) }
 }
 
-private const val BASEURL = "http://localhost:8080/mobileApi/"
+//private const val BASEURL = "http://localhost:8080/mobileApi/"
+private const val BASEURL = "http://10.0.2.2:8080/mobileApi/"
 
 val netModule = module {
     /*single<Retrofit> {
@@ -171,8 +172,8 @@ val databaseModule = module {
 }
 
 val repositoryModule = module {
-    fun filmRepository(filmDao: FilmDao, favouriteDao: FavouriteDao, genreDao: GenreDao, countryDao: CountryDao): FilmRepository {
-        return FilmRepository(filmDao, favouriteDao, genreDao, countryDao)
+    fun filmRepository(filmDao: FilmDao, favouriteDao: FavouriteDao, genreDao: GenreDao, countryDao: CountryDao, filmApiInterface: FilmApiInterface): FilmRepository {
+        return FilmRepository(filmDao, favouriteDao, genreDao, countryDao, filmApiInterface)
     }
 
     fun profileRepository(userDao: UserDao): ProfileRepository {
@@ -183,7 +184,7 @@ val repositoryModule = module {
         return CinemaRepository(filmCinemaDao, cinemaDao, cinemaApiInterface)
     }
 
-    single { filmRepository(get(), get(), get(), get()) }
+    single { filmRepository(get(), get(), get(), get(), get()) }
 
     single { profileRepository(get()) }
 
