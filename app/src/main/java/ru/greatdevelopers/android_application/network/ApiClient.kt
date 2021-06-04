@@ -6,9 +6,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASEURL = "http://localhost:8080/mobileApi/"
+//const val BASEURL = "http://localhost:8080/mobileApi/"
 class ApiClient {
-    companion object{
+    /*companion object{
         private var retrofit: Retrofit?=null
         fun getApiClient(): Retrofit {
             val gson = GsonBuilder()
@@ -27,5 +27,5 @@ class ApiClient {
             }
             return retrofit!!
         }
-    }
+    }*/
 }

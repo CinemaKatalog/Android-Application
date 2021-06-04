@@ -106,7 +106,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                     editViewModel.insertFilmCinema(
                         FilmCinema(
                             viewFields["film_url"]?.text.toString(),
-                            requireArguments().getInt("film_id"),
+                            requireArguments().getLong("film_id"),
                             cinema!!.url,
                             viewFields["price"]?.text.toString().toFloat(),
                             rs_cinema_add_rating.values[0]
@@ -131,7 +131,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                     editViewModel.updateFilmCinema(
                         FilmCinema(
                             viewFields["film_url"]?.text.toString(),
-                            requireArguments().getInt("film_id"),
+                            requireArguments().getLong("film_id"),
                             cinema!!.url,
                             viewFields["price"]?.text.toString().toFloat(),
                             rs_cinema_add_rating.values[0]
@@ -242,7 +242,7 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
         }
 
         tv_cancel_cinema_add.setOnClickListener {
-            editViewModel.deleteFilmCinema(requireArguments().getInt("film_id"), cinema!!.url){
+            editViewModel.deleteFilmCinema(requireArguments().getLong("film_id"), cinema!!.url){
                 editViewModel.initialRequest()
                 dismiss()
             }

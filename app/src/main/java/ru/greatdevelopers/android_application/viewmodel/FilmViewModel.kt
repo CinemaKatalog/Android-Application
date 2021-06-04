@@ -17,7 +17,7 @@ class FilmViewModel(
     private val filmRepository: FilmRepository,
     private val cinemaRepository: CinemaRepository,
     private val profileRepository: ProfileRepository,
-    private val filmId: Int
+    private val filmId: Long
 ) : ViewModel() {
 
     private val loadUser = MutableLiveData<User>()

@@ -26,7 +26,8 @@ class ProfileViewModel(
                 name, login, password,
                 user.value!!.userType
             )
-            repository.updateUser(userEdited)
+            userRepo.updateUser(userEdited)
+            //repository.updateUser(userEdited)
             userRepo.writeUserToInternal(userEdited)
             userLiveData.postValue(userEdited)
             onUpdated()

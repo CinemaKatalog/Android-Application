@@ -27,10 +27,10 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
     /**
      * SharedPreferences хранят только айди авторизованного юзера, либо -1 если юзер не авторизован
      */
-    suspend fun writeCurrentUserIdToShPref(id: Int) {
+    suspend fun writeCurrentUserIdToShPref(id: Long) {
         context.getSharedPreferences(User.SP_ID_KEY, Context.MODE_PRIVATE)
             .edit()
-            .putInt(User.SP_ID_KEY, id)
+            .putLong(User.SP_ID_KEY, id)
             .apply()
     }
 
@@ -45,9 +45,28 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
      * Там лежит сериализованный Юзер, либо null если юзер не авторизован в приложении
      */
     suspend fun getUserById(id: Int): User? {
-        return getUserFromInternalOrNull()
+        val data = MutableLiveData<User>()
+
+        userApiInterface.getUserById(id).enqueue(object : Callback<User> {
+            override fun onFailure(call: Call<User>, t: Throwable) {
+                data.value = null
+            }
+
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val res = response.body()
+                if (response.code() == 200 && res!=null){
+                    data.value = res
+                }else{
+                    data.value = null
+                }
+            }
+        })
+        return data.value
+
+
+        /*return getUserFromInternalOrNull()
             ?: // имитация получения данных из сервера
-            networkUsers.find { it.id == id }
+            networkUsers.find { it.id == id }*/
     }
 
     suspend fun getUserByLogin(login: String): User? {
@@ -116,6 +135,11 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
             Log.e("UserRepository", e.localizedMessage)
             return null
         }
+    }
+
+
+    suspend fun updateUser(user: User){
+        userApiInterface.updateUser(user)
     }
 
 }

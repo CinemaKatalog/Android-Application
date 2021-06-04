@@ -19,5 +19,5 @@ interface CountryDao {
     suspend fun getAllCountry(): List<Country>
 
     @Query("SELECT * FROM Country WHERE country_id == :id")
-    suspend fun getCountryById(id: Int): Country?
+    suspend fun getCountryById(id: Long): Country?
 }

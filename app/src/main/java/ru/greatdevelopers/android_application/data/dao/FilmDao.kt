@@ -29,7 +29,7 @@ interface FilmDao {
     suspend fun getFilmByNameWithExtra(name: String): List<FilmListItem>
 
     @Query("SELECT * FROM Film WHERE film_id == :id")
-    suspend fun getFilmById(id: Int): Film?
+    suspend fun getFilmById(id: Long): Film?
 
     @Query(
         "SELECT Film.film_id, Film.film_name, Genre.genre_name, Film.poster, Film.rating " +
@@ -38,8 +38,8 @@ interface FilmDao {
                 "year >= :minYear AND year <= :maxYear AND rating >= :minRating AND rating <= :maxRating ORDER BY Film.film_name ASC"
     )
     suspend fun getFilmByAllParams(
-        genre: Int,
-        country: Int,
+        genre: Long,
+        country: Long,
         minYear: Int,
         maxYear: Int,
         minRating: Float,
@@ -53,7 +53,7 @@ interface FilmDao {
                 " ORDER BY Film.film_name ASC"
     )
     suspend fun getFilmByParamsWC(
-        genre: Int,
+        genre: Long,
         minYear: Int,
         maxYear: Int,
         minRating: Float,
@@ -68,7 +68,7 @@ interface FilmDao {
                 " ORDER BY Film.film_name ASC"
     )
     suspend fun getFilmByParamsWG(
-        country: Int,
+        country: Long,
         minYear: Int,
         maxYear: Int,
         minRating: Float,

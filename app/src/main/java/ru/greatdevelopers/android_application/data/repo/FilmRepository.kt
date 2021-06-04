@@ -19,10 +19,10 @@ class FilmRepository(private val filmDao: FilmDao, private val favouriteDao: Fav
         return countryDao.getAllCountry()
     }
 
-    suspend fun getGenreById(id: Int): Genre?{
+    suspend fun getGenreById(id: Long): Genre?{
         return genreDao.getGenreById(id)
     }
-    suspend fun getCountryById(id: Int): Country?{
+    suspend fun getCountryById(id: Long): Country?{
         return countryDao.getCountryById(id)
     }
 
@@ -30,7 +30,7 @@ class FilmRepository(private val filmDao: FilmDao, private val favouriteDao: Fav
         return filmDao.getFilmAll()
     }
 
-    suspend fun getFilmById(filmId: Int): Film?{
+    suspend fun getFilmById(filmId: Long): Film?{
         return filmDao.getFilmById(filmId)
     }
 
@@ -42,8 +42,8 @@ class FilmRepository(private val filmDao: FilmDao, private val favouriteDao: Fav
         return filmDao.getFilmByNameWithExtra(filmName)
     }
 
-    suspend fun getFilmByParameters(genre: Int?,
-                                    country: Int?,
+    suspend fun getFilmByParameters(genre: Long?,
+                                    country: Long?,
                                     minYear: Int,
                                     maxYear: Int,
                                     minRating: Float,
@@ -73,7 +73,7 @@ class FilmRepository(private val filmDao: FilmDao, private val favouriteDao: Fav
         favouriteDao.insertFavourite(favourite)
     }
 
-    suspend fun getFavouriteById(filmId: Int, userId: Int): Favourite?{
+    suspend fun getFavouriteById(filmId: Long, userId: Long): Favourite?{
         return favouriteDao.getFavouriteById(filmId, userId)
     }
     suspend fun delFavourite(favourite: Favourite){

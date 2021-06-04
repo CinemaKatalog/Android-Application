@@ -127,8 +127,8 @@ class FilmFragment : Fragment(R.layout.activity_film) {
                 btn_edit_film.visibility = View.VISIBLE
                 btn_edit_film.setOnClickListener {
                     findNavController().navigate(
-                        FilmFragmentDirections.actionFilmFragmentToEditFragment()
-                            .setFilmId(film!!.id)
+                        FilmFragmentDirections.actionFilmFragmentToEditFragment(film!!.id)
+                            //.setFilmId(film!!.id)
                     )
                 }
                 btn_delete_film.visibility = View.VISIBLE
@@ -178,7 +178,7 @@ class FilmFragment : Fragment(R.layout.activity_film) {
         return when (item.itemId) {
             R.id.menu_film_edit -> {
                 findNavController().navigate(
-                    FilmFragmentDirections.actionFilmFragmentToEditFragment().setFilmId(film!!.id)
+                    FilmFragmentDirections.actionFilmFragmentToEditFragment(film!!.id)/*.setFilmId(film!!.id)*/
                 )
                 true
             }

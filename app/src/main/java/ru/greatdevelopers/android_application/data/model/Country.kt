@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(indices = [
     Index(value = ["country_name"], unique = true)
 ])
-data class Country(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "country_id") val id: Int = 0,
+data class Country(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "country_id") val id: Long = 0,
                    @ColumnInfo(name = "country_name") var name: String){
 
     override fun toString(): String {

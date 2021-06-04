@@ -12,7 +12,7 @@ import kotlinx.android.extensions.LayoutContainer
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.R
 
-class BaseItemAdapter(val onClick: (filmId: Int)-> Unit): RecyclerView.Adapter<BaseItemAdapter.ViewHolder>(){
+class BaseItemAdapter(val onClick: (filmId: Long)-> Unit): RecyclerView.Adapter<BaseItemAdapter.ViewHolder>(){
 
 
     private var values: List<FilmListItem> = ArrayList()

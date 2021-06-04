@@ -42,8 +42,8 @@ class SearchViewModel(private val repository: FilmRepository): ViewModel() {
         }
     }
 
-    fun searchByParamsRequest(genre: Int? = null,
-                              country: Int? = null,
+    fun searchByParamsRequest(genre: Long? = null,
+                              country: Long? = null,
                               minYear: Int,
                               maxYear: Int,
                               minRating: Float,

@@ -47,7 +47,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             if (it) {
                 fab_edit.visibility = View.VISIBLE
                 fab_edit.setOnClickListener {
-                    findNavController().navigate(MainFragmentDirections.actionMainFragmentToEditFragment())
+                    findNavController().navigate(MainFragmentDirections.actionMainFragmentToEditFragment(-1))
                 }
             }
         }

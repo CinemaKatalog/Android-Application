@@ -13,7 +13,7 @@ import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 class EditViewModel(
     private val filmRepository: FilmRepository,
     private val cinemaRepository: CinemaRepository,
-    private val filmId: Int? = null
+    private val filmId: Long? = null
 ) : ViewModel() {
 
     private val loadGenreListInfo = MutableLiveData<List<Genre>>()
@@ -109,7 +109,7 @@ class EditViewModel(
         }
     }
 
-    fun deleteFilmCinema(filmId: Int, siteUrl: String, onDelete: () -> Unit) {
+    fun deleteFilmCinema(filmId: Long, siteUrl: String, onDelete: () -> Unit) {
         viewModelScope.launch {
             var filmCinema = cinemaRepository.getFilmCinemaByIds(filmId, siteUrl)
             filmCinema?.let { cinemaRepository.deleteFilmCinema(it) }

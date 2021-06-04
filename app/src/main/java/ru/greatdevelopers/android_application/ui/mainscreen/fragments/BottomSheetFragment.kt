@@ -27,8 +27,8 @@ class BottomSheetFragment(private val searchViewModel: SearchViewModel) :
 
     private lateinit var adapterGenres: ArrayAdapter<Genre>
     private lateinit var adapterCountries: ArrayAdapter<Country>
-    private var selectedCountry: Int? = null
-    private var selectedGenre: Int? = null
+    private var selectedCountry: Long? = null
+    private var selectedGenre: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

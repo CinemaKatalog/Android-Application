@@ -58,7 +58,7 @@
             app:destination="@id/editFragment" />
         <argument
             android:name="filmId"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/editFragment"
@@ -67,8 +67,7 @@
         tools:layout="@layout/activity_edit">
         <argument
             android:name="filmId"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            app:argType="long" />
     </fragment>
 
 </navigation>

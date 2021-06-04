@@ -16,8 +16,8 @@ import androidx.room.ForeignKey.CASCADE
         )]
 )
 data class Favourite(
-    @ColumnInfo(name = "user_id") val userId: Int,
-    @ColumnInfo(name = "film_id") val filmId: Int
+    @ColumnInfo(name = "user_id") val userId: Long,
+    @ColumnInfo(name = "film_id") val filmId: Long
 ) {
 
 }

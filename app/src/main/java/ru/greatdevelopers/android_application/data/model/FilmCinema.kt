@@ -15,7 +15,7 @@ import androidx.room.ForeignKey.CASCADE
     Index(value = ["page_url"], unique = true)
 ])
 data class FilmCinema(@ColumnInfo(name = "page_url") val pageUrl: String,
-                 @ColumnInfo(name = "film_id") var filmId: Int,
+                 @ColumnInfo(name = "film_id") var filmId: Long,
                  @ColumnInfo(name = "site_url") var siteUrl: String,
                  var price:Float,
                  var rating:Float) {

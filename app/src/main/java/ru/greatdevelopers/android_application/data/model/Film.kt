@@ -14,10 +14,10 @@ import androidx.room.PrimaryKey
         parentColumns = ["country_id"], childColumns = ["country"]
     )])
 data class Film(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "film_id") val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "film_id") val id: Long = 0,
     @ColumnInfo(name = "film_name") var name: String,
-    var genre: Int,
-    var country: Int,
+    var genre: Long,
+    var country: Long,
     var producer: String,
     var description: String,
     var poster: String,

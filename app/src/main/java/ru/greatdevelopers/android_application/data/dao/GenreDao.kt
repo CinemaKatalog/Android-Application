@@ -20,5 +20,5 @@ interface GenreDao {
     suspend fun getAllGenre(): List<Genre>
 
     @Query("SELECT * FROM Genre WHERE genre_id == :id")
-    suspend fun getGenreById(id: Int): Genre?
+    suspend fun getGenreById(id: Long): Genre?
 }

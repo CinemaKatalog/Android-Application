@@ -458,11 +458,11 @@ class EditFragment : Fragment(R.layout.activity_edit) {
         return position
     }
 
-    private fun showBottomSheetDialog(filmId: Int, pageUrl: String? = null, cinemaUrl: String? = null) {
+    private fun showBottomSheetDialog(filmId: Long, pageUrl: String? = null, cinemaUrl: String? = null) {
         val view: View = layoutInflater.inflate(R.layout.bottom_sheet_cinema_add, null)
         val dialog = CinemaBottomSheetFragment(editViewModel)
         var arg = Bundle()
-        arg.putInt("film_id", filmId)
+        arg.putLong("film_id", filmId)
         if (cinemaUrl != null) {
             arg.putString("cinema_url", cinemaUrl)
             arg.putString("page_url", pageUrl)
