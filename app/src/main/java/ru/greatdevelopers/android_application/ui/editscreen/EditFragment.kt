@@ -182,7 +182,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 // Проверка наличия разрешений
-                // Если нет разрешения на использование соответсвующих разркешений выполняем какие-то действия
+                // Если нет разрешения на использование соответсвующих разрешений выполняем какие-то действия
                 ActivityCompat.requestPermissions(
                     requireActivity(),
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
@@ -190,16 +190,12 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 )
             }else{
                 val intentPoster = Intent()
-                //intentPoster.type = "image/*"
-                //intentPoster.action = Intent.ACTION_GET_CONTENT
-                /*startActivityForResult(
-                    Intent.createChooser(intentPoster, "select a picture"),
-                    YOUR_IMAGE_CODE
-                )*/
                 intentPoster.action = Intent.ACTION_OPEN_DOCUMENT
                 intentPoster.addCategory(Intent.CATEGORY_OPENABLE)
                 intentPoster.type = "image/*"
                 startActivityForResult(Intent.createChooser(intentPoster, "select a picture"), YOUR_IMAGE_CODE)
+
+
             }
         }
         btn_edit_save.setOnClickListener {
@@ -497,6 +493,8 @@ class EditFragment : Fragment(R.layout.activity_edit) {
             if (resultCode == RESULT_OK) {
                 selectedImageUri = data?.data
                 iv_edit_poster.setImageURI(selectedImageUri)
+
+                selectedImageUri?.let { editViewModel.insertPoster(it) }
 
                 val takeFlags: Int = (data?.flags!!
                         and (Intent.FLAG_GRANT_READ_URI_PERMISSION

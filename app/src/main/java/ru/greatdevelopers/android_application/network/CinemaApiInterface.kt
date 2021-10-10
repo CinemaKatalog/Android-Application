@@ -18,7 +18,8 @@ interface CinemaApiInterface {
     @GET("edit/loadCinema")
     suspend fun getAllCinema(): List<Cinema>
 
-    @GET("film/loadFilmCinema/{id}")
+    @GET("edit/loadFilmCinema/{id}")
+    //@GET("film/loadFilmCinema/{id}")
     suspend fun getFilmCinemaWithName(@Path("id") id: Long): List<CinemaListItem>
 
     @POST("edit/filmCinema")

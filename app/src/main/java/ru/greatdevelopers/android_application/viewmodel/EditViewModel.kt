@@ -1,5 +1,6 @@
 package ru.greatdevelopers.android_application.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -47,7 +48,7 @@ class EditViewModel(
         }
     }
 
-    fun spinnerInitRequest(){
+    fun spinnerInitRequest() {
         viewModelScope.launch {
             loadGenreListInfo.postValue(filmRepository.getAllGenres())
             loadCountryListInfo.postValue(filmRepository.getAllCountries())
@@ -66,6 +67,13 @@ class EditViewModel(
         viewModelScope.launch {
             filmRepository.insertFilm(film)
             onInsert()
+        }
+    }
+
+    fun insertPoster(fileUri: Uri) {
+        viewModelScope.launch {
+            val tmp = filmRepository.insertPoster(fileUri)
+            if (tmp!=null) println(tmp) else println("\n sent VM")
         }
     }
 
@@ -133,8 +141,6 @@ class EditViewModel(
     }
 
 
-
-
     fun initialRequestCinemas(siteUrl: String? = null) {
         viewModelScope.launch {
             loadFilmCinemaInfo.postValue(siteUrl?.let {
@@ -146,7 +152,7 @@ class EditViewModel(
         }
     }
 
-    fun cinemaInitRequest(){
+    fun cinemaInitRequest() {
         viewModelScope.launch {
             loadCinemaInfo.postValue(cinemaRepository.getAllCinema())
         }

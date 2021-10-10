@@ -15,7 +15,7 @@ import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.GroupAdapter
 import ru.greatdevelopers.android_application.viewmodel.MainViewModel
 
-class MainFragment : Fragment(R.layout.fragment_main) {
+class  MainFragment : Fragment(R.layout.fragment_main) {
 
     private val mainViewModel by viewModel<MainViewModel>()
 
@@ -52,10 +52,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
         }
 
-        /*val id: Int = requireContext().getSharedPreferences(User.SP_ID_KEY, Context.MODE_PRIVATE)
-            .getInt(User.SP_ID_KEY, -1)*/
-
-        mainViewModel.initialRequest(/*id*/) {
+        mainViewModel.initialRequest() {
             filmsGroupList.clear()
             mainViewModel.initGroupsRequest() {
                 recyclerViewAdapter.setItemList(filmsGroupList)

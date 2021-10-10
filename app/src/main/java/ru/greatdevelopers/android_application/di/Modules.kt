@@ -172,9 +172,9 @@ val databaseModule = module {
 }
 
 val repositoryModule = module {
-    fun filmRepository(filmDao: FilmDao, favouriteDao: FavouriteDao, genreDao: GenreDao, countryDao: CountryDao, filmApiInterface: FilmApiInterface): FilmRepository {
+    /*fun filmRepository(filmDao: FilmDao, favouriteDao: FavouriteDao, genreDao: GenreDao, countryDao: CountryDao, filmApiInterface: FilmApiInterface): FilmRepository {
         return FilmRepository(filmDao, favouriteDao, genreDao, countryDao, filmApiInterface)
-    }
+    }*/
 
     fun profileRepository(userDao: UserDao): ProfileRepository {
         return ProfileRepository(userDao)
@@ -184,11 +184,11 @@ val repositoryModule = module {
         return CinemaRepository(filmCinemaDao, cinemaDao, cinemaApiInterface)
     }
 
-    single { filmRepository(get(), get(), get(), get(), get()) }
+    single { FilmRepository(androidContext(), get(), get(), get(), get(), get()) }
 
-    single { profileRepository(get()) }
+    single { ProfileRepository(get()) }
 
-    single { cinemaRepository(get(), get(), get()) }
+    single { CinemaRepository(get(), get(), get()) }
 
     single { UserRepository(androidContext(), get()) }
 }

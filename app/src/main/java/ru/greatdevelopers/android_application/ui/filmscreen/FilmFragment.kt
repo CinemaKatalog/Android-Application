@@ -144,7 +144,9 @@ class FilmFragment : Fragment(R.layout.activity_film) {
 
             fab_add_favourite.setOnClickListener {
                 if (isFavourite) {
-                    filmViewModel.deleteFavourite(foundFavour)
+                    filmViewModel.deleteFavourite(foundFavour) {
+                        filmViewModel.favouriteRequest()
+                    }
                 } else {
                     filmViewModel.insertFavourite(Favourite(user!!.id, film!!.id)) {
                         filmViewModel.favouriteRequest()

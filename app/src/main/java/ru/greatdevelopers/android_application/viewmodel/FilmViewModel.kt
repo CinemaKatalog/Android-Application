@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import ru.greatdevelopers.android_application.data.model.*
 import ru.greatdevelopers.android_application.data.repo.CinemaRepository
 import ru.greatdevelopers.android_application.data.repo.FilmRepository
@@ -57,7 +58,12 @@ class FilmViewModel(
             loadUser()
             val tmpFilm = filmId.let { filmRepository.getFilmById(it) }
             loadFilmInfo.postValue(tmpFilm)
-            loadFavourite.postValue(filmRepository.getFavouriteById(filmId, loadUser.value!!.id))
+            val favourite = try{
+                filmRepository.getFavouriteById(filmId, loadUser.value!!.id)
+            }catch (ex: HttpException){
+                null
+            }
+            loadFavourite.postValue(favourite)
             loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaByFilm(filmId))
             loadGenreInfo.postValue(tmpFilm?.let { filmRepository.getGenreById(it.genre) })
             loadCountryInfo.postValue(tmpFilm?.let { filmRepository.getCountryById(it.country) })
@@ -78,9 +84,10 @@ class FilmViewModel(
         }
     }
 
-    fun deleteFavourite(favourite: Favourite){
+    fun deleteFavourite(favourite: Favourite, onDelete: () -> Unit){
         viewModelScope.launch {
             filmRepository.delFavourite(favourite)
+            onDelete()
         }
     }
 

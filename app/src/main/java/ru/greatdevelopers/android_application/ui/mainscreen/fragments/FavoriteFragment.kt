@@ -17,7 +17,6 @@ import ru.greatdevelopers.android_application.ui.mainscreen.adapters.BaseItemAda
 import ru.greatdevelopers.android_application.viewmodel.FavouriteViewModel
 
 class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
-    //private val user: User by inject<User> ()
     private val favouriteViewModel by viewModel<FavouriteViewModel>()
 
 
@@ -27,44 +26,14 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
         super.onViewCreated(view, savedInstanceState)
         initView()
         initVM()
-        /*favouriteViewModel.user.observe(viewLifecycleOwner){foundUser ->
-            if (foundUser == null) {
 
-                group_signed.visibility = View.GONE
-                group_unsigned.visibility = View.VISIBLE
 
-                return@observe
-            }else{
-                group_unsigned.visibility =View.GONE
-                group_signed.visibility = View.VISIBLE
-            }
-        }*/
-
-        //val userId = requireArguments().getInt("user_id")
-        //recyclerView = view.findViewById(R.id.recycle_view_favorite)
-
-        /*recyclerViewAdapter = BaseItemAdapter() {
-            val intent = Intent(
-                activity,
-                FilmActivity::class.java
-            )
-            intent.putExtra("film_id", it)
-            //intent.putExtra("user_id", user.id)
-            activity?.startActivity(intent)
-        }
-        recycle_view_favorite.adapter = recyclerViewAdapter
-        recycle_view_favorite.layoutManager = GridLayoutManager(activity, 3)*/
-
-        /*favouriteViewModel.favoriteFilms.observe(viewLifecycleOwner, Observer { films ->
-            recyclerViewAdapter.setItemList(films)
-        })*/
-        //favouriteViewModel.initialRequest()
     }
 
     override fun onResume() {
         super.onResume()
         favouriteViewModel.loadUser()
-        favouriteViewModel.initialRequest()
+        //favouriteViewModel.initialRequest()
     }
 
     private fun initView(){
@@ -79,7 +48,6 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
         recycle_view_favorite.layoutManager = GridLayoutManager(activity, 3)
 
         btn_not_authorized_favor.setOnClickListener {
-            /*findNavController().navigate(R.id.sign_nav_graph)*/
             (requireParentFragment().requireParentFragment() as MenuFragment).findNavController()
                 .navigate(MenuFragmentDirections.actionMenuFragmentToSignInFragment())
         }
@@ -94,11 +62,10 @@ class FavoriteFragment() : Fragment(R.layout.fragment_favorite){
             }else{
                 group_unsignet_favor.visibility =View.GONE
                 recycle_view_favorite.visibility = View.VISIBLE
+                favouriteViewModel.favoriteFilms.observe(viewLifecycleOwner, Observer { films ->
+                    recyclerViewAdapter.setItemList(films)
+                })
             }
         }
-
-        favouriteViewModel.favoriteFilms.observe(viewLifecycleOwner, Observer { films ->
-            recyclerViewAdapter.setItemList(films)
-        })
     }
 }

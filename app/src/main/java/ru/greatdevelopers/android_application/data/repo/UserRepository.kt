@@ -2,14 +2,11 @@ package ru.greatdevelopers.android_application.data.repo
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import ru.greatdevelopers.android_application.data.model.User
 import ru.greatdevelopers.android_application.data.reqmodel.LoginUser
 import ru.greatdevelopers.android_application.network.UserApiInterface
+import ru.greatdevelopers.android_application.utils.Utils.safeApiCall
 import java.io.File
 
 class UserRepository(val context: Context, private val userApiInterface: UserApiInterface) {
@@ -17,12 +14,6 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
     companion object {
         const val FILE_CURRENT_USER = "current_user"
     }
-
-    // имитация данных из сервера
-    private val networkUsers = mutableListOf<User>(
-        User(1, "Nikola", "nik@mail.ru", "12345678", "admin"),
-        User(2, "Farkhad", "far@mail.ru", "12345678", "user")
-    )
 
     /**
      * SharedPreferences хранят только айди авторизованного юзера, либо -1 если юзер не авторизован
@@ -63,62 +54,68 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
         })
         return data.value*/
 
-        return  getUserFromInternalOrNull() ?:userApiInterface.getUserById(id)
+        println("/n $id")
 
-
-        /*return getUserFromInternalOrNull()
-            ?: // имитация получения данных из сервера
-            networkUsers.find { it.id == id }*/
+        //TODO if call returns 404 exit
+        //
+        return getUserFromInternalOrNull() ?: getUserFromApiOrNull(id)
     }
 
-    suspend fun getUserByLogin(login: String): User? {
-        return getUserFromInternalOrNull()
-            ?: // имитация получения данных из сервера
-            networkUsers.find { it.login == login }
+    private suspend fun getUserFromApiOrNull(id: Long): User? {
+
+        return if(id == -1L) {
+            null
+        }else {
+            val user = safeApiCall(
+                call = { userApiInterface.getUserById(id) },
+                errorMessage = "Error Fetching User"
+            )
+            if (user != null) {
+                user
+            } else {
+                writeCurrentUserIdToShPref(-1)
+                writeUserToInternal(null)
+                null
+            }
+        }
     }
+
+    suspend fun checkUserById(id: Long): Long {
+        return if(id == -1L) {
+            -1L
+        }
+        else {
+            if (safeApiCall(
+                    call = { userApiInterface.getUserById(id) },
+                    errorMessage = "Error Fetching User"
+                ) != null
+            ) {
+                id
+            } else {
+                writeCurrentUserIdToShPref(-1)
+                writeUserToInternal(null)
+                //getCurrentUserIdFromShPref()
+                -1L
+            }
+        }
+    }
+
 
     suspend fun loginUser(loginUser: LoginUser): User? {
-        /*val data = MutableLiveData<User>()
 
-        userApiInterface.signIn(loginUser).enqueue(object : Callback<User> {
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                data.value = null
-            }
-
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                val res = response.body()
-                if (response.code() == 200 && res != null) {
-                    data.value = res
-                    println("1 - " + data.value)
-                } else {
-                    data.value = null
-                }
-            }
-        })
-        return data.value*/
-        return userApiInterface.signIn(loginUser)
+        return safeApiCall(
+            call = { userApiInterface.signIn(loginUser) },
+            errorMessage = "Error Login User"
+        )
     }
 
     suspend fun registerUser(user: User): User? {
-        /*val data = MutableLiveData<User>()
 
-        userApiInterface.signUp(user).enqueue(object : Callback<User> {
-            override fun onFailure(call: Call<User>, t: Throwable) {
-                data.value = null
-            }
 
-            override fun onResponse(call: Call<User>, response: Response<User>) {
-                val res = response.body()
-                if (response.code() == 200 && res!=null){
-                    data.value = res
-                }else{
-                    data.value = null
-                }
-            }
-        })
-        return data.value*/
-
-        return userApiInterface.signUp(user)
+        return safeApiCall(
+            call = { userApiInterface.signUp(user) },
+            errorMessage = "Error Register User"
+        )
     }
 
     suspend fun writeUserToInternal(user: User?) {
@@ -144,8 +141,12 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
     }
 
 
-    suspend fun updateUser(user: User){
-        userApiInterface.updateUser(user)
+    suspend fun updateUser(user: User) {
+
+        safeApiCall(
+            call = { userApiInterface.updateUser(user) },
+            errorMessage = "Error Fetching User"
+        )
     }
 
 }

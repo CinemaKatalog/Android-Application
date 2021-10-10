@@ -1,6 +1,9 @@
 package ru.greatdevelopers.android_application.network
 
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 import ru.greatdevelopers.android_application.data.model.*
 import ru.greatdevelopers.android_application.data.reqmodel.FavouriteRequest
@@ -8,6 +11,7 @@ import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFavourite
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFilm
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFilmCinema
+import ru.greatdevelopers.android_application.data.respmodel.ResponsePoster
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
@@ -42,8 +46,9 @@ interface FilmApiInterface {
     @POST("favourite/is_favourite")
     suspend fun getFavouriteById(@Body favouriteRequest: FavouriteRequest): ResponseFavourite?
 
-    @DELETE("favourite/delete")
-    suspend fun deleteFavourite(@Body favourite: Favourite)
+    //@DELETE("favourite/delete")
+    @HTTP(method = "DELETE",path = "favourite/delete", hasBody = true)
+    suspend fun deleteFavourite(@Field("favourite") favourite: Favourite)
 
     @DELETE("edit/film")
     suspend fun deleteFilm(@Query("id") id: Long)
@@ -68,4 +73,8 @@ interface FilmApiInterface {
 
     @PUT("edit/film")
     suspend fun updateFilm(@Body film: Film)
+
+    @Multipart
+    @POST("edit/poster")
+    suspend fun insertPoster(@Part image: MultipartBody.Part): Response<ResponsePoster>
 }

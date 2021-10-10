@@ -36,16 +36,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 val password = et_sign_in_password.text.toString()
 
                 viewModel.loginRequest(LoginUser(login, password)) { user: User? ->
-                    /*if (user.password == password) {
-                        viewModel.saveUser(user)
-                        goToMenuActivity(user)
-                    } else {
-                        Utils.showToast(
-                            requireContext(),
-                            getString(R.string.text_sign_up_incorrect), Toast.LENGTH_SHORT
-                        )
-                    }*/
-                    println("3 - " + user)
                     if (user != null) {
                         viewModel.saveUser(user)
                         goToMenuActivity(user)
@@ -62,8 +52,6 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                     getString(R.string.text_not_complete), Toast.LENGTH_SHORT
                 )
             }
-
-
         }
 
         btn_login_sign_up.setOnClickListener {
@@ -72,17 +60,12 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     }
 
     private fun goToMenuActivity(user: User) {
-        /*findNavController().navigate(
-            SignInFragmentDirections.actionSignInFragmentToMenuFragment()
-        )*/
-
         findNavController().navigate(
             SignInFragmentDirections.actionSignInFragmentToMenuFragment()
         )
     }
 
     private fun goToSignUpFragment() {
-        //findNavController().navigate(SignInFragmentDirections.actionSignInFragmentToSignUpFragment())
         findNavController().navigate(
             SignInFragmentDirections.actionSignInFragmentToSignUpFragment()
         )

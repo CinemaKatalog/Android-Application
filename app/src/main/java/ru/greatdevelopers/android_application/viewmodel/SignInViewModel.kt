@@ -19,11 +19,10 @@ class SignInViewModel(
     val user: LiveData<User>
         get() = loadUser
 
-    fun loginRequest(/*login: String*/ loginUser: LoginUser, onResult: (user: User?) -> Unit) {
+    fun loginRequest(loginUser: LoginUser, onResult: (user: User?) -> Unit) {
         viewModelScope.launch {
             //val tmpUser = userRepo.getUserByLogin(login)
             val tmpUser = userRepo.loginUser(loginUser)
-            println("2 - " + tmpUser)
             if (tmpUser != null) {
                 loadUser.postValue(tmpUser)
             }
@@ -35,7 +34,7 @@ class SignInViewModel(
         viewModelScope.launch {
             userRepo.writeCurrentUserIdToShPref(user.id)
             userRepo.writeUserToInternal(user)
-            println(userRepo.getCurrentUserIdFromShPref())
+            //println(userRepo.getCurrentUserIdFromShPref())
         }
     }
 }

@@ -5,7 +5,7 @@ import ru.greatdevelopers.android_application.data.model.User
 
 data class ResponseFavourite(
 
-    val responseUser: User,
-    val responseFilm: ResponseFilm
+    val user: User,
+    val film: ResponseFilm
 )
 

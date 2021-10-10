@@ -1,5 +1,12 @@
 package ru.greatdevelopers.android_application.data.repo
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import ru.greatdevelopers.android_application.data.dao.CountryDao
 import ru.greatdevelopers.android_application.data.dao.FavouriteDao
 import ru.greatdevelopers.android_application.data.dao.FilmDao
@@ -12,8 +19,11 @@ import ru.greatdevelopers.android_application.data.reqmodel.FavouriteRequest
 import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
 import ru.greatdevelopers.android_application.network.FilmApiInterface
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
+import ru.greatdevelopers.android_application.utils.Utils.safeApiCall
+import java.io.*
 
 class FilmRepository(
+    val context: Context,
     private val filmDao: FilmDao,
     private val favouriteDao: FavouriteDao,
     private val genreDao: GenreDao,
@@ -82,16 +92,6 @@ class FilmRepository(
         minRating: Float,
         maxRating: Float
     ): List<FilmListItem> {
-        /*return if (genre == null && country == null) {
-            filmDao.getFilmByParamsWGC(maxYear, minYear, minRating, maxRating)
-        } else if (genre == null) {
-            filmDao.getFilmByParamsWG(country!!, maxYear, minYear, minRating, maxRating)
-        } else if (country == null) {
-            filmDao.getFilmByParamsWC(genre, maxYear, minYear, minRating, maxRating)
-        } else {
-            filmDao.getFilmByAllParams(genre, country, maxYear, minYear, minRating, maxRating)
-        }*/
-
         return filmApiInterface.getFilmByParameters(
             SearchParams(
                 genre,
@@ -120,16 +120,19 @@ class FilmRepository(
 
     suspend fun getFavouriteById(filmId: Long, userId: Long): Favourite? {
         //return favouriteDao.getFavouriteById(filmId, userId)
-        val film = filmApiInterface.getFavouriteById(FavouriteRequest(userId = userId, filmId = filmId))
+        val film =
+            filmApiInterface.getFavouriteById(FavouriteRequest(userId = userId, filmId = filmId))
+        println("$userId $filmId")
         return if (film != null) {
             Favourite(
-                filmId = film.responseFilm.id,
-                userId = film.responseUser.id
+                filmId = film.film.id,
+                userId = film.user.id
             )
         } else {
             null
         }
     }
+
     suspend fun insertFavourite(favourite: Favourite) {
         filmApiInterface.insertFavourite(favourite)
         //favouriteDao.insertFavourite(favourite)
@@ -144,6 +147,37 @@ class FilmRepository(
     suspend fun insertFilm(film: Film) {
         filmApiInterface.insertFilm(film)
         //filmDao.insertFilm(film)
+    }
+
+    suspend fun insertPoster(fileUri: Uri): String? {
+        val file = File(context.cacheDir, "tmp")
+        file.createNewFile()
+        val inputStream = context.contentResolver.openInputStream(fileUri).use { input ->
+            FileOutputStream(file).buffered().use { output ->
+                BitmapFactory.decodeStream(input, null, BitmapFactory.Options())
+                    ?.compress(
+                        Bitmap.CompressFormat.JPEG,
+                        100,
+                        output
+                    )
+            }
+        }
+
+        val requestBody = file.asRequestBody("image/jpg".toMediaTypeOrNull())
+
+        val tmp = safeApiCall(call = {
+            filmApiInterface.insertPoster(
+                MultipartBody.Part.createFormData(
+                    name = "file",
+                    filename = file.name,
+                    body = requestBody
+                )
+            )
+        }, errorMessage = "Image upload Error")?.fileUUID
+        println(tmp)
+        return tmp
+
+
     }
 
     suspend fun insertGenre(genre: Genre) {

@@ -36,11 +36,14 @@ class MainViewModel(
     val isAdmin: LiveData<Boolean>
         get() = loadIsAdmin
 
-    fun initialRequest(/*userId: Int, */onFoundUser: () -> Unit) {
+    fun initialRequest(onFoundUser: () -> Unit) {
         viewModelScope.launch {
-            //loadIsAdmin.postValue(userRepo.getUserById(userId)?.userType == "admin")
-            val userId = userRepo.getCurrentUserIdFromShPref()
-            loadIsAdmin.postValue(userRepo.getUserById(userId)?.userType == "admin")
+            val userId = userRepo.checkUserById(userRepo.getCurrentUserIdFromShPref())
+            if (userId != -1L) {
+                loadIsAdmin.postValue(userRepo.getUserById(userId)?.userType == "admin")
+            } else {
+                loadIsAdmin.postValue(false)
+            }
             onFoundUser()
             loadFilms.postValue(filmRepository.getFilmsWithExtra())
         }
