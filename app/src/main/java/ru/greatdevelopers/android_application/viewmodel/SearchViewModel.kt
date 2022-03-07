@@ -11,7 +11,7 @@ import ru.greatdevelopers.android_application.data.model.Genre
 import ru.greatdevelopers.android_application.data.repo.FilmRepository
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
-class SearchViewModel(private val repository: FilmRepository): ViewModel() {
+class SearchViewModel(private val repository: FilmRepository) : ViewModel() {
 
     private val loadFilms = MutableLiveData<List<FilmListItem>>()
     val allFilms: LiveData<List<FilmListItem>>
@@ -23,33 +23,44 @@ class SearchViewModel(private val repository: FilmRepository): ViewModel() {
     val country: LiveData<List<Country>>
         get() = loadCountryInfo
 
-    fun initialRequest(){
+    fun initialRequest() {
         viewModelScope.launch {
             loadFilms.postValue(repository.getFilmsWithExtra())
         }
     }
 
-    fun initialRequestOptions(){
+    fun initialRequestOptions() {
         viewModelScope.launch {
-            loadCountryInfo.postValue(repository.getAllCountries())
-            loadGenreInfo.postValue(repository.getAllGenres())
+            loadCountryInfo.postValue(listOf(Country(name = "Не выбрано")) + repository.getAllCountries())
+            loadGenreInfo.postValue(listOf(Genre(name = "Не выбрано")) + repository.getAllGenres())
         }
     }
 
-    fun searchRequest(query: String?){
+    fun searchRequest(query: String?) {
         viewModelScope.launch {
             loadFilms.postValue(query?.let { repository.getFilmByNameWithExtra(it) })
         }
     }
 
-    fun searchByParamsRequest(genre: Long? = null,
-                              country: Long? = null,
-                              minYear: Int,
-                              maxYear: Int,
-                              minRating: Float,
-                              maxRating: Float){
+    fun searchByParamsRequest(
+        genre: Long? = null,
+        country: Long? = null,
+        minYear: Int,
+        maxYear: Int,
+        minRating: Float,
+        maxRating: Float
+    ) {
         viewModelScope.launch {
-            loadFilms.postValue(repository.getFilmByParameters(genre, country, minYear, maxYear, minRating, maxRating))
+            loadFilms.postValue(
+                repository.getFilmByParameters(
+                    genre,
+                    country,
+                    minYear,
+                    maxYear,
+                    minRating,
+                    maxRating
+                )
+            )
         }
     }
 

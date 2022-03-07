@@ -122,7 +122,6 @@ class FilmRepository(
         //return favouriteDao.getFavouriteById(filmId, userId)
         val film =
             filmApiInterface.getFavouriteById(FavouriteRequest(userId = userId, filmId = filmId))
-        println("$userId $filmId")
         return if (film != null) {
             Favourite(
                 filmId = film.film.id,
@@ -141,7 +140,7 @@ class FilmRepository(
 
     suspend fun delFavourite(favourite: Favourite) {
         //favouriteDao.deleteFavourite(favourite)
-        filmApiInterface.deleteFavourite(favourite)
+        filmApiInterface.deleteFavourite(favourite.userId, favourite.filmId)
     }
 
     suspend fun insertFilm(film: Film) {
@@ -165,7 +164,7 @@ class FilmRepository(
 
         val requestBody = file.asRequestBody("image/jpg".toMediaTypeOrNull())
 
-        val tmp = safeApiCall(call = {
+        return safeApiCall(call = {
             filmApiInterface.insertPoster(
                 MultipartBody.Part.createFormData(
                     name = "file",
@@ -174,10 +173,6 @@ class FilmRepository(
                 )
             )
         }, errorMessage = "Image upload Error")?.fileUUID
-        println(tmp)
-        return tmp
-
-
     }
 
     suspend fun insertGenre(genre: Genre) {

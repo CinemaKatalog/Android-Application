@@ -50,8 +50,8 @@ class EditViewModel(
 
     fun spinnerInitRequest() {
         viewModelScope.launch {
-            loadGenreListInfo.postValue(filmRepository.getAllGenres())
-            loadCountryListInfo.postValue(filmRepository.getAllCountries())
+            loadGenreListInfo.postValue(listOf(Genre(name = "Не выбрано")) + filmRepository.getAllGenres())
+            loadCountryListInfo.postValue(listOf(Country(name = "Не выбрано")) + filmRepository.getAllCountries())
         }
     }
 
@@ -73,7 +73,6 @@ class EditViewModel(
     fun insertPoster(fileUri: Uri) {
         viewModelScope.launch {
             val tmp = filmRepository.insertPoster(fileUri)
-            if (tmp!=null) println(tmp) else println("\n sent VM")
         }
     }
 

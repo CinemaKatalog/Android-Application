@@ -74,7 +74,12 @@ class FilmViewModel(
     fun favouriteRequest() {
         viewModelScope.launch {
             val userId = loadUser.value!!.id
-            loadFavourite.postValue(filmRepository.getFavouriteById(filmId, userId))
+            val favourite = try{
+                filmRepository.getFavouriteById(filmId, userId)
+            }catch (ex: HttpException){
+                null
+            }
+            loadFavourite.postValue(favourite)
         }
     }
 

@@ -54,9 +54,7 @@ class UserRepository(val context: Context, private val userApiInterface: UserApi
         })
         return data.value*/
 
-        println("/n $id")
-
-        //TODO if call returns 404 exit
+        //println("/n $id")
         //
         return getUserFromInternalOrNull() ?: getUserFromApiOrNull(id)
     }

@@ -48,7 +48,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
     private val args: EditFragmentArgs by navArgs()
 
     private val editViewModel by viewModel<EditViewModel> {
-        parametersOf(if(args.filmId != -1L) args.filmId else null)
+        parametersOf(if (args.filmId != -1L) args.filmId else null)
     }
     private var film: Film? = null
 
@@ -86,6 +86,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
         )
         edit_toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         edit_toolbar.setNavigationOnClickListener() {
+            findNavController().popBackStack()
             //onBackPressed() // возврат на предыдущий activity
         }
 
@@ -120,7 +121,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 countryList = it as ArrayList<Country>
 
                 if (isEditMode) {
-                    spinner_edit_country.setSelection(getCountryPosition(film))
+                    spinner_edit_country.setSelection(getCountryPosition(film) + 1) //+1 из-за фиктивного элемента "не выбрано"
                 }
             }
         })
@@ -132,7 +133,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 genreList = it as ArrayList<Genre>
 
                 if (isEditMode) {
-                    spinner_edit_genre.setSelection(getGenrePosition(film))
+                    spinner_edit_genre.setSelection(getGenrePosition(film) + 1) //+1 из-за фиктивного элемента "не выбрано"
                 }
             }
         })
@@ -147,10 +148,10 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 }
                 selectedImageUri = Uri.parse(foundFilm.poster)
 
-                try{
+                try {
                     iv_edit_poster.setImageURI(selectedImageUri)
 
-                }catch (e: SecurityException){
+                } catch (e: SecurityException) {
                     Utils.showToast(
                         requireContext(), "Photo load exception", Toast.LENGTH_SHORT
                     )
@@ -188,12 +189,15 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     READ_EXTERNAL_STORAGE_PERMISSION_CODE
                 )
-            }else{
+            } else {
                 val intentPoster = Intent()
                 intentPoster.action = Intent.ACTION_OPEN_DOCUMENT
                 intentPoster.addCategory(Intent.CATEGORY_OPENABLE)
                 intentPoster.type = "image/*"
-                startActivityForResult(Intent.createChooser(intentPoster, "select a picture"), YOUR_IMAGE_CODE)
+                startActivityForResult(
+                    Intent.createChooser(intentPoster, "select a picture"),
+                    YOUR_IMAGE_CODE
+                )
 
 
             }
@@ -279,7 +283,8 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                                 requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
-                            editViewModel.initialRequest()
+                            //editViewModel.initialRequest()
+                            editViewModel.spinnerInitRequest()
                         }
                     } else {
                         Utils.showToast(
@@ -317,7 +322,9 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                                 requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
-                            editViewModel.initialRequest()
+                            //editViewModel.initialRequest()
+                            editViewModel.spinnerInitRequest()
+
                         }
                     } else {
                         Utils.showToast(
@@ -329,7 +336,8 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
 
                 }
-            addAlert.create().show() }
+            addAlert.create().show()
+        }
         btn_add_genre.setOnClickListener {
             val promptsView: View =
                 LayoutInflater.from(requireContext()).inflate(R.layout.alert_country_genre, null)
@@ -348,7 +356,9 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                                 requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
-                            editViewModel.initialRequest()
+                            //editViewModel.initialRequest()
+                            editViewModel.spinnerInitRequest()
+
                         }
                     } else {
                         Utils.showToast(
@@ -360,7 +370,8 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
 
                 }
-            addAlert.create().show() }
+            addAlert.create().show()
+        }
         btn_change_genre.setOnClickListener {
             val promptsView: View =
                 LayoutInflater.from(requireContext()).inflate(R.layout.alert_country_genre, null)
@@ -384,7 +395,9 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                                 requireContext(),
                                 getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
                             )
-                            editViewModel.initialRequest()
+                            //editViewModel.initialRequest()
+                            editViewModel.spinnerInitRequest()
+
                         }
                     } else {
                         Utils.showToast(
@@ -418,8 +431,11 @@ class EditFragment : Fragment(R.layout.activity_edit) {
     private fun initSpinners() {
 
         // Создаем адаптер ArrayAdapter с помощью массива строк и стандартной разметки элемета spinner
-        adapterGenres =
-            ArrayAdapter<Genre>(requireContext(), android.R.layout.simple_spinner_item, genreList)
+        adapterGenres = ArrayAdapter<Genre>(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            genreList
+        )
         adapterCountries = ArrayAdapter<Country>(
             requireContext(),
             android.R.layout.simple_spinner_item,
@@ -437,24 +453,28 @@ class EditFragment : Fragment(R.layout.activity_edit) {
     private fun getCountryPosition(film: Film?): Int {
         var position: Int = 0
 
-        for(i in this.countryList){
+        for (i in this.countryList) {
             if (this.countryList[position].id == film?.country) break else position++
         }
 
-        return position
+        return position - 1 //-1 из-за фиктивного элемента "не выбрано"
     }
 
     private fun getGenrePosition(film: Film?): Int {
         var position: Int = 0
 
-        for(i in 1 .. adapterGenres.count){
+        for (i in 1..adapterGenres.count) {
             if (this.genreList[position].id == film?.genre) break else position++
         }
 
-        return position
+        return position - 1 //-1 из-за фиктивного элемента "не выбрано"
     }
 
-    private fun showBottomSheetDialog(filmId: Long, pageUrl: String? = null, cinemaUrl: String? = null) {
+    private fun showBottomSheetDialog(
+        filmId: Long,
+        pageUrl: String? = null,
+        cinemaUrl: String? = null
+    ) {
         val view: View = layoutInflater.inflate(R.layout.bottom_sheet_cinema_add, null)
         val dialog = CinemaBottomSheetFragment(editViewModel)
         var arg = Bundle()
@@ -470,15 +490,11 @@ class EditFragment : Fragment(R.layout.activity_edit) {
     }
 
     private fun showCurrentMode(isEdit: Boolean) {
-
         if (isEdit) {
             btn_add_cinema.visibility = View.VISIBLE
-            //spinner_edit_country.setSelection(getCountryPosition(film))
-            //spinner_edit_genre.setSelection(getGenrePosition(film))
         } else {
             btn_add_cinema.visibility = View.GONE
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -531,4 +547,6 @@ class EditFragment : Fragment(R.layout.activity_edit) {
             }
         }
     }
+
+
 }

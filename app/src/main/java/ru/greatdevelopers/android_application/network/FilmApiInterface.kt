@@ -46,9 +46,8 @@ interface FilmApiInterface {
     @POST("favourite/is_favourite")
     suspend fun getFavouriteById(@Body favouriteRequest: FavouriteRequest): ResponseFavourite?
 
-    //@DELETE("favourite/delete")
-    @HTTP(method = "DELETE",path = "favourite/delete", hasBody = true)
-    suspend fun deleteFavourite(@Field("favourite") favourite: Favourite)
+    @DELETE("favourite/delete")
+    suspend fun deleteFavourite(@Query("userId") userId: Long, @Query("filmId") filmId: Long)
 
     @DELETE("edit/film")
     suspend fun deleteFilm(@Query("id") id: Long)

@@ -28,7 +28,7 @@
     <string name="film_et_name">Название</string>
     <string name="film_et_description">Описание</string>
     <string name="options_genre">Жанр</string>
-    <string name="options_country">Страны</string>
+    <string name="options_country">Страна</string>
     <string name="options_year">Год</string>
     <string name="options_year_from">От</string>
     <string name="options_year_to">До</string>

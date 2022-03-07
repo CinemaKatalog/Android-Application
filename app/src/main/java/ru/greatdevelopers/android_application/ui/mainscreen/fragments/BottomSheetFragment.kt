@@ -110,12 +110,13 @@ class BottomSheetFragment(private val searchViewModel: SearchViewModel) :
                 position: Int,
                 id: Long
             ) {
-                selectedCountry = if (parent?.getItemAtPosition(position).toString() == "Не выбрано"){
-                    null
-                }else {
-                    //parent?.getItemAtPosition(position).toString()
-                    (parent?.getItemAtPosition(position) as Country).id
-                }
+                selectedCountry =
+                    if (parent?.getItemAtPosition(position).toString() == "Не выбрано") {
+                        null
+                    } else {
+                        //parent?.getItemAtPosition(position).toString()
+                        (parent?.getItemAtPosition(position) as Country).id
+                    }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -130,11 +131,12 @@ class BottomSheetFragment(private val searchViewModel: SearchViewModel) :
                 position: Int,
                 id: Long
             ) {
-                selectedGenre = if(parent?.getItemAtPosition(position).toString() == "Любой"){
-                    null
-                }else{
-                    (parent?.getItemAtPosition(position) as Genre).id
-                }
+                selectedGenre =
+                    if (parent?.getItemAtPosition(position).toString() == "Не выбрано") {
+                        null
+                    } else {
+                        (parent?.getItemAtPosition(position) as Genre).id
+                    }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
