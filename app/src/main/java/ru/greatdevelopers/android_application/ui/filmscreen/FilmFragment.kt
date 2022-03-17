@@ -8,11 +8,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_film.*
@@ -50,12 +53,41 @@ class FilmFragment : Fragment(R.layout.activity_film) {
 
     private fun initView() {
         //setting toolbar
-        //setSupportActionBar(findViewById(R.id.film_toolbar))
-        //home navigation
-        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
+        film_toolbar.setupWithNavController(findNavController())
+        film_toolbar.inflateMenu(R.menu.menu_film_toolbar)
+        film_toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_film_edit -> {
+                    findNavController().navigate(
+                        FilmFragmentDirections.actionFilmFragmentToEditFragment(film!!.id)/*.setFilmId(film!!.id)*/
+                    )
 
-        //var userId = intent.extras?.getInt("user_id")
+                    true
+                }
+                R.id.menu_film_delete -> {
+                    val sureAlert = MaterialAlertDialogBuilder(requireContext())
+                    sureAlert.setTitle(getString(R.string.label_delete))
+                        .setMessage(getString(R.string.text_question_sure_delete))
+                        .setCancelable(true)
+                        .setPositiveButton(getString(R.string.label_yes_sure)) { dialog, which ->
+                            filmViewModel.deleteFilm(film!!)
+                            findNavController().popBackStack()
+                        }
+                        .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
+                            Utils.showToast(
+                                requireContext(),
+                                getString(R.string.text_delete_canceled), Toast.LENGTH_SHORT
+                            )
+                        }
+                    sureAlert.create().show()
+                    true;
+                }
+                else -> false
+            }
+        }
+        film_toolbar.menu.forEach {
+            it.isVisible = false
+        }
 
         viewFields = mapOf(
             "description" to tv_film_description_body,
@@ -65,7 +97,6 @@ class FilmFragment : Fragment(R.layout.activity_film) {
             "rating" to tv_film_rating,
             "year" to tv_film_year
         )
-
 
         recyclerViewAdapter = CinemaItemAdapter() {}
         recycle_view_film.adapter = recyclerViewAdapter
@@ -108,31 +139,8 @@ class FilmFragment : Fragment(R.layout.activity_film) {
         filmViewModel.user.observe(viewLifecycleOwner) { user: User ->
             this.user = user
             if (user.userType == "admin") {
-                btn_edit_film.visibility = View.VISIBLE
-                btn_edit_film.setOnClickListener {
-                    findNavController().navigate(
-                        FilmFragmentDirections.actionFilmFragmentToEditFragment(film!!.id)
-                            //.setFilmId(film!!.id)
-                    )
-                }
-                btn_delete_film.visibility = View.VISIBLE
-                btn_delete_film.setOnClickListener {
-                    val sureAlert = MaterialAlertDialogBuilder(requireContext())
-                    sureAlert.setTitle(getString(R.string.label_delete))
-                        .setMessage(getString(R.string.text_question_sure_delete))
-                        .setCancelable(true)
-                        .setPositiveButton(getString(R.string.label_yes_sure)) { dialog, which ->
-                            filmViewModel.deleteFilm(film!!)
-                            findNavController().popBackStack()
-                        }
-                        .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
-                            Utils.showToast(
-                                requireContext(),
-                                getString(R.string.text_delete_canceled), Toast.LENGTH_SHORT
-                            )
-                        }
-
-                    sureAlert.create().show()
+                film_toolbar.menu.forEach {
+                    it.isVisible = true
                 }
             }
         }
@@ -157,10 +165,6 @@ class FilmFragment : Fragment(R.layout.activity_film) {
             }
         })
 
-        btn_film_back.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
 
     }
 
@@ -174,29 +178,5 @@ class FilmFragment : Fragment(R.layout.activity_film) {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_film_toolbar, menu)
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.menu_film_edit -> {
-                findNavController().navigate(
-                    FilmFragmentDirections.actionFilmFragmentToEditFragment(film!!.id)/*.setFilmId(film!!.id)*/
-                )
-                true
-            }
-            R.id.menu_film_delete -> {
-                Toast.makeText(requireContext(), "delete action clicked", Toast.LENGTH_LONG).show();
-                true;
-            }
-            android.R.id.home -> {
-                Toast.makeText(requireContext(), "Home action", Toast.LENGTH_LONG).show()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 
 }
