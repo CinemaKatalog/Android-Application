@@ -46,7 +46,7 @@
     <string name="text_not_complete">Не все поля заполнены!</string>
     <string name="text_sign_up_incorrect">Неверный логин или пароль</string>
     <string name="text_sign_up_already_exist">Пользователь с таким логином уже существует</string>
-    <string name="text_sign_up_wrong_password">Неверный формат пароля</string>
+    <string name="text_sign_up_wrong_password">Пароль должен содержать не менее 8 символов, хотя бы 1 цифру и не должен содержать пробелов</string>
     <string name="text_film_fields_complete">Заполнены не все поля</string>
     <string name="text_changes_saved">Изменения сохранены</string>
     <string name="label_save">Сохранить</string>

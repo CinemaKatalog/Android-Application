@@ -14,35 +14,14 @@ class SignUpViewModel(
     private val userRepo: UserRepository
 ) : ViewModel() {
 
-    fun insertUser(user: User) = viewModelScope.launch() {
-        repository.insertUser(user)
-    }
-
-    private val loadUser = MutableLiveData<User>()
-    val user: LiveData<User>
-        get() = loadUser
 
     fun registerRequest(user: User, onResult: (user: User?) -> Unit) {
         viewModelScope.launch {
             val tmpUser = userRepo.registerUser(user)
-            if (tmpUser == null) {
-                loadUser.postValue(tmpUser)
-            }
+
             onResult(tmpUser)
         }
     }
-
-    /*fun loginRequest(login: String, onFoundUser: (user: User?) -> Unit) {
-        viewModelScope.launch {
-            val tmpUser = repository.getUserByLogin(login)
-
-            loadUser.postValue(tmpUser)
-            onFoundUser(tmpUser)
-            if (tmpUser == null) {
-
-            }
-        }
-    }*/
 
 }
 

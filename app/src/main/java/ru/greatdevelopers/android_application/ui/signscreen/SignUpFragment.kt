@@ -18,10 +18,6 @@ import ru.greatdevelopers.android_application.viewmodel.SignUpViewModel
 class SignUpFragment : Fragment() {
     private val signUpViewModel by viewModel<SignUpViewModel>()
 
-    //private lateinit var signUpButton: Button
-    private lateinit var signInFragment: SignInFragment
-    private var user: User? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,20 +25,11 @@ class SignUpFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sign_up, container, false)
 
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //signUpViewModel.insertUser(User(name = "admin", login = "admin", password = "password", userType = "admin"))
-        signInFragment = SignInFragment()
-        //signUpButton = view.findViewById(R.id.btn_sign_up)
-
-        signUpViewModel.user.observe(viewLifecycleOwner, Observer { foundUser ->
-            user = foundUser
-
-        })
 
         btn_sign_up.setOnClickListener {
             if (et_sign_up_name.text.toString().isNotEmpty()
@@ -56,45 +43,24 @@ class SignUpFragment : Fragment() {
 
                 if(password.matches(Regex(Utils.PASSWORD_PATTERN))){
 
-                    /*signUpViewModel.registerRequest(login){
-                            user: User? ->
-                        if(user != null){
-                            Utils.showToast(requireContext(),
-                                getString(R.string.text_sign_up_already_exist), Toast.LENGTH_SHORT)
-                        }else{
-                            signUpViewModel.insertUser(User(name = name, login = login, password = password, userType = "user"))
-                            //loadFragment(signInFragment)
-                            goToSignInFragment()
-                        }
-                    }*/
                     signUpViewModel.registerRequest(User(id = 0, name = name, login = login, password = password, userType = "user")){
                             user: User? ->
                         if(user != null){
+                            goToSignInFragment()
+                        }else{
                             Utils.showToast(requireContext(),
                                 getString(R.string.text_sign_up_already_exist), Toast.LENGTH_SHORT)
-                        }else{
-                            goToSignInFragment()
                         }
                     }
                 }else{
                     Utils.showToast(requireContext(),
                         getString(R.string.text_sign_up_wrong_password), Toast.LENGTH_SHORT)
                 }
-
-
-
             } else {
                 Utils.showToast(requireContext(),
                     getString(R.string.text_not_complete), Toast.LENGTH_SHORT)
             }
         }
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        /*val transaction = activity?.supportFragmentManager?.beginTransaction()
-        transaction?.replace(R.id.sign_fragment_container, fragment)
-        transaction?.addToBackStack(null)
-        transaction?.commit()*/
     }
 
     private fun goToSignInFragment(){
