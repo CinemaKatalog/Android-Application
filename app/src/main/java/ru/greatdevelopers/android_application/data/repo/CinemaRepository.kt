@@ -1,16 +1,9 @@
 package ru.greatdevelopers.android_application.data.repo
 
-import androidx.lifecycle.MutableLiveData
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import ru.greatdevelopers.android_application.data.dao.CinemaDao
 import ru.greatdevelopers.android_application.data.dao.FilmCinemaDao
 import ru.greatdevelopers.android_application.data.model.Cinema
 import ru.greatdevelopers.android_application.data.model.FilmCinema
-import ru.greatdevelopers.android_application.data.model.User
-import ru.greatdevelopers.android_application.data.reqmodel.FilmCinemaRequest
-import ru.greatdevelopers.android_application.data.respmodel.ResponseFilmCinema
 import ru.greatdevelopers.android_application.network.CinemaApiInterface
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 
@@ -49,8 +42,8 @@ class CinemaRepository(
 
         return FilmCinema(
             pageUrl = data.pageUrl,
-            filmId = data.responseFilm.id,
-            siteUrl = data.responseCinema.url,
+            filmId = data.film.id,
+            siteUrl = data.cinema.url,
             price = data.price,
             rating = data.rating
         )

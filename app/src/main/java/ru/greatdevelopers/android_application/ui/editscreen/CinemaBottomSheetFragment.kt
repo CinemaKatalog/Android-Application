@@ -102,21 +102,27 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                     viewFields["price"]?.text.toString().isNotEmpty() &&
                     viewFields["film_url"]?.text.toString().isNotEmpty()
                 ) {
-
-                    editViewModel.insertFilmCinema(
-                        FilmCinema(
-                            viewFields["film_url"]?.text.toString(),
-                            requireArguments().getLong("film_id"),
-                            cinema!!.url,
-                            viewFields["price"]?.text.toString().toFloat(),
-                            rs_cinema_add_rating.values[0]
+                    if(viewFields["film_url"]?.text.toString().matches(Regex(Utils.URL_PATTERN))){
+                        editViewModel.insertFilmCinema(
+                            FilmCinema(
+                                viewFields["film_url"]?.text.toString(),
+                                requireArguments().getLong("film_id"),
+                                cinema!!.url,
+                                viewFields["price"]?.text.toString().toFloat(),
+                                rs_cinema_add_rating.values[0]
+                            )
                         )
-                    )
 
-                    Utils.showToast(
-                        requireContext(),
-                        getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
-                    )
+                        Utils.showToast(
+                            requireContext(),
+                            getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                        )
+                    }else{
+                        Utils.showToast(
+                            requireContext(),
+                            getString(R.string.wrong_url), Toast.LENGTH_SHORT
+                        )
+                    }
                 } else {
                     Utils.showToast(
                         requireContext(),
@@ -128,19 +134,27 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                     viewFields["price"]?.text.toString().isNotEmpty() &&
                     viewFields["film_url"]?.text.toString().isNotEmpty()
                 ) {
-                    editViewModel.updateFilmCinema(
-                        FilmCinema(
-                            viewFields["film_url"]?.text.toString(),
-                            requireArguments().getLong("film_id"),
-                            cinema!!.url,
-                            viewFields["price"]?.text.toString().toFloat(),
-                            rs_cinema_add_rating.values[0]
+                    if(viewFields["film_url"]?.text.toString().matches(Regex(Utils.URL_PATTERN))){
+                        editViewModel.updateFilmCinema(
+                            FilmCinema(
+                                viewFields["film_url"]?.text.toString(),
+                                requireArguments().getLong("film_id"),
+                                cinema!!.url,
+                                viewFields["price"]?.text.toString().toFloat(),
+                                rs_cinema_add_rating.values[0]
+                            )
                         )
-                    )
-                    Utils.showToast(
-                        requireContext(),
-                        getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
-                    )
+                        Utils.showToast(
+                            requireContext(),
+                            getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                        )
+                    }else{
+                        Utils.showToast(
+                            requireContext(),
+                            getString(R.string.wrong_url), Toast.LENGTH_SHORT
+                        )
+                    }
+
                 } else {
                     Utils.showToast(
                         requireContext(),
@@ -166,20 +180,36 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                         promptsView.et_cinema_alert_url.text.toString().isNotEmpty() &&
                         promptsView.et_cinema_alert_email.text.toString().isNotEmpty()
                     ) {
-                        editViewModel.insertCinema(
-                            Cinema(
-                                promptsView.et_cinema_alert_url.text.toString(),
-                                promptsView.et_cinema_alert_name.text.toString(),
-                                promptsView.et_cinema_alert_email.text.toString()
-                            )
-                        ) {
+                        if(promptsView.et_cinema_alert_url?.text.toString().matches(Regex(Utils.URL_PATTERN))){
+                            if(promptsView.et_cinema_alert_email?.text.toString().matches(Regex(Utils.EMAIL_PATTERN))){
+
+                                editViewModel.insertCinema(
+                                    Cinema(
+                                        promptsView.et_cinema_alert_url.text.toString(),
+                                        promptsView.et_cinema_alert_name.text.toString(),
+                                        promptsView.et_cinema_alert_email.text.toString()
+                                    )
+                                ) {
+                                    Utils.showToast(
+                                        requireContext(),
+                                        getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                                    )
+                                    editViewModel.initialRequestCinemas(requireArguments().getString("cinema_url"))
+                                    editViewModel.initialRequest()
+                                }
+                            }else{
+                                Utils.showToast(
+                                    requireContext(),
+                                    getString(R.string.wrong_email), Toast.LENGTH_SHORT
+                                )
+                            }
+                        }else{
                             Utils.showToast(
                                 requireContext(),
-                                getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                                getString(R.string.wrong_url), Toast.LENGTH_SHORT
                             )
-                            editViewModel.initialRequestCinemas(requireArguments().getString("cinema_url"))
-                            editViewModel.initialRequest()
                         }
+
                     } else {
                         Utils.showToast(
                             requireContext(),
@@ -214,20 +244,28 @@ class CinemaBottomSheetFragment(private val editViewModel: EditViewModel) :
                     if (promptsView.et_cinema_alert_name.text.toString().isNotEmpty() &&
                         promptsView.et_cinema_alert_email.text.toString().isNotEmpty()
                     ) {
-                        editViewModel.updateCinema(
-                            Cinema(
-                                promptsView.et_cinema_alert_url.text.toString(),
-                                promptsView.et_cinema_alert_name.text.toString(),
-                                promptsView.et_cinema_alert_email.text.toString()
-                            )
-                        ){
+                        if(promptsView.et_cinema_alert_email?.text.toString().matches(Regex(Utils.EMAIL_PATTERN))){
+                            editViewModel.updateCinema(
+                                Cinema(
+                                    promptsView.et_cinema_alert_url.text.toString(),
+                                    promptsView.et_cinema_alert_name.text.toString(),
+                                    promptsView.et_cinema_alert_email.text.toString()
+                                )
+                            ){
+                                Utils.showToast(
+                                    requireContext(),
+                                    getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                                )
+                                editViewModel.initialRequestCinemas(requireArguments().getString("cinema_url"))
+                                editViewModel.initialRequest()
+                            }
+                        }else{
                             Utils.showToast(
                                 requireContext(),
-                                getString(R.string.text_cinema_add_complete), Toast.LENGTH_SHORT
+                                getString(R.string.wrong_email), Toast.LENGTH_SHORT
                             )
-                            editViewModel.initialRequestCinemas(requireArguments().getString("cinema_url"))
-                            editViewModel.initialRequest()
                         }
+
                     } else {
                         Utils.showToast(
                             requireContext(),

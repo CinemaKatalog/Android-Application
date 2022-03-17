@@ -44,6 +44,7 @@
     <string name="label_cancel">Отмена</string>
     <string name="text_delete_canceled">Удаление отменено</string>
     <string name="text_not_complete">Не все поля заполнены!</string>
+    <string name="wrong_url">Неверный формат URL-ссылки</string>
     <string name="text_sign_up_incorrect">Неверный логин или пароль</string>
     <string name="text_sign_up_already_exist">Пользователь с таким логином уже существует</string>
     <string name="text_sign_up_wrong_password">Пароль должен содержать не менее 8 символов, хотя бы 1 цифру и не должен содержать пробелов</string>
@@ -56,4 +57,5 @@
     <string name="text_cinema_add_complete">Изменения успешно сохранены</string>
     <string name="you_are_not_authorized">Вы не авторизованы, войдите для просмотра</string>
     <string name="not_authorized_btn_enter">Войти</string>
+    <string name="wrong_email">Неверный формат email-адреса</string>
 </resources>
