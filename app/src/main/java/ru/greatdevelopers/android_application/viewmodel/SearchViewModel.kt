@@ -25,7 +25,24 @@ class SearchViewModel(private val repository: FilmRepository) : ViewModel() {
 
     fun initialRequest() {
         viewModelScope.launch {
-            loadFilms.postValue(repository.getFilmsWithExtra())
+            //loadFilms.postValue(repository.getFilmsWithExtra())
+            val filmList = mutableListOf<FilmListItem>()
+            repository.getFilmsWithExtra().forEach {
+                repository.getPoster(it.poster)?.let { posterURI ->
+                    FilmListItem(
+                        it.film_id,
+                        it.film_name,
+                        it.genre_name,
+                        posterURI,
+                        it.rating
+                    )
+                }?.let { it ->
+                    filmList.add(
+                        it
+                    )
+                }
+            }
+            loadFilms.postValue(filmList)
         }
     }
 
@@ -38,7 +55,27 @@ class SearchViewModel(private val repository: FilmRepository) : ViewModel() {
 
     fun searchRequest(query: String?) {
         viewModelScope.launch {
-            loadFilms.postValue(query?.let { repository.getFilmByNameWithExtra(it) })
+            //loadFilms.postValue(query?.let { repository.getFilmByNameWithExtra(it) })
+
+            val filmList = mutableListOf<FilmListItem>()
+            query?.let {
+                repository.getFilmByNameWithExtra(it).forEach {
+                    repository.getPoster(it.poster)?.let { posterURI ->
+                        FilmListItem(
+                            it.film_id,
+                            it.film_name,
+                            it.genre_name,
+                            posterURI,
+                            it.rating
+                        )
+                    }?.let { it ->
+                        filmList.add(
+                            it
+                        )
+                    }
+                }
+            }
+            loadFilms.postValue(filmList)
         }
     }
 
@@ -51,7 +88,7 @@ class SearchViewModel(private val repository: FilmRepository) : ViewModel() {
         maxRating: Float
     ) {
         viewModelScope.launch {
-            loadFilms.postValue(
+            /*loadFilms.postValue(
                 repository.getFilmByParameters(
                     genre,
                     country,
@@ -60,8 +97,35 @@ class SearchViewModel(private val repository: FilmRepository) : ViewModel() {
                     minRating,
                     maxRating
                 )
-            )
+            )*/
+
+            val filmList = mutableListOf<FilmListItem>()
+            repository.getFilmByParameters(
+                genre,
+                country,
+                minYear,
+                maxYear,
+                minRating,
+                maxRating
+            ).forEach {
+                repository.getPoster(it.poster)?.let { posterURI ->
+                    FilmListItem(
+                        it.film_id,
+                        it.film_name,
+                        it.genre_name,
+                        posterURI,
+                        it.rating
+                    )
+                }?.let { it ->
+                    filmList.add(
+                        it
+                    )
+                }
+            }
+            loadFilms.postValue(filmList)
         }
+
+
     }
 
     fun insert(film: Film) = viewModelScope.launch() {

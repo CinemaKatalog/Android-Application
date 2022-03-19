@@ -35,7 +35,25 @@ class FavouriteViewModel (private val repository: FilmRepository, private val us
 
     fun initialRequest(){
         viewModelScope.launch {
-            loadFavourites.postValue(repository.getFavouriteFilmsWithExtra(userRepo.getCurrentUserIdFromShPref()))
+            //loadFavourites.postValue(repository.getFavouriteFilmsWithExtra(userRepo.getCurrentUserIdFromShPref()))
+
+            val filmList = mutableListOf<FilmListItem>()
+            repository.getFavouriteFilmsWithExtra(userRepo.getCurrentUserIdFromShPref()).forEach {
+                repository.getPoster(it.poster)?.let { posterURI ->
+                    FilmListItem(
+                        it.film_id,
+                        it.film_name,
+                        it.genre_name,
+                        posterURI,
+                        it.rating
+                    )
+                }?.let { it ->
+                    filmList.add(
+                        it
+                    )
+                }
+            }
+            loadFavourites.postValue(filmList)
         }
     }
 }

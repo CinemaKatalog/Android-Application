@@ -38,7 +38,7 @@ class FilmViewModel(
     val country: LiveData<Country>
         get() = loadCountryInfo
 
-        private val loadPosterInfo = MutableLiveData<String>()
+    private val loadPosterInfo = MutableLiveData<String>()
     val poster: LiveData<String>
         get() = loadPosterInfo
 

@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.activity_edit.*
+import kotlinx.android.synthetic.main.activity_film.*
 import kotlinx.android.synthetic.main.alert_country_genre.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -147,17 +148,9 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                         "producer" -> v.text = foundFilm.producer
                     }
                 }
-                selectedImageUri = Uri.parse(foundFilm.poster)
 
-                try {
-                    iv_edit_poster.setImageURI(selectedImageUri)
+                selectedImageUUID = foundFilm.poster
 
-                } catch (e: SecurityException) {
-                    Utils.showToast(
-                        requireContext(), "Photo load exception", Toast.LENGTH_SHORT
-                    )
-                    e.printStackTrace()
-                }
 
                 date_edit_picker.init(
                     foundFilm.year,
@@ -174,6 +167,22 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 showCurrentMode(isEditMode)
             }
             editViewModel.spinnerInitRequest()
+        })
+        editViewModel.poster.observe(viewLifecycleOwner, Observer {
+
+            if (it != null){
+                selectedImageUri = Uri.parse(it)
+
+                try {
+                    iv_edit_poster.setImageURI(selectedImageUri)
+
+                } catch (e: SecurityException) {
+                    Utils.showToast(
+                        requireContext(), "Photo load exception", Toast.LENGTH_SHORT
+                    )
+                    e.printStackTrace()
+                }
+            }
         })
         editViewModel.initialRequest()
 

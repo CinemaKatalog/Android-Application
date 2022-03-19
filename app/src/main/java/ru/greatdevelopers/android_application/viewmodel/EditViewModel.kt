@@ -39,12 +39,16 @@ class EditViewModel(
     val filmCinema: LiveData<FilmCinema>
         get() = loadFilmCinemaInfo
 
+    private val loadPosterInfo = MutableLiveData<String>()
+    val poster: LiveData<String>
+        get() = loadPosterInfo
+
     fun initialRequest() {
         viewModelScope.launch {
 
             loadCinemaListInfo.postValue(filmId?.let { cinemaRepository.getFilmCinemaByFilm(it) })
             loadFilmInfo.postValue(filmId?.let { filmRepository.getFilmById(it) })
-
+            loadPosterInfo.postValue(filmId?.let { id -> filmRepository.getFilmById(id)?.let { filmRepository.getPoster(it.poster) }})
         }
     }
 
