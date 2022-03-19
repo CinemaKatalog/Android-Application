@@ -112,15 +112,7 @@ class FilmFragment : Fragment(R.layout.activity_film) {
                 }
             }
 
-            try {
-                iv_collapsing_film_poster.setImageURI(Uri.parse(foundFilm.poster))
 
-            } catch (e: SecurityException) {
-                Utils.showToast(
-                    requireContext(), "Photo load exception", Toast.LENGTH_SHORT
-                )
-                e.printStackTrace()
-            }
             film_collapsing_toolbar.title = foundFilm.name
             film = foundFilm
 
@@ -134,6 +126,18 @@ class FilmFragment : Fragment(R.layout.activity_film) {
         })
         filmViewModel.genre.observe(viewLifecycleOwner, Observer {
             viewFields["genre"]?.text = it.name
+        })
+
+        filmViewModel.poster.observe(viewLifecycleOwner, Observer {
+            try {
+                iv_collapsing_film_poster.setImageURI(Uri.parse(it))
+
+            } catch (e: SecurityException) {
+                Utils.showToast(
+                    requireContext(), "Photo load exception", Toast.LENGTH_SHORT
+                )
+                e.printStackTrace()
+            }
         })
 
         filmViewModel.user.observe(viewLifecycleOwner) { user: User ->

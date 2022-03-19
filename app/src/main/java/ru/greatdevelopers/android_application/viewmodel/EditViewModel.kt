@@ -70,9 +70,10 @@ class EditViewModel(
         }
     }
 
-    fun insertPoster(fileUri: Uri) {
+    fun insertPoster(fileUri: Uri, onInsert: (tmp: String?) -> Unit) {
         viewModelScope.launch {
             val tmp = filmRepository.insertPoster(fileUri)
+            onInsert(tmp)
         }
     }
 

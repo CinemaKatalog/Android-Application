@@ -1,18 +1,18 @@
 package ru.greatdevelopers.android_application.network
 
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import retrofit2.Call
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
-import ru.greatdevelopers.android_application.data.model.*
+import ru.greatdevelopers.android_application.data.model.Country
+import ru.greatdevelopers.android_application.data.model.Favourite
+import ru.greatdevelopers.android_application.data.model.Film
+import ru.greatdevelopers.android_application.data.model.Genre
 import ru.greatdevelopers.android_application.data.reqmodel.FavouriteRequest
 import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFavourite
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFilm
-import ru.greatdevelopers.android_application.data.respmodel.ResponseFilmCinema
 import ru.greatdevelopers.android_application.data.respmodel.ResponsePoster
-import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
 interface FilmApiInterface {
@@ -21,6 +21,10 @@ interface FilmApiInterface {
 
     @GET("edit/loadCountry")
     suspend fun getAllCountry(): List<Country>
+
+    @Streaming
+    @GET("film/loadPoster/{fileUUID}")
+    suspend fun getPosterById(@Path("fileUUID") fileUUID: String): Response<ResponseBody>
 
     @GET("film/loadGenre/{id}")
     suspend fun getGenreById(@Path("id") id: Long): Genre?

@@ -12,12 +12,13 @@ import kotlinx.android.extensions.LayoutContainer
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.R
 
-class BaseItemAdapter(val onClick: (filmId: Long)-> Unit): RecyclerView.Adapter<BaseItemAdapter.ViewHolder>(){
+class BaseItemAdapter(val onClick: (filmId: Long) -> Unit) :
+    RecyclerView.Adapter<BaseItemAdapter.ViewHolder>() {
 
 
     private var values: List<FilmListItem> = ArrayList()
 
-    fun setItemList(newList: List<FilmListItem>){
+    fun setItemList(newList: List<FilmListItem>) {
         notifyDataSetChanged()
         values = newList
     }
@@ -27,7 +28,8 @@ class BaseItemAdapter(val onClick: (filmId: Long)-> Unit): RecyclerView.Adapter<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_card_view, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_card_view, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -37,31 +39,37 @@ class BaseItemAdapter(val onClick: (filmId: Long)-> Unit): RecyclerView.Adapter<
         holder.genreTextView?.text = values[position].genre_name
         holder.ratingTextView?.text = values[position].rating.toString()
 
-        /*Glide.with(context)
-            .load(new File(uri.getPath()))
-            .into(imageView);*/
 
         holder.image?.let {
-            Glide.with(holder.itemView.context).load(Uri.parse(values[position].poster)).into(
-                it
-            )
+            Glide.with(holder.itemView.context)
+                .load(Uri.parse(values[position].poster)
+                    // "http://i.imgur.com/zuG2bGQ.jpg"
+                    //"http://developer.alexanderklimov.ru/android/images/android_cat.jpg"
+                    //"http://localhost:8080/mobileApi/film/loadPoster/165d3dc0-0851-4a91-a395-a71e232fdfff.jpeg"
+                    //"https://280d-178-205-46-24.ngrok.io/mobileApi/film/loadPoster/165d3dc0-0851-4a91-a395-a71e232fdfff.jpeg"
+                )
+                .into(
+                    it
+                )
         }
         //holder.image?.setImageURI(Uri.parse(values[position].poster))
     }
 
 
-    inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView), LayoutContainer {
+    inner class ViewHolder(override val containerView: View) :
+        RecyclerView.ViewHolder(containerView), LayoutContainer {
         var nameTextView: TextView? = null
         var genreTextView: TextView? = null
         var ratingTextView: TextView? = null
-        var image : ImageView? = null
+        var image: ImageView? = null
+
         init {
             nameTextView = containerView.findViewById(R.id.card_film_name)
             genreTextView = containerView.findViewById(R.id.card_film_genre)
             ratingTextView = containerView.findViewById(R.id.card_film_rating)
             image = containerView.findViewById(R.id.film_image)
 
-            containerView.setOnClickListener{
+            containerView.setOnClickListener {
                 onClick(values[adapterPosition].film_id)
             }
         }

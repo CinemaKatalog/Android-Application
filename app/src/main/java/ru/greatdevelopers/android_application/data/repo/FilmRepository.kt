@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -19,6 +21,7 @@ import ru.greatdevelopers.android_application.data.reqmodel.FavouriteRequest
 import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
 import ru.greatdevelopers.android_application.network.FilmApiInterface
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
+import ru.greatdevelopers.android_application.utils.Utils
 import ru.greatdevelopers.android_application.utils.Utils.safeApiCall
 import java.io.*
 
@@ -150,10 +153,15 @@ class FilmRepository(
 
     suspend fun insertPoster(fileUri: Uri): String? {
         val file = File(context.cacheDir, "tmp")
+        val byteArray: ByteArray?
         file.createNewFile()
-        val inputStream = context.contentResolver.openInputStream(fileUri).use { input ->
+        withContext(Dispatchers.IO) {
+            val inputStream = context.contentResolver.openInputStream(fileUri).use { input ->
+                byteArray = input?.readBytes()
+            }
             FileOutputStream(file).buffered().use { output ->
-                BitmapFactory.decodeStream(input, null, BitmapFactory.Options())
+                //BitmapFactory.decodeStream(input, null, BitmapFactory.Options())
+                Utils.decodeSampledBitmap(byteArray, 1000, 1000)
                     ?.compress(
                         Bitmap.CompressFormat.JPEG,
                         100,
@@ -174,6 +182,46 @@ class FilmRepository(
             )
         }, errorMessage = "Image upload Error")?.fileUUID
     }
+
+    suspend fun getPoster(fileUUID: String): String? {
+        val body = filmApiInterface.getPosterById(fileUUID).body()
+
+        //println("body ${body.toString()}")
+
+        return if (body != null) {
+            val file = File(context.filesDir, fileUUID)
+            if (!file.exists()) {
+                file.createNewFile()
+                val input = body.byteStream()
+
+                withContext(Dispatchers.IO) {
+                    FileOutputStream(file).buffered().use { output ->
+                        BitmapFactory.decodeStream(input, null, BitmapFactory.Options())
+                            ?.compress(
+                                Bitmap.CompressFormat.JPEG,
+                                100,
+                                output
+                            )
+                    }
+                }
+            }
+            file.toURI().toString()
+        } else {
+            null
+        }
+
+
+        /*return safeApiCall(call = {
+            filmApiInterface.insertPoster(
+                MultipartBody.Part.createFormData(
+                    name = "file",
+                    filename = file.name,
+                    body = requestBody
+                )
+            )
+        }, errorMessage = "Image download Error")?.fileUUID*/
+    }
+
 
     suspend fun insertGenre(genre: Genre) {
         //genreDao.insertGenre(genre)

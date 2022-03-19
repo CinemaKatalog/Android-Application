@@ -51,35 +51,82 @@ class MainViewModel(
 
     fun initGroupsRequest(onInit: () -> Unit) {
         viewModelScope.launch {
-            loadFilmsGenre.postValue(
-                filmRepository.getFilmByParameters(
-                    2,
-                    null,
-                    minRating = 0f,
-                    maxRating = 5f,
-                    minYear = 0,
-                    maxYear = 2020
-                )
-            )
-            loadFilmsYear.postValue(
-                filmRepository.getFilmByParameters(
-                    null,
-                    null,
-                    minRating = 0f,
-                    maxRating = 5f,
-                    minYear = 2021,
-                    maxYear = 2021
-                )
-            )
+            val genreList = mutableListOf<FilmListItem>()
+            filmRepository.getFilmByParameters(
+                2,
+                null,
+                minRating = 0f,
+                maxRating = 5f,
+                minYear = 0,
+                maxYear = 2020
+            ).forEach {
+                filmRepository.getPoster(it.poster)?.let { posterURI ->
+                    FilmListItem(
+                        it.film_id,
+                        it.film_name,
+                        it.genre_name,
+                        posterURI,
+                        it.rating
+                    )
+                }?.let { it ->
+                    genreList.add(
+                        it
+                    )
+                }
+            }
+            loadFilmsGenre.postValue(genreList)
+
+            val yearList = mutableListOf<FilmListItem>()
+            filmRepository.getFilmByParameters(
+                null,
+                null,
+                minRating = 0f,
+                maxRating = 5f,
+                minYear = 2021,
+                maxYear = 2021
+            ).forEach {
+                filmRepository.getPoster(it.poster)?.let { posterURI ->
+                    FilmListItem(
+                        it.film_id,
+                        it.film_name,
+                        it.genre_name,
+                        posterURI,
+                        it.rating
+                    )
+                }?.let { it ->
+                    yearList.add(
+                        it
+                    )
+                }
+            }
+            loadFilmsYear.postValue(yearList)
+
+            val ratingList = mutableListOf<FilmListItem>()
+            filmRepository.getFilmByParameters(
+                null,
+                null,
+                minRating = 4f,
+                maxRating = 5f,
+                minYear = 0,
+                maxYear = 2020
+            ).forEach {
+                filmRepository.getPoster(it.poster)?.let { posterURI ->
+                    FilmListItem(
+                        it.film_id,
+                        it.film_name,
+                        it.genre_name,
+                        posterURI,
+                        it.rating
+                    )
+                }?.let { it ->
+                    ratingList.add(
+                        it
+                    )
+                }
+            }
+
             loadFilmsRating.postValue(
-                filmRepository.getFilmByParameters(
-                    null,
-                    null,
-                    minRating = 4f,
-                    maxRating = 5f,
-                    minYear = 0,
-                    maxYear = 2020
-                )
+                ratingList
             )
             onInit()
         }

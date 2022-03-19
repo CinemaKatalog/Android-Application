@@ -67,6 +67,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
     private lateinit var adapterCountries: ArrayAdapter<Country>
 
     private var selectedImageUri: Uri? = null
+    private var selectedImageUUID: String? = null
 
     private var cinemaList: ArrayList<CinemaListItem> = ArrayList()
 
@@ -220,7 +221,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                             countryList[spinner_edit_country.selectedItemPosition].id,
                             viewFields["producer"]?.text.toString(),
                             viewFields["description"]?.text.toString(),
-                            selectedImageUri.toString(),
+                            selectedImageUUID.toString(),
                             date_edit_picker.year,
                             rating
                         )
@@ -238,7 +239,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                         country = countryList[spinner_edit_country.selectedItemPosition].id,
                         producer = viewFields["producer"]?.text.toString(),
                         description = viewFields["description"]?.text.toString(),
-                        poster = selectedImageUri.toString(),
+                        poster = selectedImageUUID.toString(),
                         year = date_edit_picker.year,
                         rating = rating
                     )
@@ -510,7 +511,9 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 selectedImageUri = data?.data
                 iv_edit_poster.setImageURI(selectedImageUri)
 
-                selectedImageUri?.let { editViewModel.insertPoster(it) }
+                selectedImageUri?.let { editViewModel.insertPoster(it){uuid->
+                    selectedImageUUID = uuid
+                } }
 
                 val takeFlags: Int = (data?.flags!!
                         and (Intent.FLAG_GRANT_READ_URI_PERMISSION

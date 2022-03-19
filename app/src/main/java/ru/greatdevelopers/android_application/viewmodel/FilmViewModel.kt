@@ -38,6 +38,10 @@ class FilmViewModel(
     val country: LiveData<Country>
         get() = loadCountryInfo
 
+        private val loadPosterInfo = MutableLiveData<String>()
+    val poster: LiveData<String>
+        get() = loadPosterInfo
+
     private val loadCinemaInfo = MutableLiveData<List<CinemaListItem>>()
     val cinema: LiveData<List<CinemaListItem>>
         get() = loadCinemaInfo
@@ -67,6 +71,7 @@ class FilmViewModel(
             loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaByFilm(filmId))
             loadGenreInfo.postValue(tmpFilm?.let { filmRepository.getGenreById(it.genre) })
             loadCountryInfo.postValue(tmpFilm?.let { filmRepository.getCountryById(it.country) })
+            loadPosterInfo.postValue(tmpFilm?.let { filmRepository.getPoster(it.poster) })
             //onFoundUser
         }
     }
