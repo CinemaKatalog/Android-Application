@@ -22,7 +22,9 @@
             app:destination="@id/sign_nav_graph" />-->
         <action
             android:id="@+id/action_menuFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
         <!--<action
             android:id="@+id/action_menuFragment_to_menu_nav_graph"
             app:destination="@id/menu_nav_graph" />-->
@@ -45,7 +47,9 @@
 
         <action
             android:id="@+id/action_signInFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
+            app:destination="@id/menuFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
