@@ -1,14 +1,11 @@
 package ru.greatdevelopers.android_application.ui.filmscreen
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -98,7 +95,10 @@ class FilmFragment : Fragment(R.layout.activity_film) {
             "year" to tv_film_year
         )
 
-        recyclerViewAdapter = CinemaItemAdapter() {}
+        recyclerViewAdapter = CinemaItemAdapter() {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it.page_url))
+            startActivity(browserIntent)
+        }
         recycle_view_film.adapter = recyclerViewAdapter
         recycle_view_film.layoutManager = LinearLayoutManager(requireContext())
 
