@@ -240,6 +240,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/spacing_normal_16" />
 
+            <TextView
+                android:id="@+id/tv_edit_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_rating"
+                android:layout_marginStart="@dimen/spacing_huge_32"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                app:layout_constraintTop_toBottomOf="@+id/date_edit_picker"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/rs_edit_rating"
+                style="@style/SearchOptions.Slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_huge_32"
+                android:layout_marginTop="@dimen/spacing_large_24"
+                android:layout_marginEnd="@dimen/spacing_huge_32"
+                android:paddingBottom="@dimen/spacing_huge_32"
+                android:valueFrom="0.0"
+                android:valueTo="10.0"
+                android:stepSize="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_edit_rating"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle_view_options"
                 android:layout_width="match_parent"
@@ -249,7 +275,7 @@
                 android:padding="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_edit_picker"
+                app:layout_constraintTop_toBottomOf="@id/rs_edit_rating"
                 tools:listitem="@layout/cinema_card_view"/>
 
             <ImageButton

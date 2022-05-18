@@ -22,7 +22,7 @@ class FilmViewModel(
 ) : ViewModel() {
 
     private val loadUser = MutableLiveData<User>()
-    val user: LiveData<User>
+    val user: LiveData<User?>
         get() = loadUser
 
     private val loadFilmInfo = MutableLiveData<Film>()
@@ -62,11 +62,13 @@ class FilmViewModel(
             loadUser()
             val tmpFilm = filmId.let { filmRepository.getFilmById(it) }
             loadFilmInfo.postValue(tmpFilm)
-            val favourite = try{
-                filmRepository.getFavouriteById(filmId, loadUser.value!!.id)
-            }catch (ex: HttpException){
-                null
-            }
+            val favourite = if (loadUser.value != null) {
+                try {
+                    filmRepository.getFavouriteById(filmId, loadUser.value!!.id)
+                } catch (ex: HttpException) {
+                    null
+                }
+            }else null
             loadFavourite.postValue(favourite)
             loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaByFilm(filmId))
             loadGenreInfo.postValue(tmpFilm?.let { filmRepository.getGenreById(it.genre) })
@@ -79,22 +81,22 @@ class FilmViewModel(
     fun favouriteRequest() {
         viewModelScope.launch {
             val userId = loadUser.value!!.id
-            val favourite = try{
+            val favourite = try {
                 filmRepository.getFavouriteById(filmId, userId)
-            }catch (ex: HttpException){
+            } catch (ex: HttpException) {
                 null
             }
             loadFavourite.postValue(favourite)
         }
     }
 
-    fun deleteFilm(film: Film){
+    fun deleteFilm(film: Film) {
         viewModelScope.launch {
             filmRepository.delFilm(film)
         }
     }
 
-    fun deleteFavourite(favourite: Favourite, onDelete: () -> Unit){
+    fun deleteFavourite(favourite: Favourite, onDelete: () -> Unit) {
         viewModelScope.launch {
             filmRepository.delFavourite(favourite)
             onDelete()
@@ -105,7 +107,7 @@ class FilmViewModel(
     val favourite: LiveData<Favourite>
         get() = loadFavourite
 
-    fun insertFavourite(favourite: Favourite, onInsert: () -> Unit){
+    fun insertFavourite(favourite: Favourite, onInsert: () -> Unit) {
         viewModelScope.launch {
             filmRepository.insertFavourite(favourite)
             onInsert()

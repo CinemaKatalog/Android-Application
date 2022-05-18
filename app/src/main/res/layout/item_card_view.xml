@@ -44,12 +44,14 @@
         android:id="@+id/card_film_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
         android:layout_below="@+id/card_film_image"
-        android:text="Название"
-        android:textStyle="bold"
-        android:textColor="@color/color_text_dark"
+        android:layout_marginTop="3dp"
         android:gravity="center"
+        android:text="Название"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/color_text_dark"
+        android:textStyle="bold"
         tools:ignore="NotSibling" />
     <TextView
         android:id="@+id/card_film_genre"

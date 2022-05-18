@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -140,13 +141,16 @@ class FilmFragment : Fragment(R.layout.activity_film) {
             }
         })
 
-        filmViewModel.user.observe(viewLifecycleOwner) { user: User ->
+        filmViewModel.user.observe(viewLifecycleOwner) { user: User? ->
             this.user = user
-            if (user.userType == "admin") {
-                film_toolbar.menu.forEach {
-                    it.isVisible = true
+            if (user != null) {
+                if (user.userType == "admin") {
+                    film_toolbar.menu.forEach {
+                        it.isVisible = true
+                    }
+
                 }
-            }
+            }else fab_add_favourite.isVisible = false
         }
         filmViewModel.initialRequest()
         //filmViewModel.favouriteRequest()

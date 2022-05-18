@@ -80,6 +80,7 @@ val apiModule = module {
 
 //private const val BASEURL = "http://localhost:8080/mobileApi/"
 private const val BASEURL = "http://10.0.2.2:8080/mobileApi/"
+//private const val BASEURL = "http://0367-5-101-17-70.ngrok.io/mobileApi/"
 
 val netModule = module {
     /*single<Retrofit> {

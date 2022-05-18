@@ -142,6 +142,7 @@
         android:layout_marginTop="@dimen/spacing_normal_16"
         app:layout_constraintTop_toBottomOf="@+id/date_picker_to"
         app:layout_constraintStart_toStartOf="parent"/>
+
     <com.google.android.material.slider.RangeSlider
         android:id="@+id/rs_rating"
         style="@style/SearchOptions.Slider"
@@ -151,13 +152,13 @@
         android:layout_marginTop="@dimen/spacing_large_24"
         android:layout_marginEnd="@dimen/spacing_huge_32"
         android:paddingBottom="@dimen/spacing_huge_32"
-        android:valueFrom="0.0"
-        android:valueTo="5.0"
         android:stepSize="0.5"
+        android:valueFrom="0.0"
+        android:valueTo="10.0"
+        app:layout_constraintBottom_toTopOf="@id/btn_select"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rating"
-        app:layout_constraintBottom_toTopOf="@id/btn_select"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_rating" />
 
     <Button
         android:id="@+id/btn_select"

@@ -48,8 +48,8 @@ class BottomSheetFragment(private val searchViewModel: SearchViewModel) :
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
         initDatePicker()
-        val sliderRating = view.findViewById(R.id.rs_rating) as RangeSlider
-        sliderRating.values = listOf(0F, 5F)
+        //val sliderRating = view.findViewById(R.id.rs_rating) as RangeSlider
+        rs_rating.values = listOf(0F, 10F)
 
         searchViewModel.country.observe(viewLifecycleOwner, Observer {
             if (it != null) {
@@ -82,8 +82,10 @@ class BottomSheetFragment(private val searchViewModel: SearchViewModel) :
                 selectedCountry,
                 date_picker_from.year,
                 date_picker_to.year,
-                sliderRating.values[0],
-                sliderRating.values[1]
+                //sliderRating.values[0],
+                rs_rating.values[0],
+                //sliderRating.values[1]
+                rs_rating.values[1]
             )
         }
     }

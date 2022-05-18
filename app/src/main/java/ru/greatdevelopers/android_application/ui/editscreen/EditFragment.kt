@@ -22,9 +22,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.slider.RangeSlider
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.activity_film.*
 import kotlinx.android.synthetic.main.alert_country_genre.view.*
+import kotlinx.android.synthetic.main.bottom_sheet_cinema_add.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.greatdevelopers.android_application.R
@@ -54,7 +56,6 @@ class EditFragment : Fragment(R.layout.activity_edit) {
     private var film: Film? = null
 
     private var isEditMode = false
-    private var rating = 0f
 
     lateinit var viewFields: Map<String, TextView>
 
@@ -96,6 +97,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
         initSpinners()
         initDatePickers()
 
+
         recyclerView = recycle_view_options
         recyclerViewAdapter = CinemaItemAdapter() {
             showBottomSheetDialog(it.film_id, it.page_url, it.site_url)
@@ -105,14 +107,14 @@ class EditFragment : Fragment(R.layout.activity_edit) {
 
         editViewModel.cinemaList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                var sum = 0f
+                /*var sum = 0f
                 recyclerViewAdapter.setItemList(it)
                 for (i in it) {
                     sum += i.rating
                 }
                 if (sum > 0) {
                     rating = sum / it.size
-                }
+                }*/
             }
         })
         editViewModel.countryList.observe(viewLifecycleOwner, Observer {
@@ -161,6 +163,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                 //spinner_edit_country.setSelection(getCountryPosition(foundFilm))
                 //spinner_edit_genre.setSelection(getGenrePosition(foundFilm))
 
+                rs_edit_rating.values = arrayListOf(foundFilm.rating)
 
                 film = foundFilm
                 isEditMode = true
@@ -232,7 +235,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                             viewFields["description"]?.text.toString(),
                             selectedImageUUID.toString(),
                             date_edit_picker.year,
-                            rating
+                            rs_edit_rating.values[0]
                         )
                     ) {
                         Utils.showToast(
@@ -250,7 +253,7 @@ class EditFragment : Fragment(R.layout.activity_edit) {
                         description = viewFields["description"]?.text.toString(),
                         poster = selectedImageUUID.toString(),
                         year = date_edit_picker.year,
-                        rating = rating
+                        rating = rs_edit_rating.values[0]
                     )
                     editViewModel.insertFilm(film!!) {
                         Utils.showToast(
