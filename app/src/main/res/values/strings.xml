@@ -39,10 +39,14 @@
     <string name="menu_film_edit_title">Изменить</string>
     <string name="menu_film_delete_title">Удалить</string>
     <string name="label_delete">Удалить?</string>
+    <string name="label_rate">Оценить?</string>
     <string name="text_question_sure_delete">Вы уверены, что хотите удалить фильм?</string>
+    <string name="text_question_sure_rate">Подтвердите свою оценку</string>
     <string name="label_yes_sure">Да, уверен</string>
+    <string name="label_yes">Да</string>
     <string name="label_cancel">Отмена</string>
     <string name="text_delete_canceled">Удаление отменено</string>
+    <string name="text_rate_canceled">Оценка отменена</string>
     <string name="text_not_complete">Не все поля заполнены!</string>
     <string name="wrong_url">Неверный формат URL-ссылки</string>
     <string name="text_sign_up_incorrect">Неверный логин или пароль</string>

@@ -126,6 +126,40 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_film_producer" />
+
+            <TextView
+                android:id="@+id/tv_film_set_rating"
+                style="@style/Film.BlockTitles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                android:text="Оцените фильм"
+                app:layout_constraintStart_toStartOf="@+id/tv_film_genre"
+                app:layout_constraintTop_toBottomOf="@id/divider_producer" />
+
+            <RatingBar
+                android:id="@+id/rb_film"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:rating="0"
+                android:stepSize="0.5"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_film_set_rating"/>
+
+            <View
+                android:id="@+id/divider_rating"
+                style="@style/Divider.Horizontal"
+                android:layout_marginStart="@dimen/spacing_normal_16"
+                android:layout_marginTop="@dimen/spacing_normal_16"
+                android:layout_marginEnd="@dimen/spacing_normal_16"
+                android:background="@color/color_divider_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rb_film" />
             <TextView
                 android:id="@+id/tv_film_description_body"
                 android:layout_width="match_parent"
@@ -134,7 +168,7 @@
                 android:layout_marginTop="@dimen/spacing_normal_16"
                 android:lineSpacingExtra="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_producer"
+                app:layout_constraintTop_toBottomOf="@id/barrier"
                 android:text="Overview of the movie Overview of the movie Overview of the movie Overview of the movie Overview of the movie Overview of the movie Overview of the movie" />
             <View
                 android:id="@+id/divider_description"
@@ -156,6 +190,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_description"
                 tools:listitem="@layout/cinema_card_view"/>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="divider_rating,rb_film,tv_film_set_rating"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_producer" />
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="tv_film_set_rating,rb_film,divider_rating" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -169,4 +217,6 @@
         app:layout_anchor="@id/film_app_bar"
         app:layout_anchorGravity="bottom|right|end"
         app:tint="@android:color/white" />
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

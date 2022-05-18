@@ -23,6 +23,7 @@ import ru.greatdevelopers.android_application.R
 import ru.greatdevelopers.android_application.data.model.Favourite
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.model.User
+import ru.greatdevelopers.android_application.data.reqmodel.RatingRequest
 import ru.greatdevelopers.android_application.utils.Utils
 import ru.greatdevelopers.android_application.viewmodel.FilmViewModel
 
@@ -150,11 +151,57 @@ class FilmFragment : Fragment(R.layout.activity_film) {
                     }
 
                 }
-            }else fab_add_favourite.isVisible = false
+                group_rating.isVisible = true
+                filmViewModel.favourite.observe(viewLifecycleOwner, Observer { foundFavour ->
+                    isFavourite = foundFavour != null
+                    showCurrentMode(isFavourite)
+
+                    fab_add_favourite.setOnClickListener {
+                        if (isFavourite) {
+                            filmViewModel.deleteFavourite(foundFavour) {
+                                filmViewModel.favouriteRequest()
+                            }
+                        } else {
+                            filmViewModel.insertFavourite(Favourite(user!!.id, film!!.id)) {
+                                filmViewModel.favouriteRequest()
+                            }
+                        }
+                        isFavourite = !isFavourite
+                        showCurrentMode(isFavourite)
+                    }
+                })
+                filmViewModel.rating.observe(viewLifecycleOwner, Observer { rating ->
+                    if (rating!=null) rb_film.rating = rating else rb_film.rating = 0F
+
+                    rb_film.setOnRatingBarChangeListener { ratingBar, fl, b ->
+                        val sureAlert = MaterialAlertDialogBuilder(requireContext())
+                        sureAlert.setTitle(getString(R.string.label_rate))
+                            .setMessage("${getString(R.string.text_question_sure_rate)} $fl")
+                            .setCancelable(true)
+                            .setPositiveButton(getString(R.string.label_yes)) { dialog, which ->
+                                filmViewModel.insertRating(RatingRequest(user.id, film!!.id, rb_film.rating)) {
+                                    //filmViewModel.favouriteRequest()
+                                }
+                            }
+                            .setNegativeButton(getString(R.string.label_cancel)) { dialog, which ->
+                                rb_film.rating = rating
+                                Utils.showToast(
+                                    requireContext(),
+                                    getString(R.string.text_rate_canceled), Toast.LENGTH_SHORT
+                                )
+                            }
+                        sureAlert.create().show()
+                    }
+                })
+
+            }else {
+                fab_add_favourite.isVisible = false
+
+            }
         }
         filmViewModel.initialRequest()
         //filmViewModel.favouriteRequest()
-        filmViewModel.favourite.observe(viewLifecycleOwner, Observer { foundFavour ->
+        /*filmViewModel.favourite.observe(viewLifecycleOwner, Observer { foundFavour ->
             isFavourite = foundFavour != null
             showCurrentMode(isFavourite)
 
@@ -171,7 +218,9 @@ class FilmFragment : Fragment(R.layout.activity_film) {
                 isFavourite = !isFavourite
                 showCurrentMode(isFavourite)
             }
-        })
+        })*/
+
+
 
 
     }
@@ -185,6 +234,6 @@ class FilmFragment : Fragment(R.layout.activity_film) {
         }
 
     }
-
+    
 
 }

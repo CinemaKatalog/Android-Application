@@ -8,7 +8,8 @@ import ru.greatdevelopers.android_application.data.model.Country
 import ru.greatdevelopers.android_application.data.model.Favourite
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.model.Genre
-import ru.greatdevelopers.android_application.data.reqmodel.FavouriteRequest
+import ru.greatdevelopers.android_application.data.reqmodel.RatingRequest
+import ru.greatdevelopers.android_application.data.reqmodel.UserFilmRequest
 import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFavourite
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFilm
@@ -48,7 +49,10 @@ interface FilmApiInterface {
     suspend fun getFilmWithExtra(): List<FilmListItem>
 
     @POST("favourite/is_favourite")
-    suspend fun getFavouriteById(@Body favouriteRequest: FavouriteRequest): ResponseFavourite?
+    suspend fun getFavouriteById(@Body userFilmRequest: UserFilmRequest): ResponseFavourite?
+
+    @POST("recommendations/rating")
+    suspend fun getRatingById(@Body userFilmRequest: UserFilmRequest): Float?
 
     @DELETE("favourite/delete")
     suspend fun deleteFavourite(@Query("userId") userId: Long, @Query("filmId") filmId: Long)
@@ -58,6 +62,9 @@ interface FilmApiInterface {
 
     @POST("favourite/post")
     suspend fun insertFavourite(@Body favourite: Favourite)
+
+    @POST("recommendations/set_rating")
+    suspend fun insertRating(@Body ratingRequest: RatingRequest)
 
     @POST("edit/genre")
     suspend fun insertGenre(@Body genre: Genre)

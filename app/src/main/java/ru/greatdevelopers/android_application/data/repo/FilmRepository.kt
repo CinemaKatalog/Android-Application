@@ -17,7 +17,8 @@ import ru.greatdevelopers.android_application.data.model.Country
 import ru.greatdevelopers.android_application.data.model.Favourite
 import ru.greatdevelopers.android_application.data.model.Film
 import ru.greatdevelopers.android_application.data.model.Genre
-import ru.greatdevelopers.android_application.data.reqmodel.FavouriteRequest
+import ru.greatdevelopers.android_application.data.reqmodel.RatingRequest
+import ru.greatdevelopers.android_application.data.reqmodel.UserFilmRequest
 import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
 import ru.greatdevelopers.android_application.network.FilmApiInterface
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
@@ -124,7 +125,7 @@ class FilmRepository(
     suspend fun getFavouriteById(filmId: Long, userId: Long): Favourite? {
         //return favouriteDao.getFavouriteById(filmId, userId)
         val film =
-            filmApiInterface.getFavouriteById(FavouriteRequest(userId = userId, filmId = filmId))
+            filmApiInterface.getFavouriteById(UserFilmRequest(userId = userId, filmId = filmId))
         return if (film != null) {
             Favourite(
                 filmId = film.film.id,
@@ -250,5 +251,14 @@ class FilmRepository(
 
     suspend fun updateFilm(film: Film) {
         filmApiInterface.updateFilm(film)
+    }
+
+    suspend fun getRatingById(filmId: Long, userId: Long): Float? {
+        //return favouriteDao.getFavouriteById(filmId, userId)
+        return filmApiInterface.getRatingById(UserFilmRequest(userId = userId, filmId = filmId))
+    }
+
+    suspend fun insertRating(ratingRequest: RatingRequest) {
+        filmApiInterface.insertRating(ratingRequest)
     }
 }

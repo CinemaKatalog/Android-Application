@@ -11,6 +11,7 @@ import ru.greatdevelopers.android_application.data.repo.CinemaRepository
 import ru.greatdevelopers.android_application.data.repo.FilmRepository
 import ru.greatdevelopers.android_application.data.repo.ProfileRepository
 import ru.greatdevelopers.android_application.data.repo.UserRepository
+import ru.greatdevelopers.android_application.data.reqmodel.RatingRequest
 import ru.greatdevelopers.android_application.ui.filmscreen.CinemaListItem
 
 class FilmViewModel(
@@ -29,7 +30,6 @@ class FilmViewModel(
     val film: LiveData<Film>
         get() = loadFilmInfo
 
-
     private val loadGenreInfo = MutableLiveData<Genre>()
     val genre: LiveData<Genre>
         get() = loadGenreInfo
@@ -45,6 +45,14 @@ class FilmViewModel(
     private val loadCinemaInfo = MutableLiveData<List<CinemaListItem>>()
     val cinema: LiveData<List<CinemaListItem>>
         get() = loadCinemaInfo
+
+    private val loadFavourite = MutableLiveData<Favourite>()
+    val favourite: LiveData<Favourite>
+        get() = loadFavourite
+
+    private val loadRating = MutableLiveData<Float>()
+    val rating: LiveData<Float>
+        get() = loadRating
 
     private fun loadUser() {
         viewModelScope.launch {
@@ -69,6 +77,14 @@ class FilmViewModel(
                     null
                 }
             }else null
+            val rating = if (loadUser.value != null) {
+                try {
+                    filmRepository.getRatingById(filmId, loadUser.value!!.id)
+                } catch (ex: HttpException) {
+                    null
+                }
+            }else null
+            loadRating.postValue(rating)
             loadFavourite.postValue(favourite)
             loadCinemaInfo.postValue(cinemaRepository.getFilmCinemaByFilm(filmId))
             loadGenreInfo.postValue(tmpFilm?.let { filmRepository.getGenreById(it.genre) })
@@ -103,13 +119,18 @@ class FilmViewModel(
         }
     }
 
-    private val loadFavourite = MutableLiveData<Favourite>()
-    val favourite: LiveData<Favourite>
-        get() = loadFavourite
+
 
     fun insertFavourite(favourite: Favourite, onInsert: () -> Unit) {
         viewModelScope.launch {
             filmRepository.insertFavourite(favourite)
+            onInsert()
+        }
+    }
+
+    fun insertRating(ratingRequest: RatingRequest, onInsert: () -> Unit) {
+        viewModelScope.launch {
+            filmRepository.insertRating(ratingRequest)
             onInsert()
         }
     }
