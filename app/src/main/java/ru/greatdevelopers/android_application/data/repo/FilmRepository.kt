@@ -117,6 +117,11 @@ class FilmRepository(
         //return filmDao.getFavourFilmWithExtra(userId)
     }
 
+    suspend fun getRecommendedFilms(userId: Long): List<FilmListItem> {
+        return filmApiInterface.getRecommendedFilm(userId)
+        //return filmDao.getFavourFilmWithExtra(userId)
+    }
+
     suspend fun getFilmsWithExtra(): List<FilmListItem> {
         //return filmDao.getFilmWithExtra()
         return filmApiInterface.getFilmWithExtra()

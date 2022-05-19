@@ -55,6 +55,7 @@ class  MainFragment : Fragment(R.layout.fragment_main) {
         mainViewModel.initialRequest() {
             filmsGroupList.clear()
             mainViewModel.initGroupsRequest() {
+
                 recyclerViewAdapter.setItemList(filmsGroupList)
             }
         }

@@ -45,6 +45,9 @@ interface FilmApiInterface {
     @GET("favourite/{id}")
     suspend fun getFavourFilmWithExtra(@Path("id") id: Long): List<FilmListItem>
 
+    @GET("recommendations/{id}")
+    suspend fun getRecommendedFilm(@Path("id") id: Long): List<FilmListItem>
+
     @GET("search/")
     suspend fun getFilmWithExtra(): List<FilmListItem>
 

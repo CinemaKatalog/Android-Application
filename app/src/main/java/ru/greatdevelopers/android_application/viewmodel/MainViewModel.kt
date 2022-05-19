@@ -52,14 +52,15 @@ class MainViewModel(
     fun initGroupsRequest(onInit: () -> Unit) {
         viewModelScope.launch {
             val genreList = mutableListOf<FilmListItem>()
-            filmRepository.getFilmByParameters(
+            filmRepository.getRecommendedFilms(userRepo.getCurrentUserIdFromShPref())
+                /*filmRepository.getFilmByParameters(
                 2,
                 null,
                 minRating = 0f,
-                maxRating = 5f,
+                maxRating = 10f,
                 minYear = 0,
-                maxYear = 2020
-            ).forEach {
+                maxYear = 2022
+            )*/.forEach {
                 filmRepository.getPoster(it.poster)?.let { posterURI ->
                     FilmListItem(
                         it.film_id,
@@ -81,9 +82,9 @@ class MainViewModel(
                 null,
                 null,
                 minRating = 0f,
-                maxRating = 5f,
-                minYear = 2021,
-                maxYear = 2021
+                maxRating = 10f,
+                minYear = 2008,
+                maxYear = 2009
             ).forEach {
                 filmRepository.getPoster(it.poster)?.let { posterURI ->
                     FilmListItem(
@@ -105,10 +106,10 @@ class MainViewModel(
             filmRepository.getFilmByParameters(
                 null,
                 null,
-                minRating = 4f,
-                maxRating = 5f,
+                minRating = 8f,
+                maxRating = 10f,
                 minYear = 0,
-                maxYear = 2020
+                maxYear = 2022
             ).forEach {
                 filmRepository.getPoster(it.poster)?.let { posterURI ->
                     FilmListItem(
