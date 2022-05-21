@@ -20,6 +20,7 @@ import ru.greatdevelopers.android_application.data.model.Genre
 import ru.greatdevelopers.android_application.data.reqmodel.RatingRequest
 import ru.greatdevelopers.android_application.data.reqmodel.UserFilmRequest
 import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
+import ru.greatdevelopers.android_application.data.respmodel.ResponseTop
 import ru.greatdevelopers.android_application.network.FilmApiInterface
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 import ru.greatdevelopers.android_application.utils.Utils
@@ -108,6 +109,28 @@ class FilmRepository(
         )
     }
 
+    suspend fun getRecFilmByParams(
+        userId: Long,
+        genre: Long?,
+        country: Long?,
+        minYear: Int,
+        maxYear: Int,
+        minRating: Float,
+        maxRating: Float
+    ): List<FilmListItem> {
+        return filmApiInterface.getRecFilmByParams(
+            userId,
+            SearchParams(
+                genre,
+                country,
+                minYear,
+                maxYear,
+                minRating,
+                maxRating
+            )
+        )
+    }
+
     suspend fun getFavouriteFilms(userId: Int): List<Film> {
         return filmDao.getFavouriteFilms(userId)
     }
@@ -125,6 +148,11 @@ class FilmRepository(
     suspend fun getFilmsWithExtra(): List<FilmListItem> {
         //return filmDao.getFilmWithExtra()
         return filmApiInterface.getFilmWithExtra()
+    }
+
+    suspend fun getTopFilms(): List<ResponseTop> {
+        //return filmDao.getFilmWithExtra()
+        return filmApiInterface.getTopFilm()
     }
 
     suspend fun getFavouriteById(filmId: Long, userId: Long): Favourite? {

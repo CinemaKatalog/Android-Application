@@ -14,6 +14,7 @@ import ru.greatdevelopers.android_application.data.reqmodel.SearchParams
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFavourite
 import ru.greatdevelopers.android_application.data.respmodel.ResponseFilm
 import ru.greatdevelopers.android_application.data.respmodel.ResponsePoster
+import ru.greatdevelopers.android_application.data.respmodel.ResponseTop
 import ru.greatdevelopers.android_application.ui.mainscreen.adapters.FilmListItem
 
 interface FilmApiInterface {
@@ -42,11 +43,17 @@ interface FilmApiInterface {
     @POST("search/params")
     suspend fun getFilmByParameters(@Body searchParams: SearchParams): List<FilmListItem>
 
+    @POST("recommendations/{id}/params")
+    suspend fun getRecFilmByParams(@Path("id") id: Long, @Body searchParams: SearchParams): List<FilmListItem>
+
     @GET("favourite/{id}")
     suspend fun getFavourFilmWithExtra(@Path("id") id: Long): List<FilmListItem>
 
     @GET("recommendations/{id}")
     suspend fun getRecommendedFilm(@Path("id") id: Long): List<FilmListItem>
+
+    @GET("tops/")
+    suspend fun getTopFilm(): List<ResponseTop>
 
     @GET("search/")
     suspend fun getFilmWithExtra(): List<FilmListItem>

@@ -30,11 +30,11 @@ class  MainFragment : Fragment(R.layout.fragment_main) {
         recycle_view_tops.adapter = recyclerViewAdapter
         recycle_view_tops.layoutManager = LinearLayoutManager(activity)
 
-        mainViewModel.films.observe(viewLifecycleOwner) { films ->
+        /*mainViewModel.films.observe(viewLifecycleOwner) { films ->
             //createFakeElements()
             //recyclerViewAdapter.setItemList(filmsGroupList)
-        }
-        mainViewModel.filmsGenre.observe(viewLifecycleOwner) {
+        }*/
+        /*mainViewModel.filmsGenre.observe(viewLifecycleOwner) {
             filmsGroupList.add(FilmGroup("Комедии", it))
         }
         mainViewModel.filmsYear.observe(viewLifecycleOwner) {
@@ -42,6 +42,10 @@ class  MainFragment : Fragment(R.layout.fragment_main) {
         }
         mainViewModel.filmsRating.observe(viewLifecycleOwner) {
             filmsGroupList.add(FilmGroup("Рейтинговые", it))
+        }*/
+        mainViewModel.topFilms.observe(viewLifecycleOwner) {
+            filmsGroupList = it
+            recyclerViewAdapter.setItemList(filmsGroupList)
         }
         mainViewModel.isAdmin.observe(viewLifecycleOwner) {
             if (it) {
@@ -55,7 +59,6 @@ class  MainFragment : Fragment(R.layout.fragment_main) {
         mainViewModel.initialRequest() {
             filmsGroupList.clear()
             mainViewModel.initGroupsRequest() {
-
                 recyclerViewAdapter.setItemList(filmsGroupList)
             }
         }
