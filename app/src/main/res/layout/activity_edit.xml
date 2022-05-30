@@ -261,7 +261,7 @@
                 android:paddingBottom="@dimen/spacing_huge_32"
                 android:valueFrom="0.0"
                 android:valueTo="10.0"
-                android:stepSize="0.5"
+                android:stepSize="0.1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_edit_rating"/>

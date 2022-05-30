@@ -153,6 +153,7 @@ class MainViewModel(
         val groups: ArrayList<FilmGroup> = ArrayList()
         viewModelScope.launch {
             val userId = userRepo.getCurrentUserIdFromShPref()
+            //val userId = 3477L
             if (userId != -1L){
                 val recommendedList = mutableListOf<FilmListItem>()
                 filmRepository.getRecommendedFilms(userId)

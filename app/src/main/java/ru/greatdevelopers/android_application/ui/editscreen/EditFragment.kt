@@ -107,8 +107,9 @@ class EditFragment : Fragment(R.layout.activity_edit) {
 
         editViewModel.cinemaList.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                /*var sum = 0f
                 recyclerViewAdapter.setItemList(it)
+                /*var sum = 0f
+
                 for (i in it) {
                     sum += i.rating
                 }
